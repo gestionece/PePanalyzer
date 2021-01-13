@@ -242,6 +242,8 @@ document.getElementById('button').addEventListener("click", () => {
             workbook.SheetNames.forEach(sheet => {
                 let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
 
+                console.log(rowObject);
+
                 if (sheet.localeCompare("Riepilogo attività completo") == 0) {
                     saveLoadFile = rowObject;
                     getLCL(rowObject);
