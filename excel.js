@@ -18,12 +18,8 @@ document.getElementById('button').addEventListener("click", () => {
             workbook.SheetNames.forEach(sheet => {
                 let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
 
-                console.log(rowObject);
-
-                if (sheet.localeCompare("Riepilogo attività completo") == 0) {
-                    saveLoadFile = rowObject;
-                    getLCL(rowObject);
-                }
+                saveLoadFile = rowObject;
+                getLCL(rowObject);
             });
         }
     }
@@ -38,82 +34,45 @@ function convertDate(stringDate) {
 
 let saveListLCL = [{}];
 function getLCL(data) {
-    if (data[0].LCL !== undefined) {
-        var typelcl = "NaN";
-        if (data[1]["Motivazione richiesta"].localeCompare("PRM2") == 0 && data[1]["CIT"].localeCompare("525") == 0) {
-            typelcl = "M2";
-        } else if (data[1]["Motivazione richiesta"].localeCompare("RI2G") == 0 && data[1]["CIT"].localeCompare("521") == 0) {
-            typelcl = "MF-R";
-        }
-        else if (data[1]["Motivazione richiesta"].localeCompare("RI2G") == 0 && data[1]["CIT"].localeCompare("523") == 0) {
-            typelcl = "TF-R";
-        }
-        else if (data[1]["Motivazione richiesta"].localeCompare("MA2G") == 0 && data[1]["CIT"].localeCompare("520") == 0) {
-            typelcl = "MF";
-        }
-        else if (data[1]["Motivazione richiesta"].localeCompare("MA2G") == 0 && data[1]["CIT"].localeCompare("523") == 0) {
-            typelcl = "TF";
-        }
 
-        let LCLs = [{
-            "CN": data[1]["Codice contratto"],
-            "LCL": data[1].LCL,
-            "TYPE": typelcl,
-            "DATE": convertDate(data[1]["Data creazione"]),
-            "SELECT": true,
-        }];
+    let LCLs = [];
 
-        var count = Object.keys(data).length;
-        for (let i = 0; i < count; i++) {
-            var LCLexist = false;
-            var lastEneltel;
-            if (lastEneltel !== data[i]["Eneltel"]) {
-                lastEneltel = data[i]["Eneltel"];
-
-                for (let j = 0; j < LCLs.length; j++) {
-                    if (LCLs[j].LCL != undefined && data[i].LCL == LCLs[j].LCL) {
-                        LCLexist = true;
-                    }
-
-                }
-                if (LCLexist == false) {
-                    LCLexist = false;
-
-                    var typelcl = "NaN";
-                    if (data[i]["Motivazione richiesta"].localeCompare("PRM2") == 0 && data[i]["CIT"].localeCompare("525") == 0) {
-                        typelcl = "M2";
-                    } else if (data[i]["Motivazione richiesta"].localeCompare("RI2G") == 0 && data[i]["CIT"].localeCompare("521") == 0) {
-                        typelcl = "MF-R";
-                    }
-                    else if (data[i]["Motivazione richiesta"].localeCompare("RI2G") == 0 && data[i]["CIT"].localeCompare("523") == 0) {
-                        typelcl = "TF-R";
-                    }
-                    else if (data[i]["Motivazione richiesta"].localeCompare("MA2G") == 0 && data[i]["CIT"].localeCompare("520") == 0) {
-                        typelcl = "MF";
-                    }
-                    else if (data[i]["Motivazione richiesta"].localeCompare("MA2G") == 0 && data[i]["CIT"].localeCompare("523") == 0) {
-                        typelcl = "TF";
-                    }
-
-                    let LCL = {
-                        "CN": data[i]["Codice contratto"],
-                        "LCL": data[i].LCL,
-                        "TYPE": typelcl,
-                        "DATE": convertDate(data[i]["Data creazione"]),
-                        "SELECT": true,
-                    };
-
-                    LCLs.push(LCL);
-
-                }
-            }
-        }
-        //console.log(LCLs);
-        saveListLCL = LCLs;
-        loadData(LCLs);
-    } else {
-        //alert("Errato");
+    //start test
+    function ExcelDateToJSDate(date) {
+        return new Date(Math.round((date - 25569)*86400*1000));
     }
+    console.log(data[1].DATA_FINE_LCL);
+    console.log(Math.round((data[1].DATA_FINE_LCL - 25569)*86400*1000));
+    console.log(ExcelDateToJSDate(data[1].DATA_FINE_LCL));
+    //end test
+
+    data.forEach(row => {
+        var LCLexist = false;
+        LCLs.forEach(lcl => {
+            if (row.CODICE_LCL == lcl.CODICE_LCL) {
+                LCLexist = true;
+            }
+        });
+
+        if (LCLexist == false) {
+            LCLexist = false;
+
+            let LCL = {
+                "CODICE_CONTRATTO": row.CODICE_CONTRATTO,
+                "CODICE_LCL": row.CODICE_LCL,
+                "TIPO_LCL": row.MOTIV_RICH,
+                "STATO_LCL": row.STATO_LCL,
+                //"DATA_INIZIO_LCL": convertDate(data[1]["DATA_INIZIO_LCL"]),
+                //"DATA_FINE_LCL": convertDate(data[1]["DATA_FINE_LCL"]),
+                "SELECT": true,
+            };
+
+            LCLs.push(LCL);
+
+        }
+    });
+
+    console.log(LCLs);
 }
 
 function loadData(data) {
