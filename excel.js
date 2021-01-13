@@ -25,13 +25,6 @@ document.getElementById('button').addEventListener("click", () => {
     }
 });
 
-function convertDate(stringDate) {
-    const regex = /\d{2}\/\d{2}\/\d{4}/gm;
-    var dateParts = stringDate.match(regex)[0].split("/");
-    // month is 0-based, that's why we need dataParts[1] - 1
-    return new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-}
-
 let saveListLCL = [{}];
 function getLCL(data) {
 
