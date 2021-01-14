@@ -13,7 +13,7 @@ document.getElementById('button').addEventListener("click", () => {
         fileReader.readAsBinaryString(selectedFile);
         fileReader.onload = (event) => {
             let data = event.target.result;
-            let workbook = XLSX.read(data, { type: "binary", cellDates: true, dateNF: 'dd/mm/yyyy'});
+            let workbook = XLSX.read(data, { type: "binary", cellDates: true, dateNF: 'dd/mm/yyyy' });
             workbook.SheetNames.forEach(sheet => {
                 let rowObject = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
 
@@ -51,52 +51,34 @@ function getLCL(data) {
             LCLs.push(LCL);
         }
     });
+    //console.log(LCLs);
     saveListLCL = LCLs;
-
-    console.log(LCLs);
+    loadData(LCLs);
 }
 
 
 
 
-///////////////////////////
+////////// / TEST / ///////////////
 function loadData(data) {
-    if (data.length > 0) {
-        for (let i = 0; i < data.length; i++) {
+    data.sort(function (a, b) {
+        return a.CODICE_LCL - b.CODICE_LCL;
+    });
+    data.forEach(row => {
+        var element = document.createElement("li");
+        element.classList.add("w3-display-container");
+        element.setAttribute("onclick", 'if(event.target === this) { modalEditLCL(this); }');
+        element.id = row.CODICE_LCL;
 
-            data.sort(function (a, b) {
-                return a.LCL - b.LCL;
-            });
+        element.innerHTML = '<b>' + row.CODICE_LCL + '</b><i class="w3-tiny"> (' + row.CODICE_CONTRATTO + ', ' + row.TIPO_LCL + ')</i><span onclick="changeCN(this.parentElement)" class="w3-button w3-transparent w3-display-right">&times;</span>';
+        document.querySelector("#addListLCL").appendChild(element);
+    });
 
-            var LCLexist = false;
-            for (let j = 0; j < document.querySelector("#addListLCL").childElementCount; j++) {
-                if (document.querySelector("#addListLCL").children[j].id == data[i].LCL) {
-                    LCLexist = true;
-                }
-            }
-
-            if (LCLexist == false) {
-                var element = document.createElement("li");
-                element.classList.add("w3-display-container");
-                element.setAttribute("onclick", 'if(event.target === this) { modalEditLCL(this); }');
-                element.id = data[i].LCL;
-
-                var typeLCL = convertTYPE(data[i].TYPE);
-
-                var jsonCalcTable = loadOptions();
-                for (let cnI = 0; cnI < jsonCalcTable.EUP.length; cnI++) {
-                    if (data[i].CN == jsonCalcTable.EUP[cnI].key) {
-                        element.innerHTML = '<b>' + data[i].LCL + '</b><i class="w3-tiny"> (' + jsonCalcTable.EUP[cnI].label + ', ' + typeLCL + ')</i><span onclick="changeCN(this.parentElement)" class="w3-button w3-transparent w3-display-right">&times;</span>';
-                    }
-                }
-                document.querySelector("#addListLCL").appendChild(element);
-            }
-        }
-
-        document.querySelector("#loadFile").style.display = "none";
-        document.querySelector("#selectLCL").style.display = "block";
-    }
+    document.querySelector("#loadFile").style.display = "none";
+    document.querySelector("#selectLCL").style.display = "block";
 }
+
+///////
 
 window.Print = function () {
     var resultList = document.querySelector("#BeneficitTab").innerHTML;
