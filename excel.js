@@ -11,12 +11,11 @@ document.getElementById('button').addEventListener("click", () => {
     if (selectedFile) {
         let fileReader = new FileReader();
         fileReader.readAsBinaryString(selectedFile);
-
         fileReader.onload = (event) => {
             let data = event.target.result;
-            let workbook = XLSX.read(data, { type: "binary" });
+            let workbook = XLSX.read(data, { type: "binary", cellDates: true, dateNF: 'dd/mm/yyyy'});
             workbook.SheetNames.forEach(sheet => {
-                let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
+                let rowObject = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
 
                 saveLoadFile = rowObject;
                 getLCL(rowObject);
@@ -25,20 +24,9 @@ document.getElementById('button').addEventListener("click", () => {
     }
 });
 
-let saveListLCL = [{}];
+let saveListLCL = [];
 function getLCL(data) {
-
     let LCLs = [];
-
-    //start test
-    function ExcelDateToJSDate(date) {
-        return new Date(Math.round((date - 25569)*86400*1000));
-    }
-    console.log(data[1].DATA_FINE_LCL);
-    console.log(Math.round((data[1].DATA_FINE_LCL - 25569)*86400*1000));
-    console.log(ExcelDateToJSDate(data[1].DATA_FINE_LCL));
-    //end test
-
     data.forEach(row => {
         var LCLexist = false;
         LCLs.forEach(lcl => {
@@ -55,19 +43,23 @@ function getLCL(data) {
                 "CODICE_LCL": row.CODICE_LCL,
                 "TIPO_LCL": row.MOTIV_RICH,
                 "STATO_LCL": row.STATO_LCL,
-                //"DATA_INIZIO_LCL": convertDate(data[1]["DATA_INIZIO_LCL"]),
-                //"DATA_FINE_LCL": convertDate(data[1]["DATA_FINE_LCL"]),
+                "DATA_INIZIO_LCL": row.DATA_INIZIO_LCL,
+                "DATA_FINE_LCL": row.DATA_FINE_LCL,
                 "SELECT": true,
             };
 
             LCLs.push(LCL);
-
         }
     });
+    saveListLCL = LCLs;
 
     console.log(LCLs);
 }
 
+
+
+
+///////////////////////////
 function loadData(data) {
     if (data.length > 0) {
         for (let i = 0; i < data.length; i++) {
