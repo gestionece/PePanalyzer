@@ -112,43 +112,6 @@
 
       </div>
     </div>
-    <script>
-      window.changeCN = function (element) {
-        if (element.parentElement.id == "addListLCL" && document.querySelector('#addListLCL').children.length > 1) {
-          element.lastChild.innerHTML = "&plus;";
-          document.querySelector("#removeListLCL").appendChild(element);
-
-          for (let i = 0; i < saveListLCL.length; i++) {
-            if (saveListLCL[i].LCL == element.id) {
-              saveListLCL[i].SELECT = false;
-            }
-          }
-        } else if (element.parentElement.id == "removeListLCL") {
-          element.lastChild.innerHTML = "&times;";
-          document.querySelector("#addListLCL").appendChild(element);
-
-          for (let i = 0; i < saveListLCL.length; i++) {
-            if (saveListLCL[i].LCL == element.id) {
-              saveListLCL[i].SELECT = true;
-            }
-          }
-        }
-
-        if (document.querySelector('#removeListLCL').children.length > 0) {
-          document.querySelector("#txtRemoveList").style.display = "block";
-        } else {
-          document.querySelector("#txtRemoveList").style.display = "none";
-        }
-      }
-
-      window.backLCList = function () {
-        document.querySelector("#addListLCL").innerHTML = "<!-- Injection JavaScript -->";
-        document.querySelector("#removeListLCL").innerHTML = "<!-- Injection JavaScript -->";
-
-        document.querySelector('#selectLCL').style.display = 'none';
-        document.querySelector('#loadFile').style.display = 'block';
-      }
-    </script>
   </div>
 
   <div id="optionsTab" class="w3-container" style="display: none;">
@@ -198,15 +161,6 @@
 
       </div>
     </div>
-
-    <script>
-      window.backOp = function () {
-        document.querySelector("#optionsList").innerHTML = "<!-- Injection JavaScript -->";
-
-        document.querySelector('#optionsTab').style.display = 'none';
-        document.querySelector('#selectLCL').style.display = 'block';
-      }
-    </script>
   </div>
 
   <div id="BeneficitTab" class="w3-container w3-padding-64 w3-small" style="display: none;">
@@ -236,17 +190,11 @@
         <p></p>
       </div>
     </div>
-    <script>
-      window.backBeneficit = function () {
-        document.querySelector("#listCnLCL").innerHTML = "<!-- Injection JavaScript -->";
-        document.querySelector('#BeneficitTab').style.display = 'none';
-        document.querySelector('#selectLCL').style.display = 'block';
-      }
-    </script>
   </div>
 
 </body>
 <script src="db.js"></script>
+<script src="uiCommands.js"></script>
 <script src="excel.js"></script>
 
 </html>
