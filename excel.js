@@ -56,10 +56,6 @@ function getLCL(data) {
     loadData(LCLs);
 }
 
-
-
-
-////////// / TEST / ///////////////
 function loadData(data) {
     data.sort(function (a, b) {
         return a.CODICE_LCL - b.CODICE_LCL;
@@ -77,8 +73,6 @@ function loadData(data) {
     document.querySelector("#loadFile").style.display = "none";
     document.querySelector("#selectLCL").style.display = "block";
 }
-
-///////
 
 window.Print = function () {
     var resultList = document.querySelector("#BeneficitTab").innerHTML;
@@ -99,6 +93,8 @@ window.Print = function () {
 
     setTimeout(function () { a.print(); a.close(); }, 600);
 }
+
+/////////////////
 
 function loadOptions() {
     var jsonCalcTable;
