@@ -66,7 +66,14 @@ function loadData(data) {
         element.setAttribute("onclick", 'if(event.target === this) { modalEditLCL(this); }');
         element.id = row.CODICE_LCL;
 
-        element.innerHTML = '<b>' + row.CODICE_LCL + '</b><i class="w3-tiny"> (' + row.CODICE_CONTRATTO + ', ' + row.TIPO_LCL + ')</i><span onclick="changeCN(this.parentElement)" class="w3-button w3-transparent w3-display-right">&times;</span>';
+        var cnLabel = row.CODICE_CONTRATTO;
+        CalcTable.EUP.forEach(Contratto => {
+            if (row.CODICE_CONTRATTO == Contratto.key) {
+                cnLabel = Contratto.label;
+            }
+        });
+
+        element.innerHTML = '<b>' + row.CODICE_LCL + '</b><i class="w3-tiny"> (' + cnLabel + ', ' + row.TIPO_LCL + ')</i><span onclick="changeCN(this.parentElement)" class="w3-button w3-transparent w3-display-right">&times;</span>';
         document.querySelector("#addListLCL").appendChild(element);
     });
 
@@ -206,7 +213,7 @@ function modalEditLCL(element) {
     for (let i = 0; i < saveListLCL.length; i++) {
         if (saveListLCL[i].LCL == element.id) {
             document.querySelector('#labelLCL').innerHTML = saveListLCL[i].LCL + '<i class="w3-small">(' + saveListLCL[i].CN + ')</i>';
-            document.querySelector('#dateLCL').value = dateToYMD(saveListLCL[i].DATE);
+            document.querySelector('#dateLCL').value = dateToYMD(new Date(saveListLCL[i].DATA_FINE_LCL));
             document.querySelector('#typeLCL').value = saveListLCL[i].TYPE;
 
             elementIDlcl.addEventListener('click', saveCalcTableLCL, false);
