@@ -24,6 +24,30 @@ document.getElementById('button').addEventListener("click", () => {
     }
 });
 
+function convertTYPE(type) {
+    var typeLCL = "NaN";
+    switch (type) {
+        case "M2":
+            typeLCL = "M2";
+            break;
+        case "MF-R":
+            typeLCL = "MF-TF Recuperi";
+            break;
+        case "TF-R":
+            typeLCL = "TF-15/30 Recuperi";
+            break;
+        case "MF":
+            typeLCL = "MF-TF";
+            break;
+        case "TF":
+            typeLCL = "TF-15/30";
+            break;
+        default:
+            break;
+    }
+    return typeLCL;
+}
+
 let saveListLCL = [];
 function getLCL(data) {
     let LCLs = [];
@@ -38,10 +62,28 @@ function getLCL(data) {
         if (LCLexist == false) {
             LCLexist = false;
 
+            var typelcl = "MF";
+            var typeCE = row.CODICE_ANTE_SOSTITUZIONE.substring(4, 5);
+            if (row.MOTIV_RICH == "PRM2") {
+                typelcl = "M2";
+            }
+            else if (row.MOTIV_RICH == "RI2G" && typeCE != "F") {
+                typelcl = "MF-R";
+            }
+            else if (row.MOTIV_RICH == "RI2G" && typeCE == "F") {
+                typelcl = "TF-R";
+            }
+            else if (row.MOTIV_RICH == "MA2G" && typeCE != "F") {
+                typelcl = "MF";
+            }
+            else if (row.MOTIV_RICH == "MA2G" && typeCE == "F") {
+                typelcl = "TF";
+            }
+
             let LCL = {
                 "CODICE_CONTRATTO": row.CODICE_CONTRATTO,
                 "CODICE_LCL": row.CODICE_LCL,
-                "TIPO_LCL": row.MOTIV_RICH,
+                "TIPO_LCL": typelcl,
                 "STATO_LCL": row.STATO_LCL,
                 "DATA_INIZIO_LCL": row.DATA_INIZIO_LCL,
                 "DATA_FINE_LCL": row.DATA_FINE_LCL,
@@ -73,32 +115,12 @@ function loadData(data) {
             }
         });
 
-        element.innerHTML = '<b>' + row.CODICE_LCL + '</b><i class="w3-tiny"> (' + cnLabel + ', ' + row.TIPO_LCL + ')</i><span onclick="changeCN(this.parentElement)" class="w3-button w3-transparent w3-display-right">&times;</span>';
+        element.innerHTML = '<b>' + row.CODICE_LCL + '</b><i class="w3-tiny"> (' + cnLabel + ', ' + convertTYPE(row.TIPO_LCL) + ')</i><span onclick="changeCN(this.parentElement)" class="w3-button w3-transparent w3-display-right">&times;</span>';
         document.querySelector("#addListLCL").appendChild(element);
     });
 
     document.querySelector("#loadFile").style.display = "none";
     document.querySelector("#selectLCL").style.display = "block";
-}
-
-window.Print = function () {
-    var resultList = document.querySelector("#BeneficitTab").innerHTML;
-
-    var a = window.open('', '', 'width=733,height=454');
-    a.document.open("text/html");
-    a.document.write('<html><head><title>');
-    a.document.write('Beneficit LCL');
-    a.document.write('</title>');
-    a.document.write('<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">');
-    a.document.write('<style>body{opacity: 0}@media print { body{opacity: 1}}</style>');
-    a.document.write('</head><body style="overflow: hidden;">');
-    a.document.write(resultList);
-    a.document.write("</body><!--FIX LIVE SERVER--></html>");
-
-    a.document.close(); // necessary for IE >= 10
-    a.focus(); // necessary for IE >= 10*/
-
-    setTimeout(function () { a.print(); a.close(); }, 600);
 }
 
 /////////////////
@@ -112,7 +134,7 @@ function loadOptions() {
         jsonCalcTable = nevCalcTable;
     }*/
 
-    jsonCalcTable = nevCalcTable;
+    jsonCalcTable = CalcTable;
 
     jsonCalcTable.EUP.sort(function (a, b) {
         return a.label - b.label;
@@ -127,7 +149,26 @@ function loadOptions() {
 window.options = function () {
     var jsonCalcTable = loadOptions();
 
-    var element = document.createElement("ul");
+    var divObject = document.createElement('div');
+    divObject.classList.add("w3-containery");
+    divObject.classList.add("w3-light-grey");
+    divObject.classList.add("w3-card-4");
+    divObject.classList.add("w3-center");
+    divObject.innerHTML = '<h2>' + "€/Punto" + '</h2><table id="lclPerCent" class="w3-table-all w3-hoverable w3-margin-bottom w3-border-0"><thead><tr class="w3-blue"><th>Contratto</th><th class="w3-center">MF-TF</th><th class="w3-center">TF15-30</th><th class="w3-center">M2</th></tr></thead><!-- Injection JavaScript --></table>';
+    
+    jsonCalcTable.EUP.forEach(Contratto => {
+        var row = document.createElement("tr");
+        row.id = Contratto.key;
+        row.setAttribute("onclick", "ediTable(this)");
+        row.innerHTML = "<td><b>" + Contratto.label + "</b><i class='w3-tiny'>(" + Contratto.key + ")</i></td><td class='w3-center'>" + parseFloat(Contratto.MF).toFixed(2) + "<i class='w3-tiny'>€</i></td><td class='w3-center'>" + parseFloat(Contratto.TF).toFixed(2) + "<i class='w3-tiny'>€</i></td><td class='w3-center'>" + parseFloat(Contratto.M2).toFixed(2) + "<i class='w3-tiny'>€</i></td>";
+        divObject.querySelector("#lclPerCent").appendChild(row);
+    });
+    
+    document.querySelector("#optionsList").appendChild(divObject);
+
+
+
+    /*var element = document.createElement("ul");
     element.classList.add("w3-ul");
     element.classList.add("w3-card-4");
     element.classList.add("w3-margin-top");
@@ -139,6 +180,7 @@ window.options = function () {
     }
 
     document.querySelector("#optionsList").appendChild(element);
+    */
 
     element = document.createElement("ul");
     element.classList.add("w3-ul");
@@ -159,43 +201,48 @@ window.options = function () {
 
 const elementID = document.querySelector('#ModalButtonSave');
 function ediTable(element) {
-    if (localStorage.getItem("calcTable")) {
-        loadCalcTable = JSON.parse(localStorage.getItem("calcTable"));
 
-        for (let i = 0; i < loadCalcTable.EUP.length; i++) {
-            if (loadCalcTable.EUP[i].key == element.id) {
-                document.querySelector('#labelCN').innerHTML = loadCalcTable.EUP[i].label + '<i class="w3-small">(' + loadCalcTable.EUP[i].key + ')</i>';
-                document.querySelector('#euroPunto').value = loadCalcTable.EUP[i].value;
-            }
+    var jsonCalcTable = loadOptions();
+    jsonCalcTable.EUP.forEach(contratto => {
+        if (contratto.key == element.id) {
+            document.querySelector('#labelCN').innerHTML = contratto.label + '<i class="w3-small">(' + contratto.key + ')</i>';
+            document.querySelector('#epMF').value = contratto.MF;
+            document.querySelector('#epTF').value = contratto.TF;
+            document.querySelector('#epM2').value = contratto.M2;
         }
+    });
 
-        document.getElementById('modalEditOp').style.display = "block";
+    document.getElementById('modalEditOp').style.display = "block";
 
-        elementID.addEventListener('click', saveCalcTable, false);
-        elementID.myParam = element;
-    }
+    elementID.addEventListener('click', saveCalcTable, false);
+    elementID.myParam = element;
 }
 
 function saveCalcTable(evt) {
-    for (let i = 0; i < loadCalcTable.EUP.length; i++) {
-        if (loadCalcTable.EUP[i].key == evt.currentTarget.myParam.id) {
+    var jsonCalcTable = loadOptions();
+    jsonCalcTable.EUP.forEach(contratto => {
+        if (contratto.key == evt.currentTarget.myParam.id) {
+            document.querySelector('#labelCN').innerHTML = contratto.label + '<i class="w3-small">(' + contratto.key + ')</i>';
+            contratto.MF = document.querySelector('#epMF').value;
+            contratto.TF = document.querySelector('#epTF').value;
+            contratto.M2 = document.querySelector('#epM2').value;
 
-            loadCalcTable.EUP[i].value = parseFloat(document.querySelector('#euroPunto').value);
-            localStorage.setItem("calcTable", JSON.stringify(loadCalcTable));
+            alert(document.querySelector('#epMF').value + "\n" + document.querySelector('#epTF').value + "\n" +document.querySelector('#epM2').value);
 
+            //localStorage.setItem("calcTable", JSON.stringify(loadCalcTable));
             document.getElementById('modalEditOp').style.display = "none";
-
             document.querySelector("#optionsList").innerHTML = "<!-- Injection JavaScript -->";
             options();
         }
-    }
-
+    });
     elementID.removeEventListener('click', saveCalcTable);
 }
 
 function closeModal() {
     document.querySelector('#labelCN').innerHTML = "<!-- Injection JavaScript -->";
-    document.querySelector('#euroPunto').value = "";
+    document.querySelector('#epMF').value = "";
+    document.querySelector('#epTF').value = "";
+    document.querySelector('#epM2').value = "";
     document.getElementById('modalEditOp').style.display = 'none';
     elementID.removeEventListener('click', saveCalcTable);
 }
@@ -380,6 +427,27 @@ function convertTYPE(type) {
             break;
     }
     return typeLCL;
+}
+
+
+window.Print = function () {
+    var resultList = document.querySelector("#BeneficitTab").innerHTML;
+
+    var a = window.open('', '', 'width=733,height=454');
+    a.document.open("text/html");
+    a.document.write('<html><head><title>');
+    a.document.write('Beneficit LCL');
+    a.document.write('</title>');
+    a.document.write('<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">');
+    a.document.write('<style>body{opacity: 0}@media print { body{opacity: 1}}</style>');
+    a.document.write('</head><body style="overflow: hidden;">');
+    a.document.write(resultList);
+    a.document.write("</body><!--FIX LIVE SERVER--></html>");
+
+    a.document.close(); // necessary for IE >= 10
+    a.focus(); // necessary for IE >= 10*/
+
+    setTimeout(function () { a.print(); a.close(); }, 600);
 }
 
 function download_csv(filename = "beneficit") {
