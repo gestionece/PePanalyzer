@@ -92,8 +92,8 @@
               <!--<option value="" disabled selected>Choose your option</option>-->
               <option value="MF">MF-TF</option>
               <option value="TF">TF-15/30</option>
-              <option value="MF-R">MF-TF Recuperi</option>
-              <option value="TF-R">TF-15/30 Recuperi</option>
+              <option value="MF-R">MF-TF Ripassi</option>
+              <option value="TF-R">TF-15/30 Ripassi</option>
               <option value="M2">M2</option>
             </select>
           </div>
@@ -146,9 +146,19 @@
             <!-- Injection JavaScript -->
           </h2>
           <div class="w3-section">
-            <label><b>Euro/Punto</b></label>
-            <input id="euroPunto" class="w3-input w3-border w3-margin-bottom" type="number" placeholder="Euro"
-              step="0.1" min="0.1" max="10" required>
+            <label><b>Euro/Punto MF</b></label>
+            <input id="epMF" class="w3-input w3-border w3-margin-bottom" type="number" placeholder="Euro"
+              step="0.01" min="0.01" max="10" required>
+          </div>
+          <div class="w3-section">
+            <label><b>Euro/Punto TF</b></label>
+            <input id="epTF" class="w3-input w3-border w3-margin-bottom" type="number" placeholder="Euro"
+              step="0.01" min="0.01" max="10" required>
+          </div>
+          <div class="w3-section">
+            <label><b>Euro/Punto M2</b></label>
+            <input id="epM2" class="w3-input w3-border w3-margin-bottom" type="number" placeholder="Euro"
+              step="0.01" min="0.01" max="10" required>
           </div>
         </div>
 
