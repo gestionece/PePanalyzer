@@ -1,45 +1,60 @@
-let nevCalcTable = {
+let CalcTable = {
     EUP: [
-
-
-        [
-            {
-                "key" : "8400149083",
-                "label": "Parma",
-            },
-            {
-                "filter": "MF",
-                "value": 4.15
-            },
-            {
-                "filter": "TF",
-                "value": 6.00
-            },
-            {
-                "filter": "M2",
-                "value": 6.00
-            }
-        ],
-        [
-            {
-                "key" : "8400150707",
-                "label": "Ferrara",
-            },
-            {
-                "filter": "MF",
-                "value": 4.15
-            },
-            {
-                "filter": "TF",
-                "value": 6.00
-            },
-            {
-                "filter": "M2",
-                "value": 6.00
-            }
-        ],
-
-    ],
+        {
+        "key": "8400149083",
+        "label": "Parma",
+        "MF": 4.15,
+        "TF": 6.00,
+        "M2": 6.00
+    }, {
+        "key": "8400150707",
+        "label": "Ferrara",
+        "MF": 4.15,
+        "TF": 6.00,
+        "M2": 6.00
+    }, {
+        "key": "8400141787",
+        "label": "Firenze",
+        "MF": 4.15,
+        "TF": 6.00,
+        "M2": 6.00
+    }, {
+        "key": "8400124337",
+        "label": "Reggio-Modena 1",
+        "MF": 4.15,
+        "TF": 6.00,
+        "M2": 6.00
+    }, {
+        "key": "8400118979",
+        "label": "Rovigo 1",
+        "MF": 4.15,
+        "TF": 6.00,
+        "M2": 6.00
+    }, {
+        "key": "8400141790",
+        "label": "Vicenza",
+        "MF": 4.15,
+        "TF": 6.00,
+        "M2": 6.00
+    }, {
+        "key": "8400149736",
+        "label": "Mantova-Cremona",
+        "MF": 4.15,
+        "TF": 6.00,
+        "M2": 6.00
+    }, {
+        "key": "8400149816",
+        "label": "Padova-Rovigo 2",
+        "MF": 4.15,
+        "TF": 6.00,
+        "M2": 6.00
+    }, {
+        "key": "8400151041",
+        "label": "Reggio-Modena 2",
+        "MF": 4.15,
+        "TF": 6.00,
+        "M2": 6.00
+    },],
     CEP: [
         {
             "label": "Eseguiti MF-TF",
@@ -47,48 +62,27 @@ let nevCalcTable = {
             "key": "CON",
             "value": 2.50
         }, {
-            "label": "Acesso a Vuoto MF-TF",
-            "filter": "MF",
-            "key": "AV",
-            "value": 1.20
-        }, {
             "label": "Eseguiti TF15/30",
             "filter": "TF",
             "key": "CON",
             "value": 3.5
-        }, {
-            "label": "Acesso a Vuoto TF15/30",
-            "filter": "TF",
-            "key": "AV",
-            "value": 1.20
         }, {
             "label": "Eseguiti M2",
             "filter": "M2",
             "key": "CON",
             "value": 4.5
         }, {
-            "label": "Acesso a Vuoto M2",
-            "filter": "M2",
-            "key": "AV",
-            "value": 1.20
-        }, {
             "label": "Recuperi Eseguiti MF-TF",
             "filter": "MF-R",
             "key": "CON",
             "value": 3.5
         }, {
-            "label": "Recuperi Acesso a Vuoto MF-TF",
-            "filter": "MF-R",
-            "key": "AV",
-            "value": 1.20
-        }, {
             "label": "Recuperi Eseguiti TF15/30",
             "filter": "TF-R",
             "key": "CON",
             "value": 3.5
-        }, {
-            "label": "Recuperi Acesso a Vuoto TF15/30",
-            "filter": "TF-R",
+        }, { // AV
+            "label": "Acesso a Vuoto",
             "key": "AV",
             "value": 1.20
         }, { //GG MF-R
