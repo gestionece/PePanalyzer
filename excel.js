@@ -62,6 +62,7 @@ function getLCL(data) {
         if (LCLexist == false) {
             LCLexist = false;
 
+            //Castel per determinare se è 15/30
             var typelcl = "MF";
             var typeCE = row.CODICE_ANTE_SOSTITUZIONE.substring(4, 5);
             if (row.MOTIV_RICH == "PRM2") {
@@ -257,31 +258,44 @@ function dateToYMD(date) {
 const elementIDlcl = document.querySelector('#ModalButtonSaveLCL');
 function modalEditLCL(element) {
     document.getElementById('modalEditLCL').style.display = "block";
-    for (let i = 0; i < saveListLCL.length; i++) {
-        if (saveListLCL[i].LCL == element.id) {
-            document.querySelector('#labelLCL').innerHTML = saveListLCL[i].LCL + '<i class="w3-small">(' + saveListLCL[i].CN + ')</i>';
-            document.querySelector('#dateLCL').value = dateToYMD(new Date(saveListLCL[i].DATA_FINE_LCL));
-            document.querySelector('#typeLCL').value = saveListLCL[i].TYPE;
+
+    saveListLCL.forEach(lcl => {
+        if (lcl.CODICE_LCL == element.id) {
+            
+            var cnLabel = lcl.CODICE_CONTRATTO;
+            CalcTable.EUP.forEach(Contratto => {
+                if (lcl.CODICE_CONTRATTO == Contratto.key) {
+                    cnLabel = Contratto.label;
+                }
+            });
+
+            document.querySelector('#labelLCL').innerHTML = lcl.CODICE_LCL + '<i class="w3-small">(' + cnLabel + ')</i>';
+            document.querySelector('#dateLCL').value = dateToYMD(new Date(lcl.DATA_FINE_LCL));
+            document.querySelector('#typeLCL').value = lcl.TIPO_LCL;
 
             elementIDlcl.addEventListener('click', saveCalcTableLCL, false);
             elementIDlcl.myParam = element;
         }
-    }
+    });
 }
 
 function saveCalcTableLCL(evt) {
-    for (let i = 0; i < saveListLCL.length; i++) {
-        if (saveListLCL[i].LCL == evt.currentTarget.myParam.id) {
-            saveListLCL[i].DATE = new Date(document.querySelector('#dateLCL').value);
-            saveListLCL[i].TYPE = document.querySelector('#typeLCL').value;
+    document.querySelector('#labelLCL').innerHTML = "<!-- Injection JavaScript -->";
+    document.getElementById('modalEditLCL').style.display = 'none';
+    saveListLCL.forEach(lcl => {
+        if (lcl.CODICE_LCL == evt.currentTarget.myParam.id) {
+            lcl.DATA_FINE_LCL = new Date(document.querySelector('#dateLCL').value);
+            lcl.TIPO_LCL = document.querySelector('#typeLCL').value;
 
-            document.querySelector('#labelLCL').innerHTML = "<!-- Injection JavaScript -->";
-            document.getElementById('modalEditLCL').style.display = 'none';
-
-            var typeLCL = convertTYPE(saveListLCL[i].TYPE);
-            evt.currentTarget.myParam.innerHTML = '<b>' + saveListLCL[i].LCL + '</b><i class="w3-tiny"> (' + saveListLCL[i].CN + ', ' + typeLCL + ')</i><span onclick="changeCN(this.parentElement)" class="w3-button w3-transparent w3-display-right">&times;</span>';
-        }
-    }
+            var cnLabel = lcl.CODICE_CONTRATTO;
+            CalcTable.EUP.forEach(Contratto => {
+                if (lcl.CODICE_CONTRATTO == Contratto.key) {
+                    cnLabel = Contratto.label;
+                }
+            });
+            evt.currentTarget.myParam.innerHTML = '<b>' + lcl.CODICE_LCL + '</b><i class="w3-tiny"> (' + cnLabel + ', ' + convertTYPE(lcl.TIPO_LCL) + ')</i><span onclick="changeCN(this.parentElement)" class="w3-button w3-transparent w3-display-right">&times;</span>';
+        }        
+    });
 
     elementID.removeEventListener('click', saveCalcTableLCL);
 }
