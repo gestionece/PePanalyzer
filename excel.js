@@ -167,22 +167,6 @@ window.options = function () {
     
     document.querySelector("#optionsList").appendChild(divObject);
 
-
-
-    /*var element = document.createElement("ul");
-    element.classList.add("w3-ul");
-    element.classList.add("w3-card-4");
-    element.classList.add("w3-margin-top");
-    element.classList.add("w3-margin-bottom");
-    element.innerHTML = '<!-- Injection JavaScript --><li><h2>€/Punto</h2></li>';
-
-    for (let i = 0; i < jsonCalcTable.EUP.length; i++) {
-        element.innerHTML += '<li class="w3-display-container" id="' + jsonCalcTable.EUP[i].key + '"><b>' + jsonCalcTable.EUP[i].label + '</b><i class="w3-tiny">(' + jsonCalcTable.EUP[i].key + ', ' + convertTYPE(jsonCalcTable.EUP[i].filter) + ')</i><span title="Edit" onclick="ediTable(this.parentElement);" class="w3-button w3-transparent w3-display-right w3-hover-yellow">' + parseFloat(jsonCalcTable.EUP[i].value).toFixed(2) + '<i class="w3-tiny">€</i></span></li>';
-    }
-
-    document.querySelector("#optionsList").appendChild(element);
-    */
-
     element = document.createElement("ul");
     element.classList.add("w3-ul");
     element.classList.add("w3-card-4");
