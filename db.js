@@ -83,8 +83,14 @@ let CalcTable = {
             "value": 3.5
         }, { // AV
             "label": "Acesso a Vuoto",
+            "filter": "-",
             "key": "AV",
             "value": 1.20
+        }, { // INT
+            "label": "Interno",
+            "filter": "-",
+            "key": "INT",
+            "value": 1.00
         }, { //GG MF-R
             "label": "Eseguiti <30 Giorni MF-TF",
             "filter": "MF-R",
