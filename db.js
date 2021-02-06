@@ -58,7 +58,7 @@ let CalcTable = {
     ],
 
     CEP: [
-        {
+        /*{
             key: "MF",
             label: "MF-TF",
             CON: 2.50,
@@ -94,7 +94,7 @@ let CalcTable = {
             GG3: 1.50,
             INTR: 1.00,
             AV: 1.20,
-        },
+        },*/
         
         
         
@@ -104,7 +104,7 @@ let CalcTable = {
         
         
         
-        /*{
+        {
             key: "CON",
             label: "Eseguiti",
             MF: 2.50,
@@ -122,17 +122,17 @@ let CalcTable = {
             TF_R: 1.20,
         }, { //Premi
             key: "GG1",
-            label: "Premio Accelerazione",
+            label: "Premio Accelerazione <30 giorni",
             MF_R: 3.50,
             TF_R: 3.50,
         }, { //Premi
             key: "GG2",
-            label: "Premio Accelerazione",
+            label: "Premio Accelerazione 30<>90 giorni",
             MF_R: 2.50,
             TF_R: 2.50,
         }, { //Premi
             key: "GG3",
-            label: "Premio Accelerazione",
+            label: "Premio Accelerazione 90<>120 giorni",
             MF_R: 1.50,
             TF_R: 1.50,
         }, {
@@ -141,8 +141,11 @@ let CalcTable = {
             MF: 1.00,
             TF: 1.00,
             M2: 1.00,
+        }, {
+            key: "INTR",
+            label: "Premio interni",
             MF_R: 1.00,
             TF_R: 1.00,
-        }*/
+        }
     ]
 }
