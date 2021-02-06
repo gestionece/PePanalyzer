@@ -322,6 +322,7 @@ function calcBeneficit() {
                 "GG2": 0,
                 "GG3": 0,
                 "INT": 0,
+                "INTR": 0,
             };
 
             saveLoadFile.forEach(row => {
@@ -342,8 +343,14 @@ function calcBeneficit() {
                             LCL.GG1 += 1;
                         } else if (diffDays > 30 && diffDays <= 90) {
                             LCL.GG2 += 1;
+                            if (row.POSIZIONE_MIS_POST_SOST == "1 - Nell'appartamento") {
+                                LCL.INTR += 1;
+                            }
                         } else if (diffDays > 90 && diffDays <= 120) {
                             LCL.GG3 += 1;
+                            if (row.POSIZIONE_MIS_POST_SOST == "1 - Nell'appartamento") {
+                                LCL.INTR += 1;
+                            }
                         }
 
                         if (row.POSIZIONE_MIS_POST_SOST == "1 - Nell'appartamento") {
@@ -362,10 +369,13 @@ function calcBeneficit() {
 
             var typeLCL = convertTYPE(rowLCL.TIPO_LCL);
 
+            var eurPuntoCN = 0;
+
             var cnLabel = rowLCL.CODICE_CONTRATTO;
             CalcTable.EUP.forEach(Contratto => {
                 if (rowLCL.CODICE_CONTRATTO == Contratto.key) {
                     cnLabel = Contratto.label;
+                    eurPuntoCN = Contratto[(rowLCL.TIPO_LCL).substring(0, 2)]
                 }
             });
 
@@ -375,50 +385,14 @@ function calcBeneficit() {
             var subTot = 0;
 
             CalcTable.CEP.forEach(DB_CEP => {
-                if (DB_CEP.filter == rowLCL.TIPO_LCL) {
-                //var row = document.createElement("tr");
-                //var tot = numVar * jsonCalcTable.CEP[j].value * jsonCalcTable.EUP[jj].value;
-                //subTot += tot;
-                row.innerHTML = "<td>" + DB_CEP.key + "</td><td class='w3-center'>" + "numVar" + "</td><td class='w3-center'>" + "CEP[j].value" + "</td><td class='w3-center'>" + "parseFloat(jsonCalcTable.EUP[jj].value).toFixed(2)" + "€" + "</td><td class='w3-center'>" + "formatter.format(tot)" + "</td>";
-                divObject.querySelector("#lclPerCent").appendChild(row);
+                if (DB_CEP.filter == rowLCL.TIPO_LCL || DB_CEP.filter == "-") {
+                var rowTable = document.createElement("tr");
+                var tot = LCL[DB_CEP.key] * DB_CEP.value * eurPuntoCN;
+                subTot += tot;
+                rowTable.innerHTML = "<td>" + DB_CEP.label + "</td><td class='w3-center'>" + LCL[DB_CEP.key] + "</td><td class='w3-center'>" + DB_CEP.value + "</td><td class='w3-center'>" + parseFloat(eurPuntoCN).toFixed(2) + "€" + "</td><td class='w3-center'>" + formatter.format(tot) + "</td>";
+                divObject.querySelector("#lclPerCent").appendChild(rowTable);
                 }
             });
-            
-            /*for (let j = 0; j < jsonCalcTable.CEP.length; j++) {
-                for (let jj = 0; jj < jsonCalcTable.EUP.length; jj++) {
-                   
-                    if (saveListLCL[i].TYPE == jsonCalcTable.CEP[j].filter && saveListLCL[i].CN == jsonCalcTable.EUP[jj].key) {
-                        if (jsonCalcTable.EUP[jj].filter == (saveListLCL[i].TYPE).substring(0, 2)) {
-                            var row = document.createElement("tr");
-                            var numVar = 0;
-                            switch (jsonCalcTable.CEP[j].key) {
-                                case "CON":
-                                    numVar = LCL.CON;
-                                    break;
-                                case "AV":
-                                    numVar = LCL.AV;
-                                    break;
-                                case "GG1":
-                                    numVar = LCL.GG1;
-                                    break;
-                                case "GG2":
-                                    numVar = LCL.GG2;
-                                    break;
-                                case "GG3":
-                                    numVar = LCL.GG3;
-                                    break;
-                                default:
-                                    break;
-                            }
-
-                            var tot = numVar * jsonCalcTable.CEP[j].value * jsonCalcTable.EUP[jj].value;
-                            subTot += tot;
-                            row.innerHTML = "<td>" + jsonCalcTable.CEP[j].label + "</td><td class='w3-center'>" + numVar + "</td><td class='w3-center'>" + jsonCalcTable.CEP[j].value + "</td><td class='w3-center'>" + parseFloat(jsonCalcTable.EUP[jj].value).toFixed(2) + "€" + "</td><td class='w3-center'>" + formatter.format(tot) + "</td>";
-                            divObject.querySelector("#lclPerCent").appendChild(row);
-                        }
-                    }
-                }
-            }*/
 
             var row = document.createElement("tr");
             row.innerHTML = "<td>" + "Totale:" + "</td><td></td><td></td><td></td><td class='w3-center'>" + formatter.format(subTot) + "</td>";
