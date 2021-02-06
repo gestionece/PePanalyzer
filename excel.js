@@ -380,7 +380,7 @@ function calcBeneficit() {
                     var tot = LCL[DB_CEP.key] * DB_CEP[rowLCL.TIPO_LCL] * eurPuntoCN;
                     subTot += tot;
     
-                    rowTable.innerHTML = "<td>" + DB_CEP.label + "</td><td class='w3-center'>" + LCL[DB_CEP.key] + "</td><td class='w3-center'>" + DB_CEP[rowLCL.TIPO_LCL] + "</td><td class='w3-center'>" + parseFloat(eurPuntoCN).toFixed(2) + "€" + "</td><td class='w3-center'>" + formatter.format(tot) + "</td>";
+                    rowTable.innerHTML = "<td>" + DB_CEP.label + "</td><td class='w3-center'>" + LCL[DB_CEP.key] + "</td><td class='w3-center'>" + parseFloat(DB_CEP[rowLCL.TIPO_LCL]).toFixed(1) + "<i class='w3-tiny'>p</i></td><td class='w3-center'>" + parseFloat(eurPuntoCN).toFixed(2) + "€" + "</td><td class='w3-center'>" + formatter.format(tot) + "</td>";
                     divObject.querySelector("#lclPerCent").appendChild(rowTable);
                     //console.log(LCL[DB_CEP.key]);
                 }
