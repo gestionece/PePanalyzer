@@ -4,7 +4,7 @@ window.changeCN = function (element) {
       document.querySelector("#removeListLCL").appendChild(element);
 
       for (let i = 0; i < saveListLCL.length; i++) {
-        if (saveListLCL[i].LCL == element.id) {
+        if (saveListLCL[i].CODICE_LCL == element.id) {
           saveListLCL[i].SELECT = false;
         }
       }
@@ -13,7 +13,7 @@ window.changeCN = function (element) {
       document.querySelector("#addListLCL").appendChild(element);
 
       for (let i = 0; i < saveListLCL.length; i++) {
-        if (saveListLCL[i].LCL == element.id) {
+        if (saveListLCL[i].CODICE_LCL == element.id) {
           saveListLCL[i].SELECT = true;
         }
       }
