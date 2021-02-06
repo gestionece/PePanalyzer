@@ -143,7 +143,7 @@ let CalcTable = {
             M2: 1.00,
         }, {
             key: "INTR",
-            label: "Premio interni",
+            label: "Premio interni ripassi(no <30 giorni)",
             MF_R: 1.00,
             TF_R: 1.00,
         }
