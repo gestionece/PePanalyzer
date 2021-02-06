@@ -30,10 +30,10 @@ function convertTYPE(type) {
         case "M2":
             typeLCL = "M2";
             break;
-        case "MF-R":
+        case "MF_R":
             typeLCL = "MF-TF Recuperi";
             break;
-        case "TF-R":
+        case "TF_R":
             typeLCL = "TF-15/30 Recuperi";
             break;
         case "MF":
@@ -69,10 +69,10 @@ function getLCL(data) {
                 typelcl = "M2";
             }
             else if (row.MOTIV_RICH == "RI2G" && typeCE != "F") {
-                typelcl = "MF-R";
+                typelcl = "MF_R";
             }
             else if (row.MOTIV_RICH == "RI2G" && typeCE == "F") {
-                typelcl = "TF-R";
+                typelcl = "TF_R";
             }
             else if (row.MOTIV_RICH == "MA2G" && typeCE != "F") {
                 typelcl = "MF";
@@ -331,17 +331,17 @@ function calcBeneficit() {
                             LCL.GG1 += 1;
                         } else if (diffDays > 30 && diffDays <= 90) {
                             LCL.GG2 += 1;
-                            if (row.POSIZIONE_MIS_POST_SOST == "1 - Nell'appartamento") {
+                            if (row.POSIZIONE_MIS_POST_SOST == "1 - Nell'appartamento" && new Date(row.DATA_INSTALLAZIONE) >= new Date("8/11/2020")) {//dopo l’11/8/20 – data in cui è stata accettata la comunicazione che la introduceva
                                 LCL.INTR += 1;
                             }
                         } else if (diffDays > 90 && diffDays <= 120) {
                             LCL.GG3 += 1;
-                            if (row.POSIZIONE_MIS_POST_SOST == "1 - Nell'appartamento") {
+                            if (row.POSIZIONE_MIS_POST_SOST == "1 - Nell'appartamento" && new Date(row.DATA_INSTALLAZIONE) >= new Date("8/11/2020")) {//dopo l’11/8/20 – data in cui è stata accettata la comunicazione che la introduceva
                                 LCL.INTR += 1;
                             }
                         }
 
-                        if (row.POSIZIONE_MIS_POST_SOST == "1 - Nell'appartamento") {
+                        if (row.POSIZIONE_MIS_POST_SOST == "1 - Nell'appartamento" && new Date(row.DATA_INSTALLAZIONE) >= new Date("8/11/2020")) {//dopo l’11/8/20 – data in cui è stata accettata la comunicazione che la introduceva
                             LCL.INT += 1;
                         }
                     }
@@ -360,6 +360,7 @@ function calcBeneficit() {
             var eurPuntoCN = 0;
 
             var cnLabel = rowLCL.CODICE_CONTRATTO;
+            
             CalcTable.EUP.forEach(Contratto => {
                 if (rowLCL.CODICE_CONTRATTO == Contratto.key) {
                     cnLabel = Contratto.label;
@@ -373,21 +374,18 @@ function calcBeneficit() {
             var subTot = 0;
 
             CalcTable.CEP.forEach(DB_CEP => {
-                if (DB_CEP.filter == rowLCL.TIPO_LCL || DB_CEP.filter == "-") {
-                var rowTable = document.createElement("tr");
+                if (DB_CEP.key == rowLCL.TIPO_LCL) {
+                    /*var rowTable = document.createElement("tr");
 
-                //numero contatori interni
-                if (DB_CEP.key == "INT") {
-                    
-                }
-
-                var tot = LCL[DB_CEP.key] * DB_CEP.value * eurPuntoCN;
-                subTot += tot;
-
-                rowTable.innerHTML = "<td>" + DB_CEP.label + "</td><td class='w3-center'>" + LCL[DB_CEP.key] + "</td><td class='w3-center'>" + DB_CEP.value + "</td><td class='w3-center'>" + parseFloat(eurPuntoCN).toFixed(2) + "€" + "</td><td class='w3-center'>" + formatter.format(tot) + "</td>";
-                divObject.querySelector("#lclPerCent").appendChild(rowTable);
+                    var tot = LCL[DB_CEP.key] * DB_CEP[rowLCL.TIPO_LCL] * eurPuntoCN;
+                    subTot += tot;
+    
+                    rowTable.innerHTML = "<td>" + DB_CEP.label + "</td><td class='w3-center'>" + LCL[DB_CEP.key] + "</td><td class='w3-center'>" + DB_CEP[rowLCL.TIPO_LCL] + "</td><td class='w3-center'>" + parseFloat(eurPuntoCN).toFixed(2) + "€" + "</td><td class='w3-center'>" + formatter.format(tot) + "</td>";
+                    divObject.querySelector("#lclPerCent").appendChild(rowTable);*/
+                    console.log(DB_CEP);
                 }
             });
+
 
             var row = document.createElement("tr");
             row.innerHTML = "<td>" + "Totale:" + "</td><td></td><td></td><td></td><td class='w3-center'>" + formatter.format(subTot) + "</td>";
@@ -397,112 +395,6 @@ function calcBeneficit() {
 
         }
     });
-
-    console.log(LCLs);
-
-    /*for (let i = 0; i < saveListLCL.length; i++) {
-        if (saveListLCL[i].SELECT == true) {
-
-            let LCL = {
-                "CN": saveListLCL[i].CN,
-                "LCL": saveListLCL[i].LCL,
-                "TYPE": saveListLCL[i].TYPE,
-                "DATE": saveListLCL[i].DATE,
-                "TOT": 0,
-                "CON": 0,
-                "ANN": 0,
-                "AV": 0,
-                "GG1": 0,
-                "GG2": 0,
-                "GG3": 0,
-            };
-
-            for (let ii = 0; ii < saveLoadFile.length; ii++) {
-                if (saveListLCL[i].LCL == saveLoadFile[ii].LCL) {
-                    LCL.TOT += 1;
-                    if (saveLoadFile[ii]["Stato OdL"].localeCompare("Annullato") == 0) {
-                        LCL.ANN += 1;
-                    } else if (saveLoadFile[ii]["Stato OdL"].localeCompare("Chiuso") == 0 && (saveLoadFile[ii]["Causale Esito"].localeCompare("OK FINALE") == 0 || saveLoadFile[ii]["Causale Esito"].localeCompare("CHIUSO DA BACK OFFICE") == 0)) {
-                        LCL.CON += 1;
-
-                        const diffTime = Math.abs(new Date(LCL.DATE) - convertDate(saveLoadFile[ii]["Data e ora fine esecuzione"]));
-                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
-                        if (diffDays <= 30) {
-                            LCL.GG1 += 1;
-                        } else if (diffDays > 30 && diffDays <= 90) {
-                            LCL.GG2 += 1;
-                        } else if (diffDays > 90 && diffDays <= 120) {
-                            LCL.GG3 += 1;
-                        }
-
-                    } else if (saveLoadFile[ii]["Stato OdL"].localeCompare("Chiuso") == 0 && saveLoadFile[ii]["Causale Esito"].localeCompare("Chiusura Giornata Lavorativa") != 0) {
-                        LCL.AV += 1;
-                    }
-
-                }
-            }
-
-            LCLs.push(LCL);
-
-            //CODE
-            var divObject = document.createElement('div');
-            divObject.classList.add("w3-containery");
-            divObject.classList.add("w3-light-grey");
-            divObject.classList.add("w3-card-4");
-
-            var typeLCL = convertTYPE(saveListLCL[i].TYPE);
-
-            var jsonCalcTable = loadOptions();
-            for (let cnI = 0; cnI < jsonCalcTable.EUP.length; cnI++) {
-                if (saveListLCL[i].CN == jsonCalcTable.EUP[cnI].key) {
-                    divObject.innerHTML = '<h2>' + saveListLCL[i].LCL + '<i class="w3-small"> (' + jsonCalcTable.EUP[cnI].label + ', ' + typeLCL + ')</i></h2><table id="lclPerCent" class="w3-table-all w3-hoverable w3-margin-bottom"><thead><tr class="w3-green"><th style="width: 40%;">Causale</th><th class="w3-center">Contatori</th><th class="w3-center">Punti</th><th class="w3-center">€/Punto</th><th class="w3-center">€</th></tr></thead><!-- Injection JavaScript --></table>';
-                }
-            }
-
-            var subTot = 0;
-            var formatter = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' });
-            for (let j = 0; j < jsonCalcTable.CEP.length; j++) {
-                for (let jj = 0; jj < jsonCalcTable.EUP.length; jj++) {
-                    if (saveListLCL[i].TYPE == jsonCalcTable.CEP[j].filter && saveListLCL[i].CN == jsonCalcTable.EUP[jj].key) {
-                        if (jsonCalcTable.EUP[jj].filter == (saveListLCL[i].TYPE).substring(0, 2)) {
-                            var row = document.createElement("tr");
-                            var numVar = 0;
-                            switch (jsonCalcTable.CEP[j].key) {
-                                case "CON":
-                                    numVar = LCL.CON;
-                                    break;
-                                case "AV":
-                                    numVar = LCL.AV;
-                                    break;
-                                case "GG1":
-                                    numVar = LCL.GG1;
-                                    break;
-                                case "GG2":
-                                    numVar = LCL.GG2;
-                                    break;
-                                case "GG3":
-                                    numVar = LCL.GG3;
-                                    break;
-                                default:
-                                    break;
-                            }
-
-                            var tot = numVar * jsonCalcTable.CEP[j].value * jsonCalcTable.EUP[jj].value;
-                            subTot += tot;
-                            row.innerHTML = "<td>" + jsonCalcTable.CEP[j].label + "</td><td class='w3-center'>" + numVar + "</td><td class='w3-center'>" + jsonCalcTable.CEP[j].value + "</td><td class='w3-center'>" + parseFloat(jsonCalcTable.EUP[jj].value).toFixed(2) + "€" + "</td><td class='w3-center'>" + formatter.format(tot) + "</td>";
-                            divObject.querySelector("#lclPerCent").appendChild(row);
-                        }
-                    }
-                }
-            }
-
-            var row = document.createElement("tr");
-            row.innerHTML = "<td>" + "Totale:" + "</td><td></td><td></td><td></td><td class='w3-center'>" + formatter.format(subTot) + "</td>";
-            divObject.querySelector("#lclPerCent").appendChild(row);
-
-            document.querySelector("#listCnLCL").appendChild(divObject);
-        }
-    }*/
 
     saveResultBeneficit = LCLs;
 
@@ -516,11 +408,11 @@ function convertTYPE(type) {
         case "M2":
             typeLCL = "M2";
             break;
-        case "MF-R":
-            typeLCL = "MF-TF Recuperi";
+        case "MF_R":
+            typeLCL = "MF-TF Ripassi";
             break;
-        case "TF-R":
-            typeLCL = "TF-15/30 Recuperi";
+        case "TF_R":
+            typeLCL = "TF-15/30 Ripassi";
             break;
         case "MF":
             typeLCL = "MF-TF";
