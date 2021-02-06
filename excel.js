@@ -374,15 +374,15 @@ function calcBeneficit() {
             var subTot = 0;
 
             CalcTable.CEP.forEach(DB_CEP => {
-                if (DB_CEP.key == rowLCL.TIPO_LCL) {
-                    /*var rowTable = document.createElement("tr");
+                if (DB_CEP[rowLCL.TIPO_LCL] != undefined) {
+                    var rowTable = document.createElement("tr");
 
                     var tot = LCL[DB_CEP.key] * DB_CEP[rowLCL.TIPO_LCL] * eurPuntoCN;
                     subTot += tot;
     
                     rowTable.innerHTML = "<td>" + DB_CEP.label + "</td><td class='w3-center'>" + LCL[DB_CEP.key] + "</td><td class='w3-center'>" + DB_CEP[rowLCL.TIPO_LCL] + "</td><td class='w3-center'>" + parseFloat(eurPuntoCN).toFixed(2) + "€" + "</td><td class='w3-center'>" + formatter.format(tot) + "</td>";
-                    divObject.querySelector("#lclPerCent").appendChild(rowTable);*/
-                    console.log(DB_CEP);
+                    divObject.querySelector("#lclPerCent").appendChild(rowTable);
+                    //console.log(LCL[DB_CEP.key]);
                 }
             });
 
