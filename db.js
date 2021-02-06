@@ -72,22 +72,17 @@ let CalcTable = {
             "key": "CON",
             "value": 4.5
         }, {
-            "label": "Recuperi Eseguiti MF-TF",
+            "label": "Ripassi Eseguiti MF-TF",
             "filter": "MF-R",
             "key": "CON",
             "value": 3.5
         }, {
-            "label": "Recuperi Eseguiti TF15/30",
+            "label": "Ripassi Eseguiti TF15/30",
             "filter": "TF-R",
             "key": "CON",
             "value": 3.5
-        }, { // AV
-            "label": "Acesso a Vuoto",
-            "filter": "-",
-            "key": "AV",
-            "value": 1.20
         }, { // INT
-            "label": "Interno",
+            "label": "Interni",
             "filter": "-",
             "key": "INT",
             "value": 1.00
@@ -121,6 +116,11 @@ let CalcTable = {
             "filter": "TF-R",
             "key": "GG3",
             "value": 1.50
-        }
+        }, { // AV
+            "label": "Acesso a Vuoto",
+            "filter": "-",
+            "key": "AV",
+            "value": 1.20
+        },
     ]
 }
