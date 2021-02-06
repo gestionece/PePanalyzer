@@ -379,8 +379,14 @@ function calcBeneficit() {
 
                     var tot = LCL[DB_CEP.key] * DB_CEP[rowLCL.TIPO_LCL] * eurPuntoCN;
                     subTot += tot;
+
+                    //ADD alert triangle
+                    var warningTriangle = "";
+                    if (DB_CEP.key == "GG1" || DB_CEP.key == "GG2" || DB_CEP.key == "GG3") {
+                        warningTriangle = '<span class="w3-text-orange" title="I dati sono aprosimativi(per la mancanza di calcolo CE precedenti)">&#x26A0;</span>';
+                    }
     
-                    rowTable.innerHTML = "<td>" + DB_CEP.label + "</td><td class='w3-center'>" + LCL[DB_CEP.key] + "</td><td class='w3-center'>" + parseFloat(DB_CEP[rowLCL.TIPO_LCL]).toFixed(1) + "<i class='w3-tiny'>p</i></td><td class='w3-center'>" + parseFloat(eurPuntoCN).toFixed(2) + "€" + "</td><td class='w3-center'>" + formatter.format(tot) + "</td>";
+                    rowTable.innerHTML = "<td>" + warningTriangle + DB_CEP.label + "</td><td class='w3-center'>" + LCL[DB_CEP.key] + "</td><td class='w3-center'>" + parseFloat(DB_CEP[rowLCL.TIPO_LCL]).toFixed(1) + "<i class='w3-tiny'>p</i></td><td class='w3-center'>" + parseFloat(eurPuntoCN).toFixed(2) + "€" + "</td><td class='w3-center'>" + formatter.format(tot) + "</td>";
                     divObject.querySelector("#lclPerCent").appendChild(rowTable);
                     //console.log(LCL[DB_CEP.key]);
                 }
