@@ -290,10 +290,148 @@ function closeModaLCL() {
     elementID.removeEventListener('click', saveCalcTableLCL);
 }
 
+/*
+            let LCL = {
+                "CODICE_CONTRATTO": row.CODICE_CONTRATTO,
+                "CODICE_LCL": row.CODICE_LCL,
+                "TIPO_LCL": typelcl,
+                "STATO_LCL": row.STATO_LCL,
+                "DATA_INIZIO_LCL": row.DATA_INIZIO_LCL,
+                "DATA_FINE_LCL": row.DATA_FINE_LCL,
+                "SELECT": true,
+            };
+*/
+
 let saveResultBeneficit;
 function calcBeneficit() {
     let LCLs = [];
-    for (let i = 0; i < saveListLCL.length; i++) {
+
+    saveListLCL.forEach(rowLCL => {
+        if (rowLCL.SELECT == true) {
+
+            let LCL = {
+                "CN": rowLCL.CODICE_CONTRATTO,
+                "LCL": rowLCL.CODICE_LCL,
+                "TYPE": rowLCL.TIPO_LCL,
+                "DATE": rowLCL.DATA_INIZIO_LCL,
+                "TOT": 0,
+                "CON": 0,
+                "ANN": 0,
+                "AV": 0,
+                "GG1": 0,
+                "GG2": 0,
+                "GG3": 0,
+                "INT": 0,
+            };
+
+            saveLoadFile.forEach(row => {
+                if (rowLCL.CODICE_LCL == row.CODICE_LCL) {
+                    LCL.TOT += 1;
+                    if (row.STATO_RDA == "ANN") {
+                        if (row.MOTIVO_ANNULLAMENTO == "Annullata per insuccesso") {
+                            LCL.AV += 1;
+                        } else {
+                            LCL.ANN += 1;
+                        }
+                    } else if (row.STATO_RDA == "CON") {
+                        LCL.CON += 1;
+
+                        const diffTime = Math.abs(new Date(row.DATA_INIZIO_LCL) - new Date(row.DATA_INSTALLAZIONE));
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
+                        if (diffDays <= 30) {
+                            LCL.GG1 += 1;
+                        } else if (diffDays > 30 && diffDays <= 90) {
+                            LCL.GG2 += 1;
+                        } else if (diffDays > 90 && diffDays <= 120) {
+                            LCL.GG3 += 1;
+                        }
+
+                        if (row.POSIZIONE_MIS_POST_SOST == "1 - Nell'appartamento") {
+                            LCL.INT += 1;
+                        }
+                    }
+                }
+            });
+            LCLs.push(LCL);
+
+            //CODE
+            var divObject = document.createElement('div');
+            divObject.classList.add("w3-containery");
+            divObject.classList.add("w3-light-grey");
+            divObject.classList.add("w3-card-4");
+
+            var typeLCL = convertTYPE(rowLCL.TIPO_LCL);
+
+            var cnLabel = rowLCL.CODICE_CONTRATTO;
+            CalcTable.EUP.forEach(Contratto => {
+                if (rowLCL.CODICE_CONTRATTO == Contratto.key) {
+                    cnLabel = Contratto.label;
+                }
+            });
+
+            divObject.innerHTML = '<h2>' + rowLCL.CODICE_LCL + '<i class="w3-small"> (' + cnLabel + ', ' + typeLCL + ')</i></h2><table id="lclPerCent" class="w3-table-all w3-hoverable w3-margin-bottom"><thead><tr class="w3-green"><th style="width: 40%;">Causale</th><th class="w3-center">Contatori</th><th class="w3-center">Punti</th><th class="w3-center">€/Punto</th><th class="w3-center">€</th></tr></thead><!-- Injection JavaScript --></table>';
+            var formatter = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' });
+
+            var subTot = 0;
+
+            CalcTable.CEP.forEach(DB_CEP => {
+                if (DB_CEP.filter == rowLCL.TIPO_LCL) {
+                //var row = document.createElement("tr");
+                //var tot = numVar * jsonCalcTable.CEP[j].value * jsonCalcTable.EUP[jj].value;
+                //subTot += tot;
+                row.innerHTML = "<td>" + DB_CEP.key + "</td><td class='w3-center'>" + "numVar" + "</td><td class='w3-center'>" + "CEP[j].value" + "</td><td class='w3-center'>" + "parseFloat(jsonCalcTable.EUP[jj].value).toFixed(2)" + "€" + "</td><td class='w3-center'>" + "formatter.format(tot)" + "</td>";
+                divObject.querySelector("#lclPerCent").appendChild(row);
+                }
+            });
+            
+            /*for (let j = 0; j < jsonCalcTable.CEP.length; j++) {
+                for (let jj = 0; jj < jsonCalcTable.EUP.length; jj++) {
+                   
+                    if (saveListLCL[i].TYPE == jsonCalcTable.CEP[j].filter && saveListLCL[i].CN == jsonCalcTable.EUP[jj].key) {
+                        if (jsonCalcTable.EUP[jj].filter == (saveListLCL[i].TYPE).substring(0, 2)) {
+                            var row = document.createElement("tr");
+                            var numVar = 0;
+                            switch (jsonCalcTable.CEP[j].key) {
+                                case "CON":
+                                    numVar = LCL.CON;
+                                    break;
+                                case "AV":
+                                    numVar = LCL.AV;
+                                    break;
+                                case "GG1":
+                                    numVar = LCL.GG1;
+                                    break;
+                                case "GG2":
+                                    numVar = LCL.GG2;
+                                    break;
+                                case "GG3":
+                                    numVar = LCL.GG3;
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            var tot = numVar * jsonCalcTable.CEP[j].value * jsonCalcTable.EUP[jj].value;
+                            subTot += tot;
+                            row.innerHTML = "<td>" + jsonCalcTable.CEP[j].label + "</td><td class='w3-center'>" + numVar + "</td><td class='w3-center'>" + jsonCalcTable.CEP[j].value + "</td><td class='w3-center'>" + parseFloat(jsonCalcTable.EUP[jj].value).toFixed(2) + "€" + "</td><td class='w3-center'>" + formatter.format(tot) + "</td>";
+                            divObject.querySelector("#lclPerCent").appendChild(row);
+                        }
+                    }
+                }
+            }*/
+
+            var row = document.createElement("tr");
+            row.innerHTML = "<td>" + "Totale:" + "</td><td></td><td></td><td></td><td class='w3-center'>" + formatter.format(subTot) + "</td>";
+            divObject.querySelector("#lclPerCent").appendChild(row);
+
+            document.querySelector("#listCnLCL").appendChild(divObject);
+
+        }
+    });
+
+    console.log(LCLs);
+
+    /*for (let i = 0; i < saveListLCL.length; i++) {
         if (saveListLCL[i].SELECT == true) {
 
             let LCL = {
@@ -395,7 +533,7 @@ function calcBeneficit() {
 
             document.querySelector("#listCnLCL").appendChild(divObject);
         }
-    }
+    }*/
 
     saveResultBeneficit = LCLs;
 
