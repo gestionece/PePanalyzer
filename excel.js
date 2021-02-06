@@ -290,18 +290,6 @@ function closeModaLCL() {
     elementID.removeEventListener('click', saveCalcTableLCL);
 }
 
-/*
-            let LCL = {
-                "CODICE_CONTRATTO": row.CODICE_CONTRATTO,
-                "CODICE_LCL": row.CODICE_LCL,
-                "TIPO_LCL": typelcl,
-                "STATO_LCL": row.STATO_LCL,
-                "DATA_INIZIO_LCL": row.DATA_INIZIO_LCL,
-                "DATA_FINE_LCL": row.DATA_FINE_LCL,
-                "SELECT": true,
-            };
-*/
-
 let saveResultBeneficit;
 function calcBeneficit() {
     let LCLs = [];
@@ -387,8 +375,15 @@ function calcBeneficit() {
             CalcTable.CEP.forEach(DB_CEP => {
                 if (DB_CEP.filter == rowLCL.TIPO_LCL || DB_CEP.filter == "-") {
                 var rowTable = document.createElement("tr");
+
+                //numero contatori interni
+                if (DB_CEP.key == "INT") {
+                    
+                }
+
                 var tot = LCL[DB_CEP.key] * DB_CEP.value * eurPuntoCN;
                 subTot += tot;
+
                 rowTable.innerHTML = "<td>" + DB_CEP.label + "</td><td class='w3-center'>" + LCL[DB_CEP.key] + "</td><td class='w3-center'>" + DB_CEP.value + "</td><td class='w3-center'>" + parseFloat(eurPuntoCN).toFixed(2) + "€" + "</td><td class='w3-center'>" + formatter.format(tot) + "</td>";
                 divObject.querySelector("#lclPerCent").appendChild(rowTable);
                 }
