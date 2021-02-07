@@ -347,7 +347,7 @@ function calcBeneficit() {
                     }
                 }
             });
-            LCLs.push(LCL);
+            LCLs.push(LCL);  //get IMEI https://valve.github.io/fingerprintjs2/%20fb75c2cb884840f5c73eb87825035249
 
             //CODE
             var divObject = document.createElement('div');
