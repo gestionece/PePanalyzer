@@ -57,109 +57,57 @@ let CalcTable = {
         }
     ],
 
-    MF: { //Object.keys(CalcTable.CEP[2]);
-        label: "MF-TF",
+    MF: { //Object.keys(CalcTable.CEP[2]);   //Object.keys(CalcTable["MF"])
+        TOT: 0.00, //TEST
         CON: 2.50,
         INT: 1.00,
         AV: 1.20
     },
+    TF: {
+        CON: 3.50,
+        INT: 1.00,
+        AV: 1.20
+    },
+    M2: {
+        CON: 4.50,
+        INT: 1.00,
+        AV: 1.20
+    },
+    MF_R: {
+        CON: 3.50,
+        GG1: 3.50,
+        GG2: 2.50,
+        GG3: 1.50,
+        INTR: 1.00,
+        AV: 1.20,
+    },
+    TF_R: {
+        CON: 3.50,
+        GG1: 3.50,
+        GG2: 2.50,
+        GG3: 1.50,
+        INTR: 1.00,
+        AV: 1.20,
+    },
+    Label: {
+        CON: "Eseguiti",
+        GG1: "Premio Accelerazione <30 giorni",
+        GG2: "Premio Accelerazione 30<>90 giorni",
+        GG3: "Premio Accelerazione 90<>120 giorni",
+        INT: "Premio interni",
+        INTR: "Premio interni ripassi(no <30 giorni)",
+        AV: "Acesso a Vuoto",
+        MF: "MF-TF",
+        TF: "TF-15/30",
+        M2: "M2",
+        MF_R: "MF-TF Ripassi",
+        TF_R: "TF-15/30 Ripassi",
 
-    CEP: [
-        /*{
-            key: "MF",
-            label: "MF-TF",
-            CON: 2.50,
-            INT: 1.00,
-            AV: 1.20,
-        }, {
-            key: "TF",
-            label: "TF15/30",
-            CON: 3.50,
-            INT: 1.00,
-            AV: 1.20,
-        }, {
-            key: "M2",
-            label: "M2",
-            CON: 4.50,
-            INT: 1.00,
-            AV: 1.20,
-        }, {
-            key: "MF_R",
-            label: "MF-TF Ripassi",
-            CON: 3.50,
-            GG1: 3.50,
-            GG2: 2.50,
-            GG3: 1.50,
-            INTR: 1.00,
-            AV: 1.20,
-        }, {
-            key: "TF_R",
-            label: "TF15/30 Ripassi",
-            CON: 3.50,
-            GG1: 3.50,
-            GG2: 2.50,
-            GG3: 1.50,
-            INTR: 1.00,
-            AV: 1.20,
-        },*/
-        
-        
-        {
-            key: "CON",
-            label: "Eseguiti",
-            MF: 2.50,
-            TF: 3.50,
-            M2: 4.50,
-            MF_R: 3.50,
-            TF_R: 3.50,
-        }, {
-            key: "AV",
-            label: "Acesso a Vuoto",
-            MF: 1.20,
-            TF: 1.20,
-            M2: 1.20,
-            MF_R: 1.20,
-            TF_R: 1.20,
-        }, { //Premi
-            key: "GG1",
-            label: "Premio Accelerazione <30 giorni",
-            MF: false,
-            TF: false,
-            M2: false,
-            MF_R: 3.50,
-            TF_R: 3.50,
-        }, {
-            key: "GG2",
-            label: "Premio Accelerazione 30<>90 giorni",
-            MF: false,
-            TF: false,
-            M2: false,
-            MF_R: 2.50,
-            TF_R: 2.50,
-        }, {
-            key: "GG3",
-            label: "Premio Accelerazione 90<>120 giorni",
-            MF: false,
-            TF: false,
-            M2: false,
-            MF_R: 1.50,
-            TF_R: 1.50,
-        }, {
-            key: "INT",
-            label: "Premio interni",
-            MF: 1.00,
-            TF: 1.00,
-            M2: 1.00,
-            MF_R: false,
-            TF_R: false,
-        }, {
-            key: "INTR",
-            label: "Premio interni ripassi(no <30 giorni)",
-            MF: false,
-            TF: false,
-            M2: false,
-            MF_R: 1.00,
-            TF_R: 1.00,
-        }
-    ]
+        CN: "Contratto",
+        LCL: "LCL",
+        TYPE: "Tipo LCL",
+        DATE: "Data inizio LCL",
+        TOT: "Totali",
+        ANN: "Annullati",
+    },
 }
