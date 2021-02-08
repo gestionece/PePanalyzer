@@ -363,12 +363,21 @@ function calcBeneficit() {
                 divObject.querySelector("#lclPerCent").appendChild(rowTable);
             });
 
+            //Totale
             var row = document.createElement("tr");
             row.innerHTML = "<td>" + "Totale:" + "</td><td></td><td></td><td></td><td class='w3-center'>" + formatter.format(subTot) + "</td>";
             divObject.querySelector("#lclPerCent").appendChild(row);
 
-            document.querySelector("#listCnLCL").appendChild(divObject);
+            //Smartest
+            var rowST = document.createElement("thead");
+            rowST.innerHTML = "<tr class='w3-green'><td></td ><td class='w3-center'>Totale RCMI</td><td class='w3-center'>Annullati</td><td class='w3-center'>Errore di Connessione</td><td class='w3-center'>Eseguiti</td></tr>";
+            divObject.querySelector("#lclPerCent").appendChild(rowST);
+            var rowST = document.createElement("tr");
+            rowST.innerHTML = "<td>SmarTest:</td ><td class='w3-center'>" + LCL.CON + "</td><td class='w3-center'>" + Number(LCL.ST_Annullato * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.ST_Connect * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.ST_Eseguito + LCL.ST_Carico) * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.ST_Eseguito + LCL.ST_Carico) + ")</i></td>";
+            divObject.querySelector("#lclPerCent").appendChild(rowST);
 
+
+            document.querySelector("#listCnLCL").appendChild(divObject);
         }
     });
 
