@@ -24,30 +24,6 @@ document.getElementById('button').addEventListener("click", () => {
     }
 });
 
-function convertTYPE(type) {
-    var typeLCL = "NaN";
-    switch (type) {
-        case "M2":
-            typeLCL = "M2";
-            break;
-        case "MF_R":
-            typeLCL = "MF-TF Recuperi";
-            break;
-        case "TF_R":
-            typeLCL = "TF-15/30 Recuperi";
-            break;
-        case "MF":
-            typeLCL = "MF-TF";
-            break;
-        case "TF":
-            typeLCL = "TF-15/30";
-            break;
-        default:
-            break;
-    }
-    return typeLCL;
-}
-
 let saveListLCL = [];
 function getLCL(data) {
     let LCLs = [];
@@ -116,7 +92,7 @@ function loadData(data) {
             }
         });
 
-        element.innerHTML = '<b>' + row.CODICE_LCL + '</b><i class="w3-tiny"> (' + cnLabel + ', ' + convertTYPE(row.TIPO_LCL) + ')</i><span onclick="changeCN(this.parentElement)" class="w3-button w3-transparent w3-display-right">&times;</span>';
+        element.innerHTML = '<b>' + row.CODICE_LCL + '</b><i class="w3-tiny"> (' + cnLabel + ', ' + CalcTable.Label[row.TIPO_LCL] + ')</i><span onclick="changeCN(this.parentElement)" class="w3-button w3-transparent w3-display-right">&times;</span>';
         document.querySelector("#addListLCL").appendChild(element);
     });
 
@@ -277,7 +253,7 @@ function saveCalcTableLCL(evt) {
                     cnLabel = Contratto.label;
                 }
             });
-            evt.currentTarget.myParam.innerHTML = '<b>' + lcl.CODICE_LCL + '</b><i class="w3-tiny"> (' + cnLabel + ', ' + convertTYPE(lcl.TIPO_LCL) + ')</i><span onclick="changeCN(this.parentElement)" class="w3-button w3-transparent w3-display-right">&times;</span>';
+            evt.currentTarget.myParam.innerHTML = '<b>' + lcl.CODICE_LCL + '</b><i class="w3-tiny"> (' + cnLabel + ', ' + CalcTable.Label[lcl.TIPO_LCL] + ')</i><span onclick="changeCN(this.parentElement)" class="w3-button w3-transparent w3-display-right">&times;</span>';
         }        
     });
 
@@ -355,7 +331,7 @@ function calcBeneficit() {
             divObject.classList.add("w3-light-grey");
             divObject.classList.add("w3-card-4");
 
-            var typeLCL = convertTYPE(rowLCL.TIPO_LCL);
+            var typeLCL = CalcTable.Label[rowLCL.TIPO_LCL];
 
             var eurPuntoCN = 0;
 
@@ -373,25 +349,21 @@ function calcBeneficit() {
 
             var subTot = 0;
 
-            CalcTable.CEP.forEach(DB_CEP => {
-                if (/*DB_CEP[rowLCL.TIPO_LCL] != undefined ||*/ DB_CEP[rowLCL.TIPO_LCL] != false) {
-                    var rowTable = document.createElement("tr");
+            Object.keys(CalcTable[rowLCL.TIPO_LCL]).forEach(DB_Key => {
+                var rowTable = document.createElement("tr");
 
-                    var tot = LCL[DB_CEP.key] * DB_CEP[rowLCL.TIPO_LCL] * eurPuntoCN;
-                    subTot += tot;
+                var tot = LCL[DB_Key] * CalcTable[rowLCL.TIPO_LCL][DB_Key] * eurPuntoCN;
+                subTot += tot;
 
-                    //ADD alert triangle
-                    /*var warningTriangle = "";
-                    if (DB_CEP.key == "GG1" || DB_CEP.key == "GG2" || DB_CEP.key == "GG3") {
-                        warningTriangle = '<b><span class="w3-text-orange" title="I dati sono aprosimativi(per la mancanza di calcolo CE precedenti)">&#x26A0;</span></b>';
-                    }*/
-    
-                    rowTable.innerHTML = "<td>" + DB_CEP.label + "</td><td class='w3-center'>" + LCL[DB_CEP.key] + "</td><td class='w3-center'>" + parseFloat(DB_CEP[rowLCL.TIPO_LCL]).toFixed(1) + "<i class='w3-tiny'>p</i></td><td class='w3-center'>" + parseFloat(eurPuntoCN).toFixed(2) + "€" + "</td><td class='w3-center'>" + formatter.format(tot) + "</td>";
-                    divObject.querySelector("#lclPerCent").appendChild(rowTable);
-                    //console.log(LCL[DB_CEP.key]);
-                }
+                //ADD alert triangle
+                /*var warningTriangle = "";
+                if (DB_CEP.key == "GG1" || DB_CEP.key == "GG2" || DB_CEP.key == "GG3") {
+                    warningTriangle = '<b><span class="w3-text-orange" title="I dati sono aprosimativi(per la mancanza di calcolo CE precedenti)">&#x26A0;</span></b>';
+                }*/
+
+                rowTable.innerHTML = "<td>" + CalcTable.Label[DB_Key] + "</td ><td class='w3-center'>" + LCL[DB_Key] + "</td><td class='w3-center'>" + parseFloat(CalcTable[rowLCL.TIPO_LCL][DB_Key]).toFixed(1) + "<i class='w3-tiny'>p</i></td><td class='w3-center'>" + parseFloat(eurPuntoCN).toFixed(2) + "€" + "</td><td class='w3-center'>" + formatter.format(tot) + "</td>";
+                divObject.querySelector("#lclPerCent").appendChild(rowTable);
             });
-
 
             var row = document.createElement("tr");
             row.innerHTML = "<td>" + "Totale:" + "</td><td></td><td></td><td></td><td class='w3-center'>" + formatter.format(subTot) + "</td>";
@@ -407,31 +379,6 @@ function calcBeneficit() {
     document.querySelector("#selectLCL").style.display = "none";
     document.querySelector("#BeneficitTab").style.display = "block";
 }
-
-function convertTYPE(type) {
-    var typeLCL = "NaN";
-    switch (type) {
-        case "M2":
-            typeLCL = "M2";
-            break;
-        case "MF_R":
-            typeLCL = "MF-TF Ripassi";
-            break;
-        case "TF_R":
-            typeLCL = "TF-15/30 Ripassi";
-            break;
-        case "MF":
-            typeLCL = "MF-TF";
-            break;
-        case "TF":
-            typeLCL = "TF-15/30";
-            break;
-        default:
-            break;
-    }
-    return typeLCL;
-}
-
 
 window.Print = function () {
     var resultList = document.querySelector("#BeneficitTab").innerHTML;
@@ -465,7 +412,7 @@ function download_csv(filename = "beneficit") {
                 row += jsonCalcTable.EUP[cnI].label + ',';
             }
         }
-        var typeLCL = convertTYPE(saveListLCL[i].TYPE);
+        var typeLCL = CalcTable.Label[saveListLCL[i].TYPE];
         row += typeLCL + ',,\n';
         row += 'Causale,Contatori,Punti,Euro/Punto,Euro\n';
         //Start Table CSV
