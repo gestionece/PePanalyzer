@@ -60,34 +60,34 @@ let CalcTable = {
     MF: { //Object.keys(CalcTable.CEP[2]);   //Object.keys(CalcTable["MF"])
         TOT: 0.00, //TEST
         CON: 2.50,
+        AV: 1.20,
         INT: 1.00,
-        AV: 1.20
     },
     TF: {
         CON: 3.50,
+        AV: 1.20,
         INT: 1.00,
-        AV: 1.20
     },
     M2: {
         CON: 4.50,
+        AV: 1.20,
         INT: 1.00,
-        AV: 1.20
     },
     MF_R: {
         CON: 3.50,
+        AV: 1.20,
         GG1: 3.50,
         GG2: 2.50,
         GG3: 1.50,
         INTR: 1.00,
-        AV: 1.20,
     },
     TF_R: {
         CON: 3.50,
+        AV: 1.20,
         GG1: 3.50,
         GG2: 2.50,
         GG3: 1.50,
         INTR: 1.00,
-        AV: 1.20,
     },
     Label: {
         CON: "Eseguiti",
@@ -110,5 +110,44 @@ let CalcTable = {
         LCL: "LCL",
         TYPE: "Tipo LCL",
         DATE: "Data inizio LCL",
+
+        ST_Annullato: "SmarTest Annullato",
+        ST_Carico: "SmarTest Sotto soglia",
+        ST_Connect: "SmarTest Errore di conessione",
+        ST_Eseguito: "SmarTest Eseguito",
     },
 }
+
+
+/*
+
+<div id="litepicker"></div>
+            <script>
+              const picker = new Litepicker({
+                element: document.getElementById('litepicker'),
+                format: "DD-MM-YYYY",
+                inlineMode: true,
+                singleMode: false,
+                lang: "it-IT",
+                tooltipText: {"one":"giorno","other":"giorni"},
+                setup: (picker) => {
+                  picker.on('selected', (dateStart, dateEnd) => {
+                    console.log(dateStart.dateInstance);
+                    console.log(dateEnd.dateInstance);
+                  });
+                },
+              });
+            </script>
+            <style>
+              :root {
+                --litepicker-is-start-color-bg: #4CAF50 !important;
+                --litepicker-is-end-color-bg: #4CAF50 !important;
+                --litepicker-is-in-range-color: #7be47f !important;
+                --litepicker-day-color-hover: #2c8a30 !important;
+                --litepicker-button-prev-month-color-hover: #4CAF50 !important;
+                --litepicker-button-next-month-color-hover: #4CAF50 !important;
+                --litepicker-day-width: 30px;
+              }
+            </style>
+
+*/
