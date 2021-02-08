@@ -123,16 +123,25 @@ let CalcTable = {
         }, { //Premi
             key: "GG1",
             label: "Premio Accelerazione <30 giorni",
+            MF: false,
+            TF: false,
+            M2: false,
             MF_R: 3.50,
             TF_R: 3.50,
         }, {
             key: "GG2",
             label: "Premio Accelerazione 30<>90 giorni",
+            MF: false,
+            TF: false,
+            M2: false,
             MF_R: 2.50,
             TF_R: 2.50,
         }, {
             key: "GG3",
             label: "Premio Accelerazione 90<>120 giorni",
+            MF: false,
+            TF: false,
+            M2: false,
             MF_R: 1.50,
             TF_R: 1.50,
         }, {
@@ -141,9 +150,14 @@ let CalcTable = {
             MF: 1.00,
             TF: 1.00,
             M2: 1.00,
+            MF_R: false,
+            TF_R: false,
         }, {
             key: "INTR",
             label: "Premio interni ripassi(no <30 giorni)",
+            MF: false,
+            TF: false,
+            M2: false,
             MF_R: 1.00,
             TF_R: 1.00,
         }
