@@ -57,6 +57,13 @@ let CalcTable = {
         }
     ],
 
+    MF: { //Object.keys(CalcTable.CEP[2]);
+        label: "MF-TF",
+        CON: 2.50,
+        INT: 1.00,
+        AV: 1.20
+    },
+
     CEP: [
         /*{
             key: "MF",
@@ -95,13 +102,6 @@ let CalcTable = {
             INTR: 1.00,
             AV: 1.20,
         },*/
-        
-        
-        
-        
-        
-        
-        
         
         
         {
