@@ -101,31 +101,7 @@ function loadData(data) {
 }
 
 /////////////////
-
-function loadOptions() {
-    var jsonCalcTable;
-    /*if (localStorage.getItem("calcTable")) {
-        jsonCalcTable = JSON.parse(localStorage.getItem("calcTable"));
-    } else {
-        localStorage.setItem("calcTable", JSON.stringify(nevCalcTable));
-        jsonCalcTable = nevCalcTable;
-    }*/
-
-    jsonCalcTable = CalcTable;
-
-    jsonCalcTable.EUP.sort(function (a, b) {
-        return a.label - b.label;
-    });
-    jsonCalcTable.CEP.sort(function (a, b) {
-        return b.value - a.value;
-    });
-
-    return jsonCalcTable;
-}
-
 window.options = function () {
-    var jsonCalcTable = loadOptions();
-
     var divObject = document.createElement('div');
     divObject.classList.add("w3-containery");
     divObject.classList.add("w3-light-grey");
@@ -133,7 +109,7 @@ window.options = function () {
     divObject.classList.add("w3-center");
     divObject.innerHTML = '<h2>' + "€/Punto" + '</h2><table id="lclPerCent" class="w3-table-all w3-hoverable w3-margin-bottom w3-border-0"><thead><tr class="w3-blue"><th>Contratto</th><th class="w3-center">MF-TF</th><th class="w3-center">TF15-30</th><th class="w3-center">M2</th></tr></thead><!-- Injection JavaScript --></table>';
     
-    jsonCalcTable.EUP.forEach(Contratto => {
+    CalcTable.EUP.forEach(Contratto => {
         var row = document.createElement("tr");
         row.id = Contratto.key;
         row.setAttribute("onclick", "ediTable(this)");
@@ -150,8 +126,8 @@ window.options = function () {
     element.classList.add("w3-margin-bottom");
     element.innerHTML = '<!-- Injection JavaScript --><li><h2>Contatore/Punto</h2></li>';
 
-    for (let i = 0; i < jsonCalcTable.CEP.length; i++) {
-        element.innerHTML += '<li class="w3-display-container"><b>' + jsonCalcTable.CEP[i].label + '</b><span title="Edit" class="w3-button w3-transparent w3-display-right w3-hover-yellow">' + parseFloat(jsonCalcTable.CEP[i].value).toFixed(2) + '<i class="w3-tiny">p</i></span></li>';
+    for (let i = 0; i < CalcTable.CEP.length; i++) {
+        element.innerHTML += '<li class="w3-display-container"><b>' + CalcTable.CEP[i].label + '</b><span title="Edit" class="w3-button w3-transparent w3-display-right w3-hover-yellow">' + parseFloat(CalcTable.CEP[i].value).toFixed(2) + '<i class="w3-tiny">p</i></span></li>';
     }
 
     document.querySelector("#optionsList").appendChild(element);
@@ -163,8 +139,7 @@ window.options = function () {
 const elementID = document.querySelector('#ModalButtonSave');
 function ediTable(element) {
 
-    var jsonCalcTable = loadOptions();
-    jsonCalcTable.EUP.forEach(contratto => {
+    CalcTable.EUP.forEach(contratto => {
         if (contratto.key == element.id) {
             document.querySelector('#labelCN').innerHTML = contratto.label + '<i class="w3-small">(' + contratto.key + ')</i>';
             document.querySelector('#epMF').value = contratto.MF;
@@ -180,8 +155,7 @@ function ediTable(element) {
 }
 
 function saveCalcTable(evt) {
-    var jsonCalcTable = loadOptions();
-    jsonCalcTable.EUP.forEach(contratto => {
+    CalcTable.EUP.forEach(contratto => {
         if (contratto.key == evt.currentTarget.myParam.id) {
             document.querySelector('#labelCN').innerHTML = contratto.label + '<i class="w3-small">(' + contratto.key + ')</i>';
             contratto.MF = document.querySelector('#epMF').value;
@@ -274,20 +248,30 @@ function calcBeneficit() {
         if (rowLCL.SELECT == true) {
 
             let LCL = {
-                "CN": rowLCL.CODICE_CONTRATTO,
-                "LCL": rowLCL.CODICE_LCL,
-                "TYPE": rowLCL.TIPO_LCL,
-                "DATE": rowLCL.DATA_INIZIO_LCL,
-                "TOT": 0,
-                "CON": 0,
-                "ANN": 0,
-                "AV": 0,
-                "GG1": 0,
-                "GG2": 0,
-                "GG3": 0,
-                "INT": 0,
-                "INTR": 0,
+                CN: rowLCL.CODICE_CONTRATTO,
+                LCL: rowLCL.CODICE_LCL,
+                TYPE: rowLCL.TIPO_LCL,
+                DATE: rowLCL.DATA_INIZIO_LCL,
+                TOT: 0,
+                CON: 0,
+                ANN: 0,
+                AV: 0,
+                GG1: 0,
+                GG2: 0,
+                GG3: 0,
+                INT: 0,
+                INTR: 0,
+                //OPR: [],
+                ST_Eseguito: 0,
+                ST_Annullato: 0,
+                ST_Carico: 0,
+                ST_Connect: 0,
+                ST_Negativo: 0,
             };
+
+            /*let OPRs = {
+
+            };*/
 
             saveLoadFile.forEach(row => {
                 if (rowLCL.CODICE_LCL == row.CODICE_LCL) {
@@ -315,6 +299,20 @@ function calcBeneficit() {
                             if (row.POSIZIONE_MIS_POST_SOST == "1 - Nell'appartamento" && new Date(row.DATA_INSTALLAZIONE) >= new Date("8/11/2020")) {//dopo l’11/8/20 – data in cui è stata accettata la comunicazione che la introduceva
                                 LCL.INTR += 1;
                             }
+                        }
+
+                        if (row.ESITO_SMARTEST == "Positivo" || row.ESITO_SMARTEST == "Negativo") {
+                            LCL.ST_Eseguito += 1;
+                            
+                        } else if (row.ESITO_SMARTEST == "Non eseguibile per carico sotto soglia") {
+                            LCL.ST_Carico += 1;
+                            
+                        } else if (row.ESITO_SMARTEST == "Non eseguibile per Errore di connessione con la sonda BIRD" || row.ESITO_SMARTEST == "Non eseguibile per Errore di connessione con la sonda ARES") {
+                            LCL.ST_Connect += 1;
+
+                        } else {
+                            LCL.ST_Annullato += 1;
+
                         }
 
                         if (row.POSIZIONE_MIS_POST_SOST == "1 - Nell'appartamento" && new Date(row.DATA_INSTALLAZIONE) >= new Date("8/11/2020")) {//dopo l’11/8/20 – data in cui è stata accettata la comunicazione che la introduceva
@@ -406,10 +404,9 @@ function download_csv(filename = "beneficit") {
     for (let i = 0; i < saveResultBeneficit.length; i++) {
         //Start Header CSV
         var row = saveResultBeneficit[i].LCL + ',';
-        var jsonCalcTable = loadOptions();
-        for (let cnI = 0; cnI < jsonCalcTable.EUP.length; cnI++) {
-            if (saveResultBeneficit[i].CN == jsonCalcTable.EUP[cnI].key) {
-                row += jsonCalcTable.EUP[cnI].label + ',';
+        for (let cnI = 0; cnI < CalcTable.EUP.length; cnI++) {
+            if (saveResultBeneficit[i].CN == CalcTable.EUP[cnI].key) {
+                row += CalcTable.EUP[cnI].label + ',';
             }
         }
         var typeLCL = CalcTable.Label[saveListLCL[i].TYPE];
@@ -417,12 +414,12 @@ function download_csv(filename = "beneficit") {
         row += 'Causale,Contatori,Punti,Euro/Punto,Euro\n';
         //Start Table CSV
         var subTot = 0;
-        for (let j = 0; j < jsonCalcTable.CEP.length; j++) {
-            for (let jj = 0; jj < jsonCalcTable.EUP.length; jj++) {
-                if (saveListLCL[i].TYPE == jsonCalcTable.CEP[j].filter && saveListLCL[i].CN == jsonCalcTable.EUP[jj].key) {
+        for (let j = 0; j < CalcTable.CEP.length; j++) {
+            for (let jj = 0; jj < CalcTable.EUP.length; jj++) {
+                if (saveListLCL[i].TYPE == CalcTable.CEP[j].filter && saveListLCL[i].CN == CalcTable.EUP[jj].key) {
 
                     var numVar = 0;
-                    switch (jsonCalcTable.CEP[j].key) {
+                    switch (CalcTable.CEP[j].key) {
                         case "CON":
                             numVar = saveResultBeneficit[i].CON;
                             break;
@@ -441,12 +438,12 @@ function download_csv(filename = "beneficit") {
                         default:
                             break;
                     }
-                    var tot = numVar * jsonCalcTable.CEP[j].value * jsonCalcTable.EUP[jj].value;
+                    var tot = numVar * CalcTable.CEP[j].value * CalcTable.EUP[jj].value;
                     subTot += tot;
 
                     //console.log(  (tot).toString().replace(".",",")   );
 
-                    row += jsonCalcTable.CEP[j].label + ',' + numVar + ',' + jsonCalcTable.CEP[j].value + ',' + jsonCalcTable.EUP[jj].value + ',' + tot + '\n';
+                    row += CalcTable.CEP[j].label + ',' + numVar + ',' + CalcTable.CEP[j].value + ',' + CalcTable.EUP[jj].value + ',' + tot + '\n';
                 }
             }
         }
