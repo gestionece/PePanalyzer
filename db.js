@@ -125,12 +125,12 @@ let CalcTable = {
             label: "Premio Accelerazione <30 giorni",
             MF_R: 3.50,
             TF_R: 3.50,
-        }, { //Premi
+        }, {
             key: "GG2",
             label: "Premio Accelerazione 30<>90 giorni",
             MF_R: 2.50,
             TF_R: 2.50,
-        }, { //Premi
+        }, {
             key: "GG3",
             label: "Premio Accelerazione 90<>120 giorni",
             MF_R: 1.50,
