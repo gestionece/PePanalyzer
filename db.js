@@ -58,7 +58,7 @@ let CalcTable = {
     ],
 
     MF: { //Object.keys(CalcTable.CEP[2]);   //Object.keys(CalcTable["MF"])
-        TOT: 0.00, //TEST
+        //TOT: 0.00, //TEST
         CON: 2.50,
         AV: 1.20,
         INT: 1.00,
