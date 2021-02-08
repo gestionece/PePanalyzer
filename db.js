@@ -96,8 +96,10 @@ let CalcTable = {
         GG3: "Premio Accelerazione 90<>120 giorni",
         INT: "Premio interni",
         INTR: "Premio interni ripassi(no <30 giorni)",
-        
         AV: "Acesso a Vuoto",
+        TOT: "Totali",
+        ANN: "Annullati",
+
         MF: "MF-TF",
         TF: "TF-15/30",
         M2: "M2",
@@ -108,7 +110,5 @@ let CalcTable = {
         LCL: "LCL",
         TYPE: "Tipo LCL",
         DATE: "Data inizio LCL",
-        TOT: "Totali",
-        ANN: "Annullati",
     },
 }
