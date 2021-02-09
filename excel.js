@@ -271,6 +271,17 @@ function calcBeneficit() {
                 }
             };
 
+            let DataOperatore = {
+                CON: 0,
+                AV: 0,
+                INT: 0,
+                ST_Eseguito: 0,
+                ST_Annullato: 0,
+                ST_Carico: 0,
+                ST_Connect: 0,
+                ST_Negativo: 0,
+            };
+
             /*let Operatoris = {
 
             };*/
@@ -281,6 +292,20 @@ function calcBeneficit() {
                     if (row.STATO_RDA == "ANN") {
                         if (row.MOTIVO_ANNULLAMENTO == "Annullata per insuccesso") {
                             LCL.AV += 1;
+
+                            if (LCL.Operatori[row.ESECUTORE] == undefined) {
+                                LCL.Operatori[row.ESECUTORE] = {
+                                    CON: 0,
+                                    AV: 0,
+                                    INT: 0,
+                                    ST_Eseguito: 0,
+                                    ST_Annullato: 0,
+                                    ST_Carico: 0,
+                                    ST_Connect: 0,
+                                    ST_Negativo: 0,
+                                };
+                            }
+                            LCL.Operatori[row.ESECUTORE].AV += 1;
                         } else {
                             LCL.ANN += 1;
                         }
@@ -288,11 +313,20 @@ function calcBeneficit() {
                         LCL.CON += 1;
 
                         //console.log(row.ESECUTORE.replace(/[^A-Z0-9]+/ig, ""));  errore spazio indisiderato "AE100492 "
+                        //Salvare in qualche modo eneltel dei contatori eseguiti senza operatore
                         if (LCL.Operatori[row.ESECUTORE] == undefined) {
-                            console.log(row.ESECUTORE);
-                            LCL.Operatori[row.ESECUTORE] = 0;
+                            LCL.Operatori[row.ESECUTORE] = {
+                                CON: 0,
+                                AV: 0,
+                                INT: 0,
+                                ST_Eseguito: 0,
+                                ST_Annullato: 0,
+                                ST_Carico: 0,
+                                ST_Connect: 0,
+                                ST_Negativo: 0,
+                            };
                         }
-                        LCL.Operatori[row.ESECUTORE] += 1
+                        LCL.Operatori[row.ESECUTORE].CON += 1;
 
                         const diffTime = Math.abs(new Date(row.DATA_INIZIO_LCL) - new Date(row.DATA_INSTALLAZIONE));
                         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
@@ -312,20 +346,38 @@ function calcBeneficit() {
 
                         if (row.ESITO_SMARTEST == "Positivo" || row.ESITO_SMARTEST == "Negativo") {
                             LCL.Smartest.ST_Eseguito += 1;
+                            LCL.Operatori[row.ESECUTORE].ST_Eseguito += 1;
                             
                         } else if (row.ESITO_SMARTEST == "Non eseguibile per carico sotto soglia") {
                             LCL.Smartest.ST_Carico += 1;
+                            LCL.Operatori[row.ESECUTORE].ST_Carico += 1;
                             
                         } else if (row.ESITO_SMARTEST == "Non eseguibile per Errore di connessione con la sonda BIRD" || row.ESITO_SMARTEST == "Non eseguibile per Errore di connessione con la sonda ARES") {
                             LCL.Smartest.ST_Connect += 1;
+                            LCL.Operatori[row.ESECUTORE].ST_Connect += 1;
 
                         } else {
                             LCL.Smartest.ST_Annullato += 1;
+                            LCL.Operatori[row.ESECUTORE].ST_Annullato += 1;
 
                         }
 
                         if (row.POSIZIONE_MIS_POST_SOST == "1 - Nell'appartamento" && new Date(row.DATA_INSTALLAZIONE) >= new Date("8/11/2020")) {//dopo l’11/8/20 – data in cui è stata accettata la comunicazione che la introduceva
                             LCL.INT += 1;
+
+                            if (LCL.Operatori[row.ESECUTORE] == undefined) {
+                                LCL.Operatori[row.ESECUTORE] = {
+                                    CON: 0,
+                                    AV: 0,
+                                    INT: 0,
+                                    ST_Eseguito: 0,
+                                    ST_Annullato: 0,
+                                    ST_Carico: 0,
+                                    ST_Connect: 0,
+                                    ST_Negativo: 0,
+                                };
+                            }
+                            LCL.Operatori[row.ESECUTORE].INT += 1;
                         }
                     }
                 }
@@ -335,6 +387,7 @@ function calcBeneficit() {
             //CODE
             var divObject = document.createElement('div');
             divObject.classList.add("w3-containery");
+            divObject.setAttribute("style", "margin-bottom: 50px;");
             divObject.classList.add("w3-light-grey");
             divObject.classList.add("w3-card-4");
 
@@ -374,15 +427,33 @@ function calcBeneficit() {
 
             //Totale
             var row = document.createElement("tr");
+            row.classList.add("w3-grey");
             row.innerHTML = "<td>" + "Totale:" + "</td><td></td><td></td><td></td><td class='w3-center'>" + formatter.format(subTot) + "</td>";
             divObject.querySelector("#lclPerCent").appendChild(row);
 
-            //Smartest
+            //Smartest Head
             var rowST = document.createElement("thead");
-            rowST.innerHTML = "<tr class='w3-green'><td></td ><td class='w3-center'>Totale RCMI</td><td class='w3-center'>Annullati</td><td class='w3-center'>Errore di Connessione</td><td class='w3-center'>Eseguiti</td></tr>";
+            rowST.innerHTML = "<br><tr class='w3-green'><td>Operatore</td ><td class='w3-center'>Totale RCMI</td><td class='w3-center'>Annullati</td><td class='w3-center'>Errore di Connessione</td><td class='w3-center'>Eseguiti</td></tr>";
             divObject.querySelector("#lclPerCent").appendChild(rowST);
+            //Smartest Operatore
+            Object.keys(LCL.Operatori).forEach(operatore => {
+                if (LCL.Operatori[operatore].CON != 0) {
+                    var rowST = document.createElement("tr");
+
+                    //ADD alert triangle
+                    /*var warningTriangle = "";
+                    if (DB_CEP.key == "GG1" || DB_CEP.key == "GG2" || DB_CEP.key == "GG3") {
+                        warningTriangle = '<b><span class="w3-text-orange" title="I dati sono aprosimativi(per la mancanza di calcolo CE precedenti)">&#x26A0;</span></b>';
+                    }*/
+    
+                    rowST.innerHTML = "<td>" + operatore + "</td ><td class='w3-center'>" + LCL.Operatori[operatore].CON + "</td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Annullato * 100 / LCL.Operatori[operatore].CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Connect * 100 / LCL.Operatori[operatore].CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) * 100 / LCL.Operatori[operatore].CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) + ")</i></td>";
+                    divObject.querySelector("#lclPerCent").appendChild(rowST);
+                }
+            });
+            //Smartest Tot
             var rowST = document.createElement("tr");
-            rowST.innerHTML = "<td>SmarTest:</td ><td class='w3-center'>" + LCL.CON + "</td><td class='w3-center'>" + Number(LCL.Smartest.ST_Annullato * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Smartest.ST_Connect * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) + ")</i></td>";
+            rowST.classList.add("w3-grey");
+            rowST.innerHTML = "<td>Totale:</td ><td class='w3-center'>" + LCL.CON + "</td><td class='w3-center'>" + Number(LCL.Smartest.ST_Annullato * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Smartest.ST_Connect * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) + ")</i></td>";
             divObject.querySelector("#lclPerCent").appendChild(rowST);
 
 
