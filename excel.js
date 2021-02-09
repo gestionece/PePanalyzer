@@ -438,7 +438,7 @@ function calcBeneficit(beneficit = true, smartest = false) {
 
                 //Totale
                 var row = document.createElement("tr");
-                row.classList.add("w3-grey");
+                row.classList.add("w3-yellow");
                 row.innerHTML = "<td>" + "Totale:" + "</td><td></td><td></td><td></td><td class='w3-center'>" + formatter.format(subTot) + "</td>";
                 divObject.querySelector("#lclPerCent").appendChild(row);
             }
@@ -465,7 +465,7 @@ function calcBeneficit(beneficit = true, smartest = false) {
                 });
                 //Smartest Tot
                 var rowST = document.createElement("tr");
-                rowST.classList.add("w3-grey");
+                rowST.classList.add("w3-yellow");
                 rowST.innerHTML = "<td>Totale:</td ><td class='w3-center'>" + LCL.CON + "</td><td class='w3-center'>" + Number(LCL.Smartest.ST_Annullato * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Smartest.ST_Connect * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) + ")</i></td>";
                 divObject.querySelector("#lclPerCent").appendChild(rowST);
             }
