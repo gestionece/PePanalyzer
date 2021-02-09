@@ -119,6 +119,7 @@ window.options = function () {
     
     document.querySelector("#optionsList").appendChild(divObject);
 
+    /*
     element = document.createElement("ul");
     element.classList.add("w3-ul");
     element.classList.add("w3-card-4");
@@ -131,6 +132,7 @@ window.options = function () {
     }
 
     document.querySelector("#optionsList").appendChild(element);
+    */
 
     document.querySelector('#selectLCL').style.display = 'none';
     document.querySelector('#optionsTab').style.display = 'block';
@@ -241,7 +243,10 @@ function closeModaLCL() {
 }
 
 let saveResultBeneficit;
-function calcBeneficit() {
+function calcBeneficit(beneficit = true, smartest = false) {
+    if (beneficit == false && smartest == false) {
+        return;
+    }
     let LCLs = [];
 
     saveListLCL.forEach(rowLCL => {
@@ -396,7 +401,7 @@ function calcBeneficit() {
             var eurPuntoCN = 0;
 
             var cnLabel = rowLCL.CODICE_CONTRATTO;
-            
+
             CalcTable.EUP.forEach(Contratto => {
                 if (rowLCL.CODICE_CONTRATTO == Contratto.key) {
                     cnLabel = Contratto.label;
@@ -404,58 +409,66 @@ function calcBeneficit() {
                 }
             });
 
-            divObject.innerHTML = '<h2>' + rowLCL.CODICE_LCL + '<i class="w3-small"> (' + cnLabel + ', ' + typeLCL + ')</i></h2><table id="lclPerCent" class="w3-table-all w3-hoverable w3-margin-bottom"><thead><tr class="w3-green"><th style="width: 40%;">Causale</th><th class="w3-center">Contatori</th><th class="w3-center">Punti</th><th class="w3-center">€/Punto</th><th class="w3-center">€</th></tr></thead><!-- Injection JavaScript --></table>';
-            var formatter = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' });
+            divObject.innerHTML = '<h2>' + rowLCL.CODICE_LCL + '<i class="w3-small"> (' + cnLabel + ', ' + typeLCL + ')</i></h2><table id="lclPerCent" class="w3-table-all w3-hoverable w3-margin-bottom"></table>';
 
-            var subTot = 0;
+            //Beneficit
+            if (beneficit == true) {
+                var rowBN = document.createElement("thead");
+                rowBN.innerHTML = '<tr class="w3-green"><th style="width: 40%;">Causale</th><th class="w3-center">Contatori</th><th class="w3-center">Punti</th><th class="w3-center">€/Punto</th><th class="w3-center">€</th></tr><!-- Injection JavaScript -->';
+                divObject.querySelector("#lclPerCent").appendChild(rowBN);
 
-            Object.keys(CalcTable[rowLCL.TIPO_LCL]).forEach(DB_Key => {
-                var rowTable = document.createElement("tr");
+                var formatter = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' });
+                var subTot = 0;
 
-                var tot = LCL[DB_Key] * CalcTable[rowLCL.TIPO_LCL][DB_Key] * eurPuntoCN;
-                subTot += tot;
+                Object.keys(CalcTable[rowLCL.TIPO_LCL]).forEach(DB_Key => {
+                    var rowTable = document.createElement("tr");
 
-                //ADD alert triangle
-                /*var warningTriangle = "";
-                if (DB_CEP.key == "GG1" || DB_CEP.key == "GG2" || DB_CEP.key == "GG3") {
-                    warningTriangle = '<b><span class="w3-text-orange" title="I dati sono aprosimativi(per la mancanza di calcolo CE precedenti)">&#x26A0;</span></b>';
-                }*/
-
-                rowTable.innerHTML = "<td>" + CalcTable.Label[DB_Key] + "</td ><td class='w3-center'>" + LCL[DB_Key] + "</td><td class='w3-center'>" + parseFloat(CalcTable[rowLCL.TIPO_LCL][DB_Key]).toFixed(1) + "<i class='w3-tiny'>p</i></td><td class='w3-center'>" + parseFloat(eurPuntoCN).toFixed(2) + "€" + "</td><td class='w3-center'>" + formatter.format(tot) + "</td>";
-                divObject.querySelector("#lclPerCent").appendChild(rowTable);
-            });
-
-            //Totale
-            var row = document.createElement("tr");
-            row.classList.add("w3-grey");
-            row.innerHTML = "<td>" + "Totale:" + "</td><td></td><td></td><td></td><td class='w3-center'>" + formatter.format(subTot) + "</td>";
-            divObject.querySelector("#lclPerCent").appendChild(row);
-
-            //Smartest Head
-            var rowST = document.createElement("thead");
-            rowST.innerHTML = "<br><tr class='w3-green'><td>Operatore</td ><td class='w3-center'>Totale RCMI</td><td class='w3-center'>Annullati</td><td class='w3-center'>Errore di Connessione</td><td class='w3-center'>Eseguiti</td></tr>";
-            divObject.querySelector("#lclPerCent").appendChild(rowST);
-            //Smartest Operatore
-            Object.keys(LCL.Operatori).forEach(operatore => {
-                if (LCL.Operatori[operatore].CON != 0) {
-                    var rowST = document.createElement("tr");
+                    var tot = LCL[DB_Key] * CalcTable[rowLCL.TIPO_LCL][DB_Key] * eurPuntoCN;
+                    subTot += tot;
 
                     //ADD alert triangle
                     /*var warningTriangle = "";
                     if (DB_CEP.key == "GG1" || DB_CEP.key == "GG2" || DB_CEP.key == "GG3") {
                         warningTriangle = '<b><span class="w3-text-orange" title="I dati sono aprosimativi(per la mancanza di calcolo CE precedenti)">&#x26A0;</span></b>';
                     }*/
-    
-                    rowST.innerHTML = "<td>" + operatore + "</td ><td class='w3-center'>" + LCL.Operatori[operatore].CON + "</td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Annullato * 100 / LCL.Operatori[operatore].CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Connect * 100 / LCL.Operatori[operatore].CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) * 100 / LCL.Operatori[operatore].CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) + ")</i></td>";
-                    divObject.querySelector("#lclPerCent").appendChild(rowST);
-                }
-            });
-            //Smartest Tot
-            var rowST = document.createElement("tr");
-            rowST.classList.add("w3-grey");
-            rowST.innerHTML = "<td>Totale:</td ><td class='w3-center'>" + LCL.CON + "</td><td class='w3-center'>" + Number(LCL.Smartest.ST_Annullato * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Smartest.ST_Connect * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) + ")</i></td>";
-            divObject.querySelector("#lclPerCent").appendChild(rowST);
 
+                    rowTable.innerHTML = "<td>" + CalcTable.Label[DB_Key] + "</td ><td class='w3-center'>" + LCL[DB_Key] + "</td><td class='w3-center'>" + parseFloat(CalcTable[rowLCL.TIPO_LCL][DB_Key]).toFixed(1) + "<i class='w3-tiny'>p</i></td><td class='w3-center'>" + parseFloat(eurPuntoCN).toFixed(2) + "€" + "</td><td class='w3-center'>" + formatter.format(tot) + "</td>";
+                    divObject.querySelector("#lclPerCent").appendChild(rowTable);
+                });
+
+                //Totale
+                var row = document.createElement("tr");
+                row.classList.add("w3-grey");
+                row.innerHTML = "<td>" + "Totale:" + "</td><td></td><td></td><td></td><td class='w3-center'>" + formatter.format(subTot) + "</td>";
+                divObject.querySelector("#lclPerCent").appendChild(row);
+            }
+
+            //Smartest Head
+            if (smartest == true) {
+                var rowST = document.createElement("thead");
+                rowST.innerHTML = "<tr class='w3-green'><td>Operatore</td ><td class='w3-center'>Totale RCMI</td><td class='w3-center'>Annullati</td><td class='w3-center'>Errore di Connessione</td><td class='w3-center'>Eseguiti</td></tr>";
+                divObject.querySelector("#lclPerCent").appendChild(rowST);
+                //Smartest Operatore
+                Object.keys(LCL.Operatori).forEach(operatore => {
+                    if (LCL.Operatori[operatore].CON != 0) {
+                        var rowST = document.createElement("tr");
+
+                        //ADD alert triangle
+                        /*var warningTriangle = "";
+                        if (DB_CEP.key == "GG1" || DB_CEP.key == "GG2" || DB_CEP.key == "GG3") {
+                            warningTriangle = '<b><span class="w3-text-orange" title="I dati sono aprosimativi(per la mancanza di calcolo CE precedenti)">&#x26A0;</span></b>';
+                        }*/
+
+                        rowST.innerHTML = "<td>" + operatore + "</td ><td class='w3-center'>" + LCL.Operatori[operatore].CON + "</td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Annullato * 100 / LCL.Operatori[operatore].CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Connect * 100 / LCL.Operatori[operatore].CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) * 100 / LCL.Operatori[operatore].CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) + ")</i></td>";
+                        divObject.querySelector("#lclPerCent").appendChild(rowST);
+                    }
+                });
+                //Smartest Tot
+                var rowST = document.createElement("tr");
+                rowST.classList.add("w3-grey");
+                rowST.innerHTML = "<td>Totale:</td ><td class='w3-center'>" + LCL.CON + "</td><td class='w3-center'>" + Number(LCL.Smartest.ST_Annullato * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Smartest.ST_Connect * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) + ")</i></td>";
+                divObject.querySelector("#lclPerCent").appendChild(rowST);
+            }
 
             document.querySelector("#listCnLCL").appendChild(divObject);
         }
