@@ -261,15 +261,17 @@ function calcBeneficit() {
                 GG3: 0,
                 INT: 0,
                 INTR: 0,
-                OPR: {},
-                ST_Eseguito: 0,
-                ST_Annullato: 0,
-                ST_Carico: 0,
-                ST_Connect: 0,
-                ST_Negativo: 0,
+                Operatori: {},
+                Smartest: {
+                    ST_Eseguito: 0,
+                    ST_Annullato: 0,
+                    ST_Carico: 0,
+                    ST_Connect: 0,
+                    ST_Negativo: 0,
+                }
             };
 
-            /*let OPRs = {
+            /*let Operatoris = {
 
             };*/
 
@@ -286,11 +288,11 @@ function calcBeneficit() {
                         LCL.CON += 1;
 
                         //console.log(row.ESECUTORE.replace(/[^A-Z0-9]+/ig, ""));  errore spazio indisiderato "AE100492 "
-                        if (LCL.OPR[row.ESECUTORE] == undefined) {
+                        if (LCL.Operatori[row.ESECUTORE] == undefined) {
                             console.log(row.ESECUTORE);
-                            LCL.OPR[row.ESECUTORE] = 0;
+                            LCL.Operatori[row.ESECUTORE] = 0;
                         }
-                        LCL.OPR[row.ESECUTORE] += 1
+                        LCL.Operatori[row.ESECUTORE] += 1
 
                         const diffTime = Math.abs(new Date(row.DATA_INIZIO_LCL) - new Date(row.DATA_INSTALLAZIONE));
                         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
@@ -309,16 +311,16 @@ function calcBeneficit() {
                         }
 
                         if (row.ESITO_SMARTEST == "Positivo" || row.ESITO_SMARTEST == "Negativo") {
-                            LCL.ST_Eseguito += 1;
+                            LCL.Smartest.ST_Eseguito += 1;
                             
                         } else if (row.ESITO_SMARTEST == "Non eseguibile per carico sotto soglia") {
-                            LCL.ST_Carico += 1;
+                            LCL.Smartest.ST_Carico += 1;
                             
                         } else if (row.ESITO_SMARTEST == "Non eseguibile per Errore di connessione con la sonda BIRD" || row.ESITO_SMARTEST == "Non eseguibile per Errore di connessione con la sonda ARES") {
-                            LCL.ST_Connect += 1;
+                            LCL.Smartest.ST_Connect += 1;
 
                         } else {
-                            LCL.ST_Annullato += 1;
+                            LCL.Smartest.ST_Annullato += 1;
 
                         }
 
@@ -380,7 +382,7 @@ function calcBeneficit() {
             rowST.innerHTML = "<tr class='w3-green'><td></td ><td class='w3-center'>Totale RCMI</td><td class='w3-center'>Annullati</td><td class='w3-center'>Errore di Connessione</td><td class='w3-center'>Eseguiti</td></tr>";
             divObject.querySelector("#lclPerCent").appendChild(rowST);
             var rowST = document.createElement("tr");
-            rowST.innerHTML = "<td>SmarTest:</td ><td class='w3-center'>" + LCL.CON + "</td><td class='w3-center'>" + Number(LCL.ST_Annullato * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.ST_Connect * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.ST_Eseguito + LCL.ST_Carico) * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.ST_Eseguito + LCL.ST_Carico) + ")</i></td>";
+            rowST.innerHTML = "<td>SmarTest:</td ><td class='w3-center'>" + LCL.CON + "</td><td class='w3-center'>" + Number(LCL.Smartest.ST_Annullato * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Smartest.ST_Connect * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) + ")</i></td>";
             divObject.querySelector("#lclPerCent").appendChild(rowST);
 
 
