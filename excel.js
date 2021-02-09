@@ -261,7 +261,7 @@ function calcBeneficit() {
                 GG3: 0,
                 INT: 0,
                 INTR: 0,
-                //OPR: [],
+                OPR: {},
                 ST_Eseguito: 0,
                 ST_Annullato: 0,
                 ST_Carico: 0,
@@ -284,6 +284,12 @@ function calcBeneficit() {
                         }
                     } else if (row.STATO_RDA == "CON") {
                         LCL.CON += 1;
+
+                        //console.log(row.ESECUTORE.replace(/[^A-Z0-9]+/ig, ""));  errore spazio indisiderato "AE100492 "
+                        if (LCL.OPR[row.ESECUTORE] == undefined) {
+                            LCL.OPR[row.ESECUTORE] = 0;
+                        }
+                        LCL.OPR[row.ESECUTORE] += 1
 
                         const diffTime = Math.abs(new Date(row.DATA_INIZIO_LCL) - new Date(row.DATA_INSTALLAZIONE));
                         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
