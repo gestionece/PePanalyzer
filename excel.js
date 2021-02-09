@@ -287,6 +287,7 @@ function calcBeneficit() {
 
                         //console.log(row.ESECUTORE.replace(/[^A-Z0-9]+/ig, ""));  errore spazio indisiderato "AE100492 "
                         if (LCL.OPR[row.ESECUTORE] == undefined) {
+                            console.log(row.ESECUTORE + " - " + index);
                             LCL.OPR[row.ESECUTORE] = 0;
                         }
                         LCL.OPR[row.ESECUTORE] += 1
