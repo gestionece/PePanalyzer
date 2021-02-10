@@ -1,75 +1,19 @@
-var app1 = new Vue({
-    el: '#app-1',
-    data: {
-        message: 'Привет, Vue!'
-    }
-});
+Vue.component('lcl-item', {
+    props: ['todo'],
+    template: '<li class="w3-display-container"><b>{{todo.CODICE_LCL}}</b><span class="w3-button w3-transparent w3-display-right">&times;</span></li>'
+  })
 
-var app2 = new Vue({
-    el: '#app-2',
-    data: {
-        message: 'Вы загрузили эту страницу: ' + new Date().toLocaleString()
-    }
-});
-
-var app3 = new Vue({
-    el: '#app-3',
-    data: {
-        seen: true
-    },
-    methods: {
-        show: function () {
-            this.seen = !this.seen;
-        }
-    }
-});
-
-var app4 = new Vue({
-    el: '#app-4',
-    data: {
-        todos: [
-            { text: 'Изучить JavaScript' },
-            { text: 'Изучить Vue' },
-            { text: 'Создать что-нибудь классное' }
-        ]
-    }
-});
-
-var app5 = new Vue({
-    el: '#app-5',
-    data: {
-        message: 'Привет, Vue.js!',
-    },
-    methods: {
-        reverseMessage: function () {
-            this.message = this.message.split('').reverse().join('');
-            this.seen = !this.seen;
-        }
-    }
-});
-
-var app6 = new Vue({
-    el: '#app-6',
-    data: {
-        message: 'Привет, Vue!'
-    }
-});
-
-
-////// TEST LCL \\\\\\
 var app = new Vue({
     el: '#app',
     data: {
         LCList: {},
+        loadFileData: {},
+        page_loadFile: true,
+        page_LCList: false
     },
     methods: {
         loadFile: function () {
-            
-            /*this.LCList.push("6600060602");
-            this.LCList.push("6600060603");
-            console.log(this.LCList);*/
-
-            var selectedFile = document.querySelector("#input").files[0];
+            var selectedFile = this.$refs.inputLoadFile.files[0];
             let data = [{}];
             XLSX.utils.json_to_sheet(data, 'out.xlsx');
             if (selectedFile) {
@@ -81,15 +25,30 @@ var app = new Vue({
                     workbook.SheetNames.forEach(sheet => {
                         let rowObject = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
 
+                        this.loadFileData = rowObject;
+
+                        let lcl = {};
                         rowObject.forEach(row => {
-                            this.LCList[row.CODICE_LCL] = row.CODICE_LCL;
+                            lcl[row.CODICE_LCL] = {
+                                "CODICE_CONTRATTO": row.CODICE_CONTRATTO,
+                                "CODICE_LCL": row.CODICE_LCL,
+                                "STATO_LCL": row.STATO_LCL,
+                                "SELECT": true,
+                            };
                         });
-                        //this.LCList = rowObject;
-                        console.log(rowObject);
+
+                        this.LCList = lcl;
+
+                        this.page_loadFile = false;
+                        this.page_LCList = true;
 
                     });
                 }
             }
+        },
+        backLCList: function () {
+            this.page_loadFile = true;
+            this.page_LCList = false;
         }
     }
 });
