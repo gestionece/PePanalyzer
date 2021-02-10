@@ -1,6 +1,6 @@
 Vue.component('lcl-item', {
-    props: ['lcl'],
-    template: '<li class="w3-display-container"><b>{{lcl.CODICE_LCL}}</b><i class="w3-tiny"> ({{lcl.CODICE_CONTRATTO}})</i><span class="w3-button w3-transparent w3-display-right">&times;</span></li>'
+    props: ['todo'],
+    template: '<li class="w3-display-container"><b>{{todo.CODICE_LCL}}</b><i class="w3-tiny"> ({{todo.CODICE_CONTRATTO}})</i><span class="w3-button w3-transparent w3-display-right">&times;</span></li>'
   })
 
 var app = new Vue({
@@ -13,6 +13,7 @@ var app = new Vue({
     },
     methods: {
         loadFile: function () {
+
             var selectedFile = this.$refs.inputLoadFile.files[0];
             let data = [{}];
             XLSX.utils.json_to_sheet(data, 'out.xlsx');
@@ -52,3 +53,21 @@ var app = new Vue({
         }
     }
 });
+
+
+/* https://ru.vuejs.org/v2/guide/forms.html
+<input type="checkbox" id="jack" value="Джек" v-model="checkedNames">
+<label for="jack">Джек</label>
+<input type="checkbox" id="john" value="Джон" v-model="checkedNames">
+<label for="john">Джон</label>
+<input type="checkbox" id="mike" value="Майк" v-model="checkedNames">
+<label for="mike">Майк</label>
+<br>
+<span>Отмеченные имена: {{ checkedNames }}</span>
+new Vue({
+  el: '...',
+  data: {
+    checkedNames: []
+  }
+})
+*/
