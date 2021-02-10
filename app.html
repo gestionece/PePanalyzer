@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A-PeP</title>
+
+    <link rel="shortcut icon" type="image/png" href="https://gestionece.github.io/resources/img/favicon.png">
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
@@ -14,11 +17,62 @@
     <!-- production-версия, оптимизированная для размера и скорости -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
 </head>
+
 <body>
-    <div id="app">
+    <h2>App 1</h2>
+    <div id="app-1">
         {{ message }}
-      </div>
-    
-      <script src="/resource/js/main.js"></script>
+    </div>
+
+    <h2>App 2</h2>
+    <div id="app-2">
+        <span v-bind:title="message">
+            Наведи на меня курсор на пару секунд,
+            чтобы увидеть динамически связанное значение title!
+        </span>
+    </div>
+
+    <h2>App 3</h2>
+    <div id="app-3">
+        <button v-on:click="show">Перевернуть сообщение</button>
+        <span v-if="seen">Сейчас меня видно</span>
+    </div>
+
+    <h2>App 4</h2>
+    <div id="app-4">
+        <ol>
+            <li v-for="todo in todos">
+                {{ todo.text }}
+            </li>
+        </ol>
+    </div>
+
+    <h2>App 5</h2>
+    <div id="app-5">
+        <p>{{ message }}</p>
+        <button v-on:click="reverseMessage">Перевернуть сообщение</button>
+    </div>
+
+    <h2>App 6</h2>
+    <div id="app-6">
+        <p>{{ message }}</p>
+        <input v-model="message">
+    </div>
+
+    <h2>App LCL</h2>
+    <div id="app">
+        <ol>
+            <li v-for="lcl in LCList">
+                {{ lcl }}
+            </li>
+        </ol>
+        <div>
+            <input type="file" id="input" accept=".xls, .xlsx, .csv">
+            <button v-on:click="loadFile" >Load</button>
+        </div>
+    </div>
+
+    <script src="/resource/js/main.js"></script>
 </body>
+
 </html>
