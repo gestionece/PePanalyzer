@@ -1,6 +1,6 @@
 Vue.component('lcl-item', {
-    props: ['todo'],
-    template: '<li class="w3-display-container"><b>{{todo.CODICE_LCL}}</b><span class="w3-button w3-transparent w3-display-right">&times;</span></li>'
+    props: ['lcl'],
+    template: '<li class="w3-display-container"><b>{{lcl.CODICE_LCL}}</b><i class="w3-tiny"> ({{lcl.CODICE_CONTRATTO}})</i><span class="w3-button w3-transparent w3-display-right">&times;</span></li>'
   })
 
 var app = new Vue({
