@@ -16,59 +16,65 @@
 
     <!-- production-версия, оптимизированная для размера и скорости -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
+
+    <style>
+        *:focus {
+            outline: none;
+        }
+    </style>
 </head>
 
 <body>
-    <h2>App 1</h2>
-    <div id="app-1">
-        {{ message }}
-    </div>
-
-    <h2>App 2</h2>
-    <div id="app-2">
-        <span v-bind:title="message">
-            Наведи на меня курсор на пару секунд,
-            чтобы увидеть динамически связанное значение title!
-        </span>
-    </div>
-
-    <h2>App 3</h2>
-    <div id="app-3">
-        <button v-on:click="show">Перевернуть сообщение</button>
-        <span v-if="seen">Сейчас меня видно</span>
-    </div>
-
-    <h2>App 4</h2>
-    <div id="app-4">
-        <ol>
-            <li v-for="todo in todos">
-                {{ todo.text }}
-            </li>
-        </ol>
-    </div>
-
-    <h2>App 5</h2>
-    <div id="app-5">
-        <p>{{ message }}</p>
-        <button v-on:click="reverseMessage">Перевернуть сообщение</button>
-    </div>
-
-    <h2>App 6</h2>
-    <div id="app-6">
-        <p>{{ message }}</p>
-        <input v-model="message">
-    </div>
-
-    <h2>App LCL</h2>
-    <div id="app">
-        <ol>
-            <li v-for="lcl in LCList">
-                {{ lcl }}
-            </li>
-        </ol>
-        <div>
-            <input type="file" id="input" accept=".xls, .xlsx, .csv">
-            <button v-on:click="loadFile" >Load</button>
+    <div id="app" class="w3-container" style="display: block;">
+        <div class="w3-row w3-margin-top w3-margin-bottom">
+            <div class="w3-col l3 m1 w3-hide-small">
+                <p></p>
+            </div>
+            <div class="w3-col l6 m10 s12">
+                <div v-if="page_loadFile">
+                    <h2 id="pharStartPage">Ehi non ti dimentichi nulla? <b>NO NIENTE!</b></h2>
+                    <p id="txtStartPage"><i>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sequi dolore, eius
+                            molestias
+                            enim nesciunt necessitatibus! Dolorum aut, ex ratione aspernatur nisi, iste voluptates
+                            suscipit
+                            tempore
+                            repudiandae mollitia consequuntur excepturi eos.</i></p>
+                    <div class="w3-col m12 w3-border w3-round-small w3-margin-top w3-margin-bottom">
+                        <input ref="inputLoadFile"
+                            style="margin: 5px 0px 0px 5px; width: calc(100% - 80px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                            type="file" accept=".xls, .xlsx, .csv">
+                        <button v-on:click="loadFile" class="w3-button w3-right w3-green">Load</button>
+                    </div>
+                </div>
+                <div v-if="page_LCList">
+                    <h2>LCL</h2>
+                    <p><i>Elimina LCL, premendo su "x":</i></p>
+                    <div class="w3-col w3-margin-bottom">
+                        <ul class="w3-ul w3-card-4">
+                            <lcl-item
+                                v-for="item in LCList"
+                                v-bind:todo="item"
+                                v-bind:key="item.id"
+                            ></lcl-item>
+                        </ul>
+                    </div>
+                    <p id="txtRemoveList" class="w3-margin-top" style="display: none;"><i>Agiungi il contratto, premendo su "+":</i></p>
+                    <div class="w3-col w3-margin-bottom">
+                        <ul id="removeListLCL" class="w3-ul w3-card-4">
+                            <!-- Injection JavaScript -->
+                        </ul>
+                    </div>
+                    <div class="w3-bar">
+                        <button class="w3-button w3-left w3-dark-grey" onclick="backLCList">&laquo; Back</button>
+                        <button v-on:click="backLCList" class="w3-button w3-right w3-green">Next &raquo;</button>
+                        <button class="w3-button w3-right w3-blue">SmarTest</button>
+                        <button class="w3-button w3-right w3-light-grey">Options</button>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-col l3 m1 w3-hide-small">
+                <p></p>
+            </div>
         </div>
     </div>
 
