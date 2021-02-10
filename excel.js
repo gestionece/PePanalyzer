@@ -266,6 +266,7 @@ function calcBeneficit(beneficit = true, smartest = false) {
                 GG3: 0,
                 INT: 0,
                 INTR: 0,
+                ST_CON: 0,
                 Operatori: {},
                 Smartest: {
                     ST_Eseguito: 0,
@@ -303,6 +304,7 @@ function calcBeneficit(beneficit = true, smartest = false) {
                                     CON: 0,
                                     AV: 0,
                                     INT: 0,
+                                    ST_CON: 0,
                                     ST_Eseguito: 0,
                                     ST_Annullato: 0,
                                     ST_Carico: 0,
@@ -324,6 +326,7 @@ function calcBeneficit(beneficit = true, smartest = false) {
                                 CON: 0,
                                 AV: 0,
                                 INT: 0,
+                                ST_CON: 0,
                                 ST_Eseguito: 0,
                                 ST_Annullato: 0,
                                 ST_Carico: 0,
@@ -332,6 +335,11 @@ function calcBeneficit(beneficit = true, smartest = false) {
                             };
                         }
                         LCL.Operatori[row.ESECUTORE].CON += 1;
+                        if (row.ESITO_SMARTEST != undefined) {
+                            LCL.Operatori[row.ESECUTORE].ST_CON += 1;
+                            LCL.ST_CON += 1;
+                        }
+
 
                         const diffTime = Math.abs(new Date(row.DATA_INIZIO_LCL) - new Date(row.DATA_INSTALLAZIONE));
                         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
@@ -361,7 +369,7 @@ function calcBeneficit(beneficit = true, smartest = false) {
                             LCL.Smartest.ST_Connect += 1;
                             LCL.Operatori[row.ESECUTORE].ST_Connect += 1;
 
-                        } else {
+                        } else if (row.ESITO_SMARTEST == "Annullato") {
                             LCL.Smartest.ST_Annullato += 1;
                             LCL.Operatori[row.ESECUTORE].ST_Annullato += 1;
 
@@ -375,6 +383,7 @@ function calcBeneficit(beneficit = true, smartest = false) {
                                     CON: 0,
                                     AV: 0,
                                     INT: 0,
+                                    ST_CON: 0,
                                     ST_Eseguito: 0,
                                     ST_Annullato: 0,
                                     ST_Carico: 0,
@@ -450,7 +459,7 @@ function calcBeneficit(beneficit = true, smartest = false) {
                 divObject.querySelector("#lclPerCent").appendChild(rowST);
                 //Smartest Operatore
                 Object.keys(LCL.Operatori).forEach(operatore => {
-                    if (LCL.Operatori[operatore].CON != 0) {
+                    if (LCL.Operatori[operatore].ST_CON != 0) {
                         var rowST = document.createElement("tr");
 
                         //ADD alert triangle
@@ -459,14 +468,14 @@ function calcBeneficit(beneficit = true, smartest = false) {
                             warningTriangle = '<b><span class="w3-text-orange" title="I dati sono aprosimativi(per la mancanza di calcolo CE precedenti)">&#x26A0;</span></b>';
                         }*/
 
-                        rowST.innerHTML = "<td>" + operatore + "</td ><td class='w3-center'>" + LCL.Operatori[operatore].CON + "</td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Annullato * 100 / LCL.Operatori[operatore].CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Connect * 100 / LCL.Operatori[operatore].CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) * 100 / LCL.Operatori[operatore].CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) + ")</i></td>";
+                        rowST.innerHTML = "<td>" + operatore + "</td ><td class='w3-center'>" + LCL.Operatori[operatore].ST_CON + "</td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Annullato * 100 / LCL.Operatori[operatore].ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Connect * 100 / LCL.Operatori[operatore].ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) * 100 / LCL.Operatori[operatore].ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) + ")</i></td>";
                         divObject.querySelector("#lclPerCent").appendChild(rowST);
                     }
                 });
                 //Smartest Tot
                 var rowST = document.createElement("tr");
                 rowST.classList.add("w3-yellow");
-                rowST.innerHTML = "<td>Totale:</td ><td class='w3-center'>" + LCL.CON + "</td><td class='w3-center'>" + Number(LCL.Smartest.ST_Annullato * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Smartest.ST_Connect * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) * 100 / LCL.CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) + ")</i></td>";
+                rowST.innerHTML = "<td>Totale:</td ><td class='w3-center'>" + LCL.ST_CON + "</td><td class='w3-center'>" + Number(LCL.Smartest.ST_Annullato * 100 / LCL.ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Smartest.ST_Connect * 100 / LCL.ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) * 100 / LCL.ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) + ")</i></td>";
                 divObject.querySelector("#lclPerCent").appendChild(rowST);
             }
 
