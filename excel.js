@@ -455,7 +455,7 @@ function calcBeneficit(beneficit = true, smartest = false) {
             //Smartest Head
             if (smartest == true) {
                 var rowST = document.createElement("thead");
-                rowST.innerHTML = "<tr class='w3-green'><td>Operatore</td ><td class='w3-center'>Totale RCMI</td><td class='w3-center'>Annullati</td><td class='w3-center'>Errore di Connessione</td><td class='w3-center'>Eseguiti</td></tr>";
+                rowST.innerHTML = "<tr class='w3-blue'><td>Operatore</td ><td class='w3-center'>Totale RCMI</td><td class='w3-center'>Annullati</td><td class='w3-center'>Errore di Connessione</td><td class='w3-center'>Eseguiti</td></tr>";
                 divObject.querySelector("#lclPerCent").appendChild(rowST);
                 //Smartest Operatore
                 Object.keys(LCL.Operatori).forEach(operatore => {
@@ -468,7 +468,12 @@ function calcBeneficit(beneficit = true, smartest = false) {
                             warningTriangle = '<b><span class="w3-text-orange" title="I dati sono aprosimativi(per la mancanza di calcolo CE precedenti)">&#x26A0;</span></b>';
                         }*/
 
-                        rowST.innerHTML = "<td>" + operatore + "</td ><td class='w3-center'>" + LCL.Operatori[operatore].ST_CON + "</td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Annullato * 100 / LCL.Operatori[operatore].ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Connect * 100 / LCL.Operatori[operatore].ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) * 100 / LCL.Operatori[operatore].ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) + ")</i></td>";
+                        var labelName = operatore;
+                        if (CalcTable.Label[operatore] != undefined) {
+                            labelName = CalcTable.Label[operatore];
+                        }
+
+                        rowST.innerHTML = "<td>" + labelName + "</td ><td class='w3-center'>" + LCL.Operatori[operatore].ST_CON + "</td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Annullato * 100 / LCL.Operatori[operatore].ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Connect * 100 / LCL.Operatori[operatore].ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) * 100 / LCL.Operatori[operatore].ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) + ")</i></td>";
                         divObject.querySelector("#lclPerCent").appendChild(rowST);
                     }
                 });
