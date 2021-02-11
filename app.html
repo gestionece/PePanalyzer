@@ -56,14 +56,14 @@
                     <p><i>Elimina LCL, premendo su "x":</i></p>
                     <div class="w3-col w3-margin-bottom">
                         <ul class="w3-ul w3-card-4">
-                            <lcl-item v-for="item in LCList" v-bind:todo="item" v-bind:key="item.id"></lcl-item>
+                            <lcl-item v-for="item in LCList" v-if="item.SELECT" v-bind:todo="item" v-bind:key="item.id"></lcl-item>
                         </ul>
                     </div>
                     <p id="txtRemoveList" class="w3-margin-top" style="display: none;"><i>Agiungi il contratto, premendo
                             su "+":</i></p>
                     <div class="w3-col w3-margin-bottom">
                         <ul class="w3-ul w3-card-4">
-                            <lcl-item v-for="item in LCList" v-bind:todo="item" v-bind:key="item.id"></lcl-item>
+                            <lcl-item v-for="item in LCList" v-if="!item.SELECT"  v-bind:todo="item" v-bind:key="item.id"></lcl-item>
                         </ul>
                     </div>
                     <div class="w3-bar">
