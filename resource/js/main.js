@@ -1,10 +1,20 @@
 Vue.component('lcl-item', {
     props: ['todo'],
-    template: '<li class="w3-display-container"><b>{{todo.CODICE_LCL}}</b><i class="w3-tiny"> ({{todo.CODICE_CONTRATTO}})</i><span v-on:click="changeLCL(todo)" class="w3-button w3-transparent w3-display-right">&times;</span></li>',
+    template: '<li class="w3-display-container"><b>{{todo.CODICE_LCL}}</b><i class="w3-tiny"> ({{todo.CODICE_CONTRATTO}})</i><span v-on:click="changeLCL(todo)" class="w3-button w3-transparent w3-display-right">x</span></li>',
     methods: {
         changeLCL: function (value) {
-            console.log(value);
-            //this.LCList[value.CODICE_LCL].SELECT = !value.SELECT;
+            const index = app.LCList.findIndex(item => item.CODICE_LCL == value.CODICE_LCL);
+            if (app.LCList.filter(lcl => lcl.SELECT == true).length > 1) {
+                app.LCList[index].SELECT = !app.LCList[index].SELECT;
+            } else if (app.LCList[index].SELECT == false) {
+                app.LCList[index].SELECT = true;
+            }
+
+            if (app.LCList.filter(lcl => lcl.SELECT == false).length > 0) {
+                page_addLCL = true;
+            } else {
+                page_addLCL = false;
+            }
         }
     }
 });
@@ -12,10 +22,19 @@ Vue.component('lcl-item', {
 var app = new Vue({
     el: '#app',
     data: {
-        LCList: {},
+        LCList: [],
         loadFileData: {},
         page_loadFile: true,
-        page_LCList: false
+        page_LCList: false,
+        page_addLCL: true,
+    },
+    computed: {
+        activeLCL: function () {
+            return this.LCList.filter(lcl => lcl.SELECT == true);
+        },
+        deactiveLCL: function () {
+            return this.LCList.filter(lcl => lcl.SELECT == false);
+        },
     },
     methods: {
         loadFile: function () {
@@ -34,21 +53,18 @@ var app = new Vue({
 
                         this.loadFileData = rowObject;
 
-                        let lcl = {};
                         rowObject.forEach(row => {
-                            lcl[row.CODICE_LCL] = {
+                            const found = this.LCList.some(oneLCL => oneLCL.CODICE_LCL === row.CODICE_LCL);
+                            if (!found) this.LCList.push({
                                 "CODICE_CONTRATTO": row.CODICE_CONTRATTO,
                                 "CODICE_LCL": row.CODICE_LCL,
                                 "STATO_LCL": row.STATO_LCL,
                                 "SELECT": true,
-                            };
+                            });
                         });
-
-                        this.LCList = lcl;
 
                         this.page_loadFile = false;
                         this.page_LCList = true;
-
                     });
                 }
             }
