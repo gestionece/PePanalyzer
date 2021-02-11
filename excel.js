@@ -470,7 +470,7 @@ function calcBeneficit(beneficit = true, smartest = false) {
 
                         var labelName = operatore;
                         if (CalcTable.Label[operatore] != undefined) {
-                            labelName = CalcTable.Label[operatore];
+                            labelName = CalcTable.Label[operatore] + "<i class='w3-tiny'>(" + operatore + ")</i>";
                         }
 
                         rowST.innerHTML = "<td>" + labelName + "</td ><td class='w3-center'>" + LCL.Operatori[operatore].ST_CON + "</td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Annullato * 100 / LCL.Operatori[operatore].ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Connect * 100 / LCL.Operatori[operatore].ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) * 100 / LCL.Operatori[operatore].ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) + ")</i></td>";
