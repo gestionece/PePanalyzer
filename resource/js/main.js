@@ -1,6 +1,16 @@
 Vue.component('lcl-item', {
     props: ['todo'],
-    template: '<li class="w3-display-container"><b>{{todo.CODICE_LCL}}</b><i class="w3-tiny"> ({{todo.CODICE_CONTRATTO}})</i><span v-on:click="changeLCL(todo)" class="w3-button w3-transparent w3-display-right">x</span></li>',
+    template: '<li class="w3-display-container"><b>{{todo.CODICE_LCL}}</b><i class="w3-tiny"> ({{todo.CODICE_CONTRATTO}})</i><span v-on:click="changeLCL(todo)" class="w3-button w3-transparent w3-display-right" v-html="btnLabel"></span></li>',
+    data: function () {
+        return {
+            btn: "&times;"
+        }
+    },
+    computed: {
+        btnLabel: function () {
+            return "&plus;";
+        },
+    },
     methods: {
         changeLCL: function (value) {
             const index = app.LCList.findIndex(item => item.CODICE_LCL == value.CODICE_LCL);
@@ -11,9 +21,9 @@ Vue.component('lcl-item', {
             }
 
             if (app.LCList.filter(lcl => lcl.SELECT == false).length > 0) {
-                page_addLCL = true;
+                app.page_addLCL = true;
             } else {
-                page_addLCL = false;
+                app.page_addLCL = false;
             }
         }
     }
@@ -26,7 +36,7 @@ var app = new Vue({
         loadFileData: {},
         page_loadFile: true,
         page_LCList: false,
-        page_addLCL: true,
+        page_addLCL: false,
     },
     computed: {
         activeLCL: function () {
