@@ -59,7 +59,9 @@
                             <lcl-item v-for="item in activeLCL" v-bind:todo="item" v-bind:key="item.id"></lcl-item>
                         </ul>
                     </div>
-                    <p v-if="page_addLCL" class="w3-margin-top"><i>Agiungi il contratto, premendo su "+":</i></p>
+                    <p v-if="page_addLCL" class="w3-margin-top">
+                        <i>Agiungi LCL, premendo su "+":</i>
+                    </p>
                     <div class="w3-col w3-margin-bottom">
                         <ul class="w3-ul w3-card-4">
                             <lcl-item v-for="item in deactiveLCL"  v-bind:todo="item" v-bind:key="item.id"></lcl-item>
