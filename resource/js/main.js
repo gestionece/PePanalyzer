@@ -1,7 +1,13 @@
 Vue.component('lcl-item', {
     props: ['todo'],
-    template: '<li class="w3-display-container"><b>{{todo.CODICE_LCL}}</b><i class="w3-tiny"> ({{todo.CODICE_CONTRATTO}})</i><span class="w3-button w3-transparent w3-display-right">&times;</span></li>'
-  })
+    template: '<li class="w3-display-container"><b>{{todo.CODICE_LCL}}</b><i class="w3-tiny"> ({{todo.CODICE_CONTRATTO}})</i><span v-on:click="changeLCL(todo)" class="w3-button w3-transparent w3-display-right">&times;</span></li>',
+    methods: {
+        changeLCL: function (value) {
+            console.log(value);
+            //this.LCList[value.CODICE_LCL].SELECT = !value.SELECT;
+        }
+    }
+});
 
 var app = new Vue({
     el: '#app',
