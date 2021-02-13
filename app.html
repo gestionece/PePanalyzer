@@ -10,7 +10,8 @@
     <link rel="shortcut icon" type="image/png" href="https://gestionece.github.io/resources/img/favicon.png">
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"
+        type="text/css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
 
@@ -26,57 +27,51 @@
 </head>
 
 <body>
+
+    <!-- Header -->
     <div id="app" class="w3-container" style="display: block;">
-        <div class="w3-row w3-margin-top w3-margin-bottom">
-            <div class="w3-col l3 m1 w3-hide-small">
-                <p></p>
-            </div>
-            <div class="w3-col l6 m10 s12">
-                <transition name="custom-classes-transition" enter-active-class="animate__animated animate__tada"
-                    leave-active-class="animate__animated animate__bounceOutUp">
-                    <div v-if="page_loadFile">
-                        <h2 id="pharStartPage">Ehi non ti dimentichi nulla? <b>NO NIENTE!</b></h2>
-                        <p id="txtStartPage"><i>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sequi dolore,
-                                eius
-                                molestias
-                                enim nesciunt necessitatibus! Dolorum aut, ex ratione aspernatur nisi, iste voluptates
-                                suscipit
-                                tempore
-                                repudiandae mollitia consequuntur excepturi eos.</i></p>
-                        <div class="w3-col m12 w3-border w3-round-small w3-margin-top w3-margin-bottom">
-                            <input ref="inputLoadFile"
-                                style="margin: 5px 0px 0px 5px; width: calc(100% - 80px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
-                                type="file" accept=".xls, .xlsx, .csv">
-                            <button v-on:click="loadFile" class="w3-button w3-right w3-green">Load</button>
-                        </div>
-                    </div>
-                </transition>
-                <div v-if="page_LCList">
-                    <h2>LCL</h2>
-                    <p><i>Elimina LCL, premendo su "x":</i></p>
-                    <div class="w3-col w3-margin-bottom">
-                        <ul class="w3-ul w3-card-4">
-                            <lcl-item v-for="item in activeLCL" v-bind:todo="item" v-bind:key="item.id"></lcl-item>
-                        </ul>
-                    </div>
-                    <p v-if="page_addLCL" class="w3-margin-top">
-                        <i>Agiungi LCL, premendo su "+":</i>
-                    </p>
-                    <div class="w3-col w3-margin-bottom">
-                        <ul class="w3-ul w3-card-4">
-                            <lcl-item v-for="item in deactiveLCL"  v-bind:todo="item" v-bind:key="item.id"></lcl-item>
-                        </ul>
-                    </div>
-                    <div class="w3-bar">
-                        <button v-on:click="backLCList" class="w3-button w3-left w3-dark-grey">&laquo; Back</button>
-                        <button class="w3-button w3-right w3-green">Next &raquo;</button>
-                        <button class="w3-button w3-right w3-blue">SmarTest</button>
-                        <button class="w3-button w3-left w3-right w3-light-grey">Options</button>
+        <div class="w3-row w3-margin-top w3-margin-bottom" style="max-width: 700px; margin-inline: auto;">
+            <transition name="custom-classes-transition" enter-active-class="animate__animated animate__tada"
+                leave-active-class="animate__animated animate__bounceOutUp">
+                <div v-if="page_loadFile">
+                    <h2 id="pharStartPage">Ehi non ti dimentichi nulla? <b>NO NIENTE!</b></h2>
+                    <p id="txtStartPage"><i>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sequi dolore,
+                            eius
+                            molestias
+                            enim nesciunt necessitatibus! Dolorum aut, ex ratione aspernatur nisi, iste voluptates
+                            suscipit
+                            tempore
+                            repudiandae mollitia consequuntur excepturi eos.</i></p>
+                    <div class="w3-col m12 w3-border w3-round-small w3-margin-top w3-margin-bottom">
+                        <input ref="inputLoadFile"
+                            style="margin: 5px 0px 0px 5px; width: calc(100% - 80px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                            type="file" accept=".xls, .xlsx, .csv">
+                        <button v-on:click="loadFile" class="w3-button w3-right w3-green">Load</button>
                     </div>
                 </div>
-            </div>
-            <div class="w3-col l3 m1 w3-hide-small">
-                <p></p>
+            </transition>
+            <div v-if="page_LCList">
+                <h2>LCL</h2>
+                <p><i>Elimina LCL, premendo su "x":</i></p>
+                <div class="w3-col w3-margin-bottom">
+                    <ul class="w3-ul w3-card-4">
+                        <lcl-item v-for="item in activeLCL" v-bind:todo="item" v-bind:key="item.id"></lcl-item>
+                    </ul>
+                </div>
+                <p v-if="page_addLCL" class="w3-margin-top">
+                    <i>Agiungi LCL, premendo su "+":</i>
+                </p>
+                <div class="w3-col w3-margin-bottom">
+                    <ul class="w3-ul w3-card-4">
+                        <lcl-item v-for="item in deactiveLCL" v-bind:todo="item" v-bind:key="item.id"></lcl-item>
+                    </ul>
+                </div>
+                <div class="w3-bar">
+                    <button v-on:click="backLCList" class="w3-button w3-left w3-dark-grey">&laquo; Back</button>
+                    <button class="w3-button w3-right w3-green">Next &raquo;</button>
+                    <button class="w3-button w3-right w3-blue">SmarTest</button>
+                    <button class="w3-button w3-left w3-right w3-light-grey">Options</button>
+                </div>
             </div>
         </div>
     </div>
