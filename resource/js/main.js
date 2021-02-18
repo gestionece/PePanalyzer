@@ -52,14 +52,14 @@ var app = new Vue({
             this.page_LCList = false;
         },
         changeLCL(value) {
-            const index = app.LCList.findIndex(item => item.CODICE_LCL == value.CODICE_LCL);
-            if (app.LCList.filter(lcl => lcl.SELECT == true).length > 1) {
-                app.LCList[index].SELECT = !app.LCList[index].SELECT;
-            } else if (app.LCList[index].SELECT == false) {
-                app.LCList[index].SELECT = true;
-            }
 
-            if (app.LCList.filter(lcl => lcl.SELECT == false).length > 0) {
+            if (this.activeLCL.length > 1) {
+                value.SELECT = !value.SELECT;
+            } else {
+                value.SELECT = true;
+            }
+            
+            if (this.deactiveLCL.length > 0) {
                 app.page_addLCL = true;
             } else {
                 app.page_addLCL = false;
