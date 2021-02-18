@@ -55,22 +55,22 @@
                 <p><i>Elimina LCL, premendo su "x":</i></p>
                 <div class="w3-col w3-margin-bottom">
                     <ul class="w3-ul w3-card-4">
-                        <li v-for="(item, index) in activeLCL" class="w3-display-container">
+                        <li v-for="item in activeLCL" class="w3-display-container">
                             <b>{{item.CODICE_LCL}}</b>
                             <i class="w3-tiny"> ({{item.CODICE_CONTRATTO}})</i>
-                            <span v-on:click="changeLCL(item, index)" class="w3-button w3-transparent w3-display-right">&times;</span>
+                            <span v-on:click="changeLCL(item)" class="w3-button w3-transparent w3-display-right">&times;</span>
                         </li>
                     </ul>
                 </div>
-                <p v-if="page_addLCL" class="w3-margin-top">
+                <p v-show="page_addLCL" class="w3-margin-top">
                     <i>Agiungi LCL, premendo su "+":</i>
                 </p>
                 <div class="w3-col w3-margin-bottom">
                     <ul class="w3-ul w3-card-4">
-                        <li v-for="(item, index) in deactiveLCL" class="w3-display-container">
+                        <li v-for="item in deactiveLCL" class="w3-display-container">
                             <b>{{item.CODICE_LCL}}</b>
                             <i class="w3-tiny"> ({{item.CODICE_CONTRATTO}})</i>
-                            <span v-on:click="changeLCL(item, index)" class="w3-button w3-transparent w3-display-right">&plus;</span>
+                            <span v-on:click="changeLCL(item)" class="w3-button w3-transparent w3-display-right">&plus;</span>
                         </li>
                     </ul>
                 </div>
