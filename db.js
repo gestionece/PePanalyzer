@@ -84,10 +84,7 @@ let CalcTable = {
     TF_R: {
         CON: 3.50,
         AV: 1.20,
-        GG1: 3.50,
-        GG2: 2.50,
-        GG3: 1.50,
-        INTR: 1.00,
+        INT: 1.00,
     },
     Label: {
         CON: "Eseguiti",
