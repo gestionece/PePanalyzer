@@ -1,34 +1,3 @@
-Vue.component('lcl-item', {
-    props: ['todo'],
-    template: '<li class="w3-display-container"><b>{{todo.CODICE_LCL}}</b><i class="w3-tiny"> ({{todo.CODICE_CONTRATTO}})</i><span v-on:click="changeLCL(todo)" class="w3-button w3-transparent w3-display-right" v-html="btnLabel"></span></li>',
-    data: function () {
-        return {
-            btn: "&times;"
-        }
-    },
-    computed: {
-        btnLabel: function () {
-            return "&plus;";
-        },
-    },
-    methods: {
-        changeLCL: function (value) {
-            const index = app.LCList.findIndex(item => item.CODICE_LCL == value.CODICE_LCL);
-            if (app.LCList.filter(lcl => lcl.SELECT == true).length > 1) {
-                app.LCList[index].SELECT = !app.LCList[index].SELECT;
-            } else if (app.LCList[index].SELECT == false) {
-                app.LCList[index].SELECT = true;
-            }
-
-            if (app.LCList.filter(lcl => lcl.SELECT == false).length > 0) {
-                app.page_addLCL = true;
-            } else {
-                app.page_addLCL = false;
-            }
-        }
-    }
-});
-
 var app = new Vue({
     el: '#app',
     data: {
@@ -39,16 +8,15 @@ var app = new Vue({
         page_addLCL: false,
     },
     computed: {
-        activeLCL: function () {
+        activeLCL() {
             return this.LCList.filter(lcl => lcl.SELECT == true);
         },
-        deactiveLCL: function () {
+        deactiveLCL() {
             return this.LCList.filter(lcl => lcl.SELECT == false);
         },
     },
     methods: {
-        loadFile: function () {
-
+        loadFile() {
             var selectedFile = this.$refs.inputLoadFile.files[0];
             let data = [{}];
             XLSX.utils.json_to_sheet(data, 'out.xlsx');
@@ -79,9 +47,23 @@ var app = new Vue({
                 }
             }
         },
-        backLCList: function () {
+        backLCList() {
             this.page_loadFile = true;
             this.page_LCList = false;
+        },
+        changeLCL(value) {
+            const index = app.LCList.findIndex(item => item.CODICE_LCL == value.CODICE_LCL);
+            if (app.LCList.filter(lcl => lcl.SELECT == true).length > 1) {
+                app.LCList[index].SELECT = !app.LCList[index].SELECT;
+            } else if (app.LCList[index].SELECT == false) {
+                app.LCList[index].SELECT = true;
+            }
+
+            if (app.LCList.filter(lcl => lcl.SELECT == false).length > 0) {
+                app.page_addLCL = true;
+            } else {
+                app.page_addLCL = false;
+            }
         }
     }
 });
