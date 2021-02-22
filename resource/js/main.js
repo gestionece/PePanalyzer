@@ -6,6 +6,7 @@ var app = new Vue({
         page_loadFile: true,
         page_LCList: false,
         page_addLCL: false,
+        btnLoad_isDisabled: false,
     },
     computed: {
         activeLCL() {
@@ -13,12 +14,13 @@ var app = new Vue({
         },
         deactiveLCL() {
             return this.LCList.filter(lcl => lcl.SELECT == false);
-        },
+        }
     },
     methods: {
         loadFile() {
             var selectedFile = this.$refs.inputLoadFile.files[0];
             if (selectedFile && window.Worker) {
+                this.btnLoad_isDisabled = true;
                 const worker = new Worker('resource/js/worker.js'); //https://dog.ceo/dog-api/
                 worker.postMessage(selectedFile);
                 worker.onmessage = (e) => {
@@ -39,6 +41,9 @@ var app = new Vue({
                     this.page_addLCL = false;
                     this.page_loadFile = false;
                     this.page_LCList = true;
+                    this.btnLoad_isDisabled = false;
+
+                    worker.terminate();
                 }
             }
         },
