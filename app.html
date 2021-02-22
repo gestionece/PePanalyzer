@@ -24,9 +24,8 @@
     <!-- Header -->
     <div id="app" class="w3-container" style="display: block;">
         <div class="w3-row w3-margin-top w3-margin-bottom" style="max-width: 700px; margin-inline: auto;">
-            <transition name="custom-classes-transition"
-                        enter-active-class="animate__animated animate__tada"
-                        leave-active-class="animate__animated animate__bounceOutUp">
+            <transition name="custom-classes-transition" enter-active-class="animate__animated animate__tada"
+                leave-active-class="animate__animated animate__bounceOutUp">
                 <div v-if="page_loadFile">
                     <h2>Ehi non ti dimentichi nulla? <b>NO NIENTE!</b></h2>
                     <p><i>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sequi dolore,
@@ -41,7 +40,8 @@
                         <input ref="inputLoadFile"
                             style="margin: 5px 0px 0px 5px; width: calc(100% - 80px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
                             type="file" accept=".xls, .xlsx, .csv">
-                        <button v-on:click="loadFile" class="w3-button w3-right w3-green">Load</button>
+                        <button v-on:click="loadFile" :disabled='btnLoad_isDisabled'
+                            class="w3-button w3-right w3-green">Load</button>
                     </div>
                 </div>
             </transition>
@@ -53,7 +53,8 @@
                         <li v-for="item in activeLCL" class="w3-display-container">
                             <b>{{item.CODICE_LCL}}</b>
                             <i class="w3-tiny"> ({{item.CODICE_CONTRATTO}})</i>
-                            <span v-on:click="changeLCL(item)" class="w3-button w3-transparent w3-display-right">&times;</span>
+                            <span v-on:click="changeLCL(item)"
+                                class="w3-button w3-transparent w3-display-right">&times;</span>
                         </li>
                     </ul>
                 </div>
@@ -65,7 +66,8 @@
                         <li v-for="item in deactiveLCL" class="w3-display-container">
                             <b>{{item.CODICE_LCL}}</b>
                             <i class="w3-tiny"> ({{item.CODICE_CONTRATTO}})</i>
-                            <span v-on:click="changeLCL(item)" class="w3-button w3-transparent w3-display-right">&plus;</span>
+                            <span v-on:click="changeLCL(item)"
+                                class="w3-button w3-transparent w3-display-right">&plus;</span>
                         </li>
                     </ul>
                 </div>
@@ -79,7 +81,8 @@
         </div>
     </div>
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"
+        type="text/css">
     <script src="resource/js/main.js"></script>
 </body>
 
