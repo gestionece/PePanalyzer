@@ -23,15 +23,9 @@
 
     <!-- Header -->
     <div id="app" class="w3-container" style="display: block;">
-
-        <v-avatar
-  color="teal"
-  size="84"
-></v-avatar>
-
         <div class="w3-row w3-margin-top w3-margin-bottom" style="max-width: 700px; margin-inline: auto;">
-            <transition name="custom-classes-transition" enter-active-class="animate__animated animate__tada"
-                leave-active-class="animate__animated animate__bounceOutUp">
+            <transition name="custom-classes-transition" enter-active-class="animate__animated animate__bounceIn"
+                leave-active-class="animate__animated animate__backOutUp">
                 <div v-if="page_loadFile">
                     <h2>Ehi non ti dimentichi nulla? <b>NO NIENTE!</b></h2>
                     <p><i>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sequi dolore,
@@ -56,39 +50,42 @@
                     <!--End load bar-->
                 </div>
             </transition>
-            <div v-if="page_LCList">
-                <h2>LCL</h2>
-                <p><i>Elimina LCL, premendo su "x":</i></p>
-                <div class="w3-col w3-margin-bottom">
-                    <ul class="w3-ul w3-card-4">
-                        <li v-for="item in activeLCL" class="w3-display-container">
-                            <b>{{item.CODICE_LCL}}</b>
-                            <i class="w3-tiny"> ({{item.CODICE_CONTRATTO}})</i>
-                            <span v-on:click="changeLCL(item)"
-                                class="w3-button w3-transparent w3-display-right">&times;</span>
-                        </li>
-                    </ul>
+            <transition name="custom-classes-transition" enter-active-class="animate__animated animate__fadeIn"
+                leave-active-class="animate__animated animate__backOutDown">
+                <div v-if="page_LCList">
+                    <h2>LCL</h2>
+                    <p><i>Elimina LCL, premendo su "x":</i></p>
+                    <div class="w3-col w3-margin-bottom">
+                        <ul class="w3-ul w3-card-4">
+                            <li v-for="item in activeLCL" class="w3-display-container">
+                                <b>{{item.CODICE_LCL}}</b>
+                                <i class="w3-tiny"> ({{item.CODICE_CONTRATTO}})</i>
+                                <span v-on:click="changeLCL(item)"
+                                    class="w3-button w3-transparent w3-display-right">&times;</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <p v-show="page_addLCL" class="w3-margin-top">
+                        <i>Agiungi LCL, premendo su "+":</i>
+                    </p>
+                    <div class="w3-col w3-margin-bottom">
+                        <ul class="w3-ul w3-card-4">
+                            <li v-for="item in deactiveLCL" class="w3-display-container">
+                                <b>{{item.CODICE_LCL}}</b>
+                                <i class="w3-tiny"> ({{item.CODICE_CONTRATTO}})</i>
+                                <span v-on:click="changeLCL(item)"
+                                    class="w3-button w3-transparent w3-display-right">&plus;</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="w3-bar">
+                        <button v-on:click="backLCList" class="w3-button w3-left w3-dark-grey">&laquo; Back</button>
+                        <button class="w3-button w3-right w3-green">Next &raquo;</button>
+                        <button class="w3-button w3-right w3-blue">SmarTest</button>
+                        <button class="w3-button w3-left w3-right w3-light-grey">Options</button>
+                    </div>
                 </div>
-                <p v-show="page_addLCL" class="w3-margin-top">
-                    <i>Agiungi LCL, premendo su "+":</i>
-                </p>
-                <div class="w3-col w3-margin-bottom">
-                    <ul class="w3-ul w3-card-4">
-                        <li v-for="item in deactiveLCL" class="w3-display-container">
-                            <b>{{item.CODICE_LCL}}</b>
-                            <i class="w3-tiny"> ({{item.CODICE_CONTRATTO}})</i>
-                            <span v-on:click="changeLCL(item)"
-                                class="w3-button w3-transparent w3-display-right">&plus;</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="w3-bar">
-                    <button v-on:click="backLCList" class="w3-button w3-left w3-dark-grey">&laquo; Back</button>
-                    <button class="w3-button w3-right w3-green">Next &raquo;</button>
-                    <button class="w3-button w3-right w3-blue">SmarTest</button>
-                    <button class="w3-button w3-left w3-right w3-light-grey">Options</button>
-                </div>
-            </div>
+            </transition>
         </div>
     </div>
 
