@@ -7,9 +7,6 @@ var app = new Vue({
         page_LCList: false,
         page_addLCL: false,
     },
-    mounted() {
-
-    },
     computed: {
         activeLCL() {
             return this.LCList.filter(lcl => lcl.SELECT == true);
