@@ -7,6 +7,9 @@ var app = new Vue({
         page_LCList: false,
         page_addLCL: false,
     },
+    mounted() {
+
+    },
     computed: {
         activeLCL() {
             return this.LCList.filter(lcl => lcl.SELECT == true);
@@ -18,32 +21,27 @@ var app = new Vue({
     methods: {
         loadFile() {
             var selectedFile = this.$refs.inputLoadFile.files[0];
-            let data = [{}];
-            XLSX.utils.json_to_sheet(data, 'out.xlsx');
-            if (selectedFile) {
-                let fileReader = new FileReader();
-                fileReader.readAsBinaryString(selectedFile);
-                fileReader.onload = (event) => {
-                    let data = event.target.result;
-                    let workbook = XLSX.read(data, { type: "binary", cellDates: true, dateNF: 'dd/mm/yyyy' });
-                    workbook.SheetNames.forEach(sheet => {
-                        let rowObject = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
+            if (selectedFile && window.Worker) {
+                const worker = new Worker('/resource/js/worker.js'); //https://dog.ceo/dog-api/
+                worker.postMessage(selectedFile);
+                worker.onmessage = (e) => {
 
-                        this.loadFileData = rowObject;
+                    this.loadFileData = e.data; // uso worker.js per caricare e leggere il file, ma per conversione delle pagine diverse uso main.js
+                    this.LCList = [];
 
-                        rowObject.forEach(row => {
-                            const found = this.LCList.some(oneLCL => oneLCL.CODICE_LCL === row.CODICE_LCL);
-                            if (!found) this.LCList.push({
-                                "CODICE_CONTRATTO": row.CODICE_CONTRATTO,
-                                "CODICE_LCL": row.CODICE_LCL,
-                                "STATO_LCL": row.STATO_LCL,
-                                "SELECT": true,
-                            });
+                    this.loadFileData.forEach(row => {
+                        const found = this.LCList.some(oneLCL => oneLCL.CODICE_LCL === row.CODICE_LCL);
+                        if (!found) this.LCList.push({
+                            "CODICE_CONTRATTO": row.CODICE_CONTRATTO,
+                            "CODICE_LCL": row.CODICE_LCL,
+                            "STATO_LCL": row.STATO_LCL,
+                            "SELECT": true,
                         });
-
-                        this.page_loadFile = false;
-                        this.page_LCList = true;
                     });
+
+                    this.page_addLCL = false;
+                    this.page_loadFile = false;
+                    this.page_LCList = true;
                 }
             }
         },
@@ -58,16 +56,41 @@ var app = new Vue({
             } else {
                 value.SELECT = true;
             }
-            
+
             if (this.deactiveLCL.length > 0) {
-                app.page_addLCL = true;
+                this.page_addLCL = true;
             } else {
-                app.page_addLCL = false;
+                this.page_addLCL = false;
             }
         }
     }
 });
 
+
+
+/*let workbook = e.data; // uso worker.js per caricare e leggere il file, ma per conversione delle pagine diverse uso main.js
+workbook.SheetNames.forEach(sheet => {
+    let rowObject = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
+
+    this.loadFileData = rowObject;
+    this.LCList = [];
+
+    rowObject.forEach(row => {
+        const found = this.LCList.some(oneLCL => oneLCL.CODICE_LCL === row.CODICE_LCL);
+        if (!found) this.LCList.push({
+            "CODICE_CONTRATTO": row.CODICE_CONTRATTO,
+            "CODICE_LCL": row.CODICE_LCL,
+            "STATO_LCL": row.STATO_LCL,
+            "SELECT": true,
+        });
+    });
+
+    this.page_addLCL = false;
+    this.page_loadFile = false;
+    this.page_LCList = true;
+});*/
+
+                    //worker.terminate();
 
 /* https://ru.vuejs.org/v2/guide/forms.html
 <input type="checkbox" id="jack" value="Джек" v-model="checkedNames">
