@@ -22,7 +22,7 @@ var app = new Vue({
         loadFile() {
             var selectedFile = this.$refs.inputLoadFile.files[0];
             if (selectedFile && window.Worker) {
-                const worker = new Worker('/resource/js/worker.js'); //https://dog.ceo/dog-api/
+                const worker = new Worker('resource/js/worker.js'); //https://dog.ceo/dog-api/
                 worker.postMessage(selectedFile);
                 worker.onmessage = (e) => {
 
