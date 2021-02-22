@@ -49,6 +49,11 @@
                         <button v-on:click="loadFile" :disabled='btnLoad_isDisabled'
                             class="w3-button w3-right w3-green">Load</button>
                     </div>
+                    <!--Test Start load bar-->
+                    <div class="w3-col m12 w3-border w3-round-small w3-light-grey">
+                        <div id="myBar" class="w3-green w3-center" style="height:24px;width: 0%"></div>
+                    </div>
+                    <!--End load bar-->
                 </div>
             </transition>
             <div v-if="page_LCList">

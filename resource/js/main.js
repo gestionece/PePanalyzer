@@ -20,10 +20,32 @@ var app = new Vue({
         loadFile() {
             var selectedFile = this.$refs.inputLoadFile.files[0];
             if (selectedFile && window.Worker) {
+
+                //Test Start load bar
+                var elem = document.getElementById("myBar");   
+                var width = 0;
+                var id = setInterval(frame, selectedFile.size/80000); //80000 scelto sperimendando
+                function frame() {
+                  if (width >= 100) {
+                    clearInterval(id);
+                  } else {
+                    width++; 
+                    elem.style.width = width + '%'; 
+                    elem.innerHTML = width * 1  + '%';
+                  }
+                }
+                //Test End load bar
+
                 this.btnLoad_isDisabled = true;
                 const worker = new Worker('resource/js/worker.js'); //https://dog.ceo/dog-api/
                 worker.postMessage(selectedFile);
                 worker.onmessage = (e) => {
+
+                    //Test Start load bar
+                    clearInterval(id);
+                    document.getElementById("myBar").style.width = '100%';
+                    document.getElementById("myBar").innerHTML = '100%';
+                    //Test End load bar
 
                     this.loadFileData = e.data; //uso worker.js per ricevere già JSON dal file EXCEL, problema consite nel riceve due volte, visto che ci sono pagine diverse(si potrebbe valuitare di utlizare un foglio per un contratto).
                     this.LCList = [];
