@@ -26,7 +26,7 @@ var app = new Vue({
                 worker.postMessage(selectedFile);
                 worker.onmessage = (e) => {
 
-                    this.loadFileData = e.data; // uso worker.js per caricare e leggere il file, ma per conversione delle pagine diverse uso main.js
+                    this.loadFileData = e.data; //uso worker.js per ricevere già JSON dal file EXCEL, problema consite nel riceve due volte, visto che ci sono pagine diverse(si potrebbe valuitare di utlizare un foglio per un contratto).
                     this.LCList = [];
 
                     this.loadFileData.forEach(row => {
@@ -90,7 +90,7 @@ workbook.SheetNames.forEach(sheet => {
     this.page_LCList = true;
 });*/
 
-                    //worker.terminate();
+//worker.terminate();
 
 /* https://ru.vuejs.org/v2/guide/forms.html
 <input type="checkbox" id="jack" value="Джек" v-model="checkedNames">
