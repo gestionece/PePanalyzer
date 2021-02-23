@@ -7,6 +7,7 @@ var app = new Vue({
         page_LCList: false,
         page_addLCL: false,
         btnLoad_isDisabled: false,
+        page_LCList_loader: false,
     },
     computed: {
         activeLCL() {
@@ -17,35 +18,14 @@ var app = new Vue({
         }
     },
     methods: {
-        loadFile() {
-            var selectedFile = this.$refs.inputLoadFile.files[0];
+        loadFile(selectedFile) {
             if (selectedFile && window.Worker) {
 
-                //Test Start load bar
-                var elem = document.getElementById("myBar");   
-                var width = 0;
-                var id = setInterval(frame, selectedFile.size/80000); //80000 scelto sperimendando
-                function frame() {
-                  if (width >= 100) {
-                    clearInterval(id);
-                  } else {
-                    width++; 
-                    elem.style.width = width + '%'; 
-                    elem.innerHTML = width * 1  + '%';
-                  }
-                }
-                //Test End load bar
-
+                this.page_LCList_loader = true;
                 this.btnLoad_isDisabled = true;
                 const worker = new Worker('resource/js/worker.js'); //https://dog.ceo/dog-api/
                 worker.postMessage(selectedFile);
                 worker.onmessage = (e) => {
-
-                    //Test Start load bar
-                    clearInterval(id);
-                    document.getElementById("myBar").style.width = '100%';
-                    document.getElementById("myBar").innerHTML = '100%';
-                    //Test End load bar
 
                     this.loadFileData = e.data; //uso worker.js per ricevere già JSON dal file EXCEL, problema consite nel riceve due volte, visto che ci sono pagine diverse(si potrebbe valuitare di utlizare un foglio per un contratto).
                     this.LCList = [];
@@ -60,6 +40,7 @@ var app = new Vue({
                         });
                     });
 
+                    this.page_LCList_loader = false;
                     this.page_addLCL = false;
                     this.page_loadFile = false;
                     this.page_LCList = true;
