@@ -11,20 +11,20 @@
 <body>
   <div id="app">
     <v-app id="inspire">
-      <div class="text-center" style="margin-top: 150px;">
-        <v-file-input show-size truncate-length="1"></v-file-input>
-        <v-btn :disabled="dialog" :loading="dialog"  class="white--text" color="purple darken-2" @click="dialog = true">
-          Start loading
-        </v-btn>
-        <v-dialog v-model="dialog" hide-overlay persistent width="60%">
-          <v-card color="primary" dark>
-            <v-card-text>
-              Please stand by
-              <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
-            </v-card-text>
-          </v-card>
-        </v-dialog>
-      </div>
+      <v-container>
+        <v-row no-gutters>
+          <v-col md="6" offset-md="3" class="d-flex mb-6" flat tile>
+              <v-file-input show-size truncate-length="15"></v-file-input>
+              <v-btn color="green" elevation="2">Load</v-btn>
+          </v-col>
+        </v-row>
+        <v-row no-gutters>
+          <v-col md="6" offset-md="3" class="d-flex" flat tile>
+              <v-file-input show-size truncate-length="15"></v-file-input>
+              <v-btn color="green" elevation="2">Load</v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-app>
   </div>
 
@@ -34,27 +34,6 @@
     new Vue({
       el: '#app',
       vuetify: new Vuetify(),
-      data: () => ({
-        value: 1,
-        dialog: false,
-      }),
-      watch: {
-        dialog(val) {
-          if (!val) return
-          setTimeout(() => (this.dialog = false), 2000)
-        },
-      },
-      computed: {
-        color() {
-          switch (this.value) {
-            case 0: return 'blue-grey'
-            case 1: return 'teal'
-            case 2: return 'brown'
-            case 3: return 'indigo'
-            default: return 'blue-grey'
-          }
-        },
-      },
     })
   </script>
 </body>
