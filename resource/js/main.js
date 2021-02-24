@@ -5,7 +5,6 @@ var app = new Vue({
         loadFileData: {},
         page_loadFile: true,
         page_LCList: false,
-        page_addLCL: false,
         btnLoad_isDisabled: false,
         page_LCList_loader: false,
     },
@@ -16,6 +15,14 @@ var app = new Vue({
         deactiveLCL() {
             return this.LCList.filter(lcl => lcl.SELECT == false);
         }
+    },
+    updated() {
+        M.Datepicker.init(this.$refs.datepickerStart, {
+            format: "yyyy-mm-dd"
+        });
+        M.Datepicker.init(this.$refs.datepickerEnd, {
+            format: "yyyy-mm-dd"
+        });
     },
     methods: {
         loadFile(selectedFile) {
@@ -41,7 +48,6 @@ var app = new Vue({
                     });
 
                     this.page_LCList_loader = false;
-                    this.page_addLCL = false;
                     this.page_loadFile = false;
                     this.page_LCList = true;
                     this.btnLoad_isDisabled = false;
@@ -55,18 +61,7 @@ var app = new Vue({
             this.page_LCList = false;
         },
         changeLCL(value) {
-
-            if (this.activeLCL.length > 1) {
-                value.SELECT = !value.SELECT;
-            } else {
-                value.SELECT = true;
-            }
-
-            if (this.deactiveLCL.length > 0) {
-                this.page_addLCL = true;
-            } else {
-                this.page_addLCL = false;
-            }
+            value.SELECT = !value.SELECT;
         }
     }
 });
