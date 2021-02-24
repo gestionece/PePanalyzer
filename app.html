@@ -38,94 +38,110 @@
             user-select: none;
             /* Non-prefixed version, currently supported by Chrome and Opera */
         }
+
+        html {
+            background: url(https://picsum.photos/1920/1080?random) no-repeat center fixed;
+            background-size: cover;
+
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        .blur {
+            background-color: rgb(0 0 0 / 54%);
+            border-radius: 15px;
+            padding: 10px;
+            margin-top: 50px;
+            color: white;
+        }
     </style>
 </head>
 
 <body>
-
-    <!-- Header -->
+    <!-- App -->
     <div id="app" class="w3-container" style="display: block;">
-
         <!-- https://materializecss.com/ -->
+        <!-- https://www.tutorialspoint.com/materialize/index.htm -->
         <div class="container">
-            <transition name="custom-classes-transition" enter-active-class="animate__animated animate__bounceIn"
-                leave-active-class="animate__animated animate__backOutUp">
-                <section v-if="page_loadFile">
-                    <div class="row">
-                        <h2>Ehi non ti dimentichi nulla? <b>NO NIENTE!</b></h2>
-                        <p><i>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sequi dolore,
-                                eius
-                                molestias
-                                enim nesciunt necessitatibus! Dolorum aut, ex ratione aspernatur nisi, iste voluptates
-                                suscipit
-                                tempore
-                                repudiandae mollitia consequuntur excepturi eos.</i>
-                        </p>
-                    </div>
-                    <div class="row">
-                        <div class="file-field input-field">
-                            <div class="btn green" :disabled='btnLoad_isDisabled'>
-                                <span>Load</span>
-                                <input @change="loadFile($event.target.files[0])" type="file"
-                                    accept=".xls, .xlsx, .csv">
-                            </div>
-                            <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text">
-                                <!--readonly-->
-                            </div>
+            <!-- <transition name="custom-classes-transition" enter-active-class="animate__animated animate__bounceIn"
+                leave-active-class="animate__animated animate__backOutUp"> -->
+            <section v-if="page_loadFile" class="blur">
+                <div class="row">
+                    <h2>Ehi non ti dimentichi nulla? <b>NO NIENTE!</b></h2>
+                    <p class="flow-text"><i>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sequi dolore,
+                            eius
+                            molestias
+                            enim nesciunt necessitatibus! Dolorum aut, ex ratione aspernatur nisi, iste voluptates
+                            suscipit
+                            tempore
+                            repudiandae mollitia consequuntur excepturi eos.</i>
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="file-field input-field">
+                        <div class="btn green" :disabled='btnLoad_isDisabled'>
+                            <span>Load</span>
+                            <input @change="loadFile($event.target.files[0])" type="file" accept=".xls, .xlsx, .csv">
                         </div>
-                    </div>
-                    <div v-if="page_LCList_loader" class="row">
-                        <div class="progress">
-                            <div class="indeterminate green"></div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate white-text" type="text">
+                            <!--readonly-->
                         </div>
-                    </div>
-                </section>
-            </transition>
-            <transition name="custom-classes-transition" enter-active-class="animate__animated animate__fadeIn"
-                leave-active-class="animate__animated animate__zoomOut">
-                <div v-if="page_LCList">
-                    <div class="row">
-                        <h2>LCL</h2>
-                        <p><i>Elimina LCL, premendo su "x":</i></p>
-                        <ul class="collection z-depth-2">
-                            <li v-for="item in activeLCL" class="collection-item">
-                                <div>
-                                    <b>{{item.CODICE_LCL}}</b>
-                                    <i> ({{item.CODICE_CONTRATTO}})</i>
-                                    <a href="javascript:;" v-on:click="changeLCL(item)"
-                                        class="secondary-content grey-text noselect">
-                                        <i class="material-icons">close</i>
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div v-show="page_addLCL" class="row">
-                        <p>
-                            <i>Agiungi LCL, premendo su "+":</i>
-                        </p>
-                        <ul class="collection z-depth-2">
-                            <li v-for="item in deactiveLCL" class="collection-item">
-                                <div>
-                                    <b>{{item.CODICE_LCL}}</b>
-                                    <i> ({{item.CODICE_CONTRATTO}})</i>
-                                    <a href="javascript:;" v-on:click="changeLCL(item)"
-                                        class="secondary-content grey-text noselect">
-                                        <i class="material-icons">add</i>
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="row">
-                        <a class="waves-effect waves-light btn green" v-on:click="backLCList"><i
-                                class="material-icons left">navigate_before</i>Back</a>
-                        <a class="waves-effect waves-light btn green right"><i
-                                class="material-icons right">navigate_next</i>Next</a>
                     </div>
                 </div>
-            </transition>
+                <div v-if="page_LCList_loader" class="row">
+                    <div class="progress">
+                        <div class="indeterminate green"></div>
+                    </div>
+                </div>
+            </section>
+            <!-- </transition> -->
+        </div>
+        <div class="container" style="padding-bottom: 50px;">
+            <div v-if="page_LCList" class="blur">
+                <div class="row">
+                    <h2>LCL</h2>
+                    <p><i>Elimina LCL, premendo su "x":</i></p>
+                    <ul class="collection z-depth-2 black-text">
+                        <li v-for="item in activeLCL" class="collection-item">
+                            <div>
+                                <b>{{item.CODICE_LCL}}</b>
+                                <i> ({{item.CODICE_CONTRATTO}})</i>
+                                <a href="javascript:;" v-on:click="changeLCL(item)"
+                                    class="secondary-content grey-text noselect">
+                                    <i class="material-icons">close</i>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div v-show="page_addLCL" class="row">
+                    <p>
+                        <i>Agiungi LCL, premendo su "+":</i>
+                    </p>
+                    <ul class="collection z-depth-2 black-text">
+                        <li v-for="item in deactiveLCL" class="collection-item">
+                            <div>
+                                <b>{{item.CODICE_LCL}}</b>
+                                <i> ({{item.CODICE_CONTRATTO}})</i>
+                                <a href="javascript:;" v-on:click="changeLCL(item)"
+                                    class="secondary-content grey-text noselect">
+                                    <i class="material-icons">add</i>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <a class="waves-effect waves-light btn green" v-on:click="backLCList"><i
+                            class="material-icons left">navigate_before</i>Back</a>
+                    <a class="waves-effect waves-light btn green right"><i
+                            class="material-icons right">navigate_next</i>Next</a>
+                </div>
+            </div>
         </div>
     </div>
 
