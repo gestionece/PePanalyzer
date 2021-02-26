@@ -23,6 +23,8 @@ var app = new Vue({
         M.Datepicker.init(this.$refs.datepickerEnd, {
             format: "dd/mm/yyyy"
         });
+
+        M.Chips.init(document.querySelectorAll('.chips'), {data:  ["Premi", "Percentuale", "Smartest"]});
     },
     methods: {
         loadFile(selectedFile) {
