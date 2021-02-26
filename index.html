@@ -30,7 +30,6 @@
       background-size: cover;
 
       height: 100vh;
-      width: 100vw;
     }
 
     .blur {
@@ -46,9 +45,9 @@
   <link rel="stylesheet" href="/resource/css/litepicker.css" />
 </head>
 
-<body>
+<body class="bg">
 
-  <div id="loadFile" class="w3-container bg" style="display: block;">
+  <div id="loadFile" class="w3-container" style="display: block;">
     <div class="w3-row w3-margin-top w3-margin-bottom">
       <div class="w3-col m2">
         <p></p>
@@ -75,39 +74,47 @@
 
   <div id="selectLCL" class="w3-container" style="display: none;">
     <div class="w3-row w3-margin-top w3-margin-bottom">
-      <div class="w3-col l3 m1">
+      <div class="w3-col l2 m1">
         <p></p>
       </div>
-      <div class="w3-col l6 m10">
+      <div class="w3-col l8 m10" style="background-color: white; border-radius: 15px;">
         <div class="w3-row">
-          <div class="w3-col l5 m12 w3-container">
+          <div class="w3-col l5 m5 w3-container w3-margin-bottom">
             <p><i>Filtri:</i></p>
-            <div class="w3-card-4 w3-container">
-              <div class="w3-row">
-                <label class="w3-text-blue"><b>Data inizioo</b></label>
-                <input class="w3-input w3-border w3-card-4" type="date">
+            <div class="w3-card-4 w3-container" style="border-radius: 15px;">
+              <div class="w3-row w3-margin-top">
+                <label class="w3-text-blue"><b>Data inizio</b></label>
+                <input class="w3-input w3-border w3-card-4" id="d_s" type="date">
               </div>
               <div class="w3-row">
                 <label class="w3-text-blue"><b>Data fine</b></label>
-                <input class="w3-input w3-border w3-card-4" type="date">
+                <input class="w3-input w3-border w3-card-4" id="d_f" type="date">
               </div>
               <div class="w3-row">
                 <p>
-                <input class="w3-check w3-card-4" type="checkbox" checked="checked">
+                <input class="w3-radio" name="selOpt" id="r_Prm" type="radio">
                 <label>Premi</label></p>
                 <p>
-                <input class="w3-check w3-card-4" type="checkbox" checked="checked">
+                <input class="w3-radio" name="selOpt" id="r_Prc" type="radio" disabled>
                 <label>Percentuali</label></p>
                 <p>
-                <input class="w3-check w3-card-4" type="checkbox" checked="checked">
+                <input class="w3-radio" name="selOpt" id="r_ST" type="radio" checked>
                 <label>Smart Test</label></p>
+              </div>
+              <div class="w3-row w3-margin-bottom"> <!--<button class="w3-button w3-block w3-light-grey" onclick="options();">Options</button>-->
+                <div class="w3-col s4 m12 l4">
+                  <button class="w3-button w3-block w3-dark-grey" onclick="backLCList();">Back</button>
+                </div>
+                <div class="w3-col s8 m12 l8">
+                  <button class="w3-button w3-block w3-green" onclick="calcBeneficit();">Next</button>
+                </div>
               </div>
             </div>
           </div>
-          <div class="w3-col l7 m12 w3-container">
+          <div class="w3-col l7 m7 w3-container">
             <p><i>Elimina LCL, premendo su "x":</i></p>
             <div class="w3-col w3-margin-bottom">
-              <ul id="addListLCL" class="w3-ul w3-card-4">
+              <ul id="addListLCL" class="w3-ul w3-card-4" style="border-radius: 15px;">
                 <!-- Injection JavaScript -->
               </ul>
             </div>
@@ -115,23 +122,14 @@
               <i>Agiungi il contratto, premendosu "+":</i>
             </p>
             <div class="w3-col w3-margin-bottom">
-              <ul id="removeListLCL" class="w3-ul w3-card-4">
+              <ul id="removeListLCL" class="w3-ul w3-card-4" style="border-radius: 15px;">
                 <!-- Injection JavaScript -->
               </ul>
             </div>
           </div>
         </div>
-        <div class="w3-row">
-          <div class="w3-bar">
-            <button class="w3-button w3-left w3-dark-grey" onclick="backLCList();">&laquo;
-              Back</button>
-            <button class="w3-button w3-right w3-green " onclick="calcBeneficit(true, false);">Next &raquo;</button>
-            <button class="w3-button w3-right w3-blue" onclick="calcBeneficit(false, true);">SmarTest</button>
-            <button class="w3-button w3-right w3-light-grey" onclick="options();">Options</button>
-          </div>
-        </div>
       </div>
-      <div class="w3-col l3 m1">
+      <div class="w3-col l2 m1">
         <p></p>
       </div>
     </div>
@@ -171,7 +169,6 @@
               id="ModalButtonSaveLCL" onclick="">Save</button>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -181,7 +178,7 @@
       <div class="w3-col l3 m1">
         <p></p>
       </div>
-      <div class="w3-col l6 m10">
+      <div class="w3-col l6 m10" style="border-radius: 15px; padding: 5px 0;">
         <div id="optionsList" class="w3-col w3-margin-bottom">
           <!-- Injection JavaScript -->
         </div>
