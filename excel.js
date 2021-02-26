@@ -131,7 +131,8 @@ window.options = function () {
     divObject.classList.add("w3-light-grey");
     divObject.classList.add("w3-card-4");
     divObject.classList.add("w3-center");
-    divObject.style.cssText = 'border-radius: 15px; padding: 5px 0;';
+    divObject.classList.add("w3-round-xlarge"); 
+    divObject.style.cssText = 'padding: 5px 0;';
     divObject.innerHTML = '<h2>' + "€/Punto" + '</h2><table id="lclPerCent" class="w3-table-all w3-hoverable w3-margin-bottom w3-border-0"><thead><tr class="w3-blue"><th>Contratto</th><th class="w3-center">MF-TF</th><th class="w3-center">TF15-30</th><th class="w3-center">M2</th></tr></thead><!-- Injection JavaScript --></table>';
     
     CalcTable.EUP.forEach(Contratto => {
