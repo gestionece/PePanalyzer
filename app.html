@@ -58,6 +58,30 @@
             margin-top: 50px;
             color: black;
         }
+
+        /* Start ScrollBar*/
+        ::-webkit-scrollbar {
+            width: 2px;
+            height: 1;
+        }
+
+        ::-webkit-scrollbar-button {
+            width: 5px;
+            height: 12px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4CAF50
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+        /* End ScrollBar*/
     </style>
 </head>
 
@@ -106,11 +130,11 @@
                     <div class="col s12 m4 l4">
                         <div class="col-content">
                             <p class="flow-text"><i>Impostazioni:</i></p>
-                            <label for="datepickerStart" class="">Birthdate</label>
-                            <input ref="datepickerStart" id="datepickerStart" placeholder="Start" type="text"
+                            <label for="datepickerStart" class="">Data Inizio</label>
+                            <input ref="datepickerStart" id="datepickerStart" placeholder="Data Inizio" type="text"
                                 class="datepicker">
-                            <label for="datepickerEnd" class="">Birthdate</label>
-                            <input ref="datepickerEnd" id="datepickerEnd" placeholder="End" type="text"
+                            <label for="datepickerEnd" class="">Data Fine</label>
+                            <input ref="datepickerEnd" id="datepickerEnd" placeholder="Data Fine" type="text"
                                 class="datepicker">
                         </div>
                     </div>
@@ -118,7 +142,7 @@
                         <div class="col-content">
                             <p class="flow-text"><i>Selezione LCL:</i></p>
                             <ul class="collection z-depth-2 black-text"
-                                style="border-radius: 15px 0 0 15px; overflow-y: auto; max-height: 50vh;">
+                                style="border-radius: 15px; overflow-y: auto; max-height: 50vh;">
                                 <li v-for="item in LCList" class="collection-item">
                                     <label>
                                         <input v-on:click="changeLCL(item)" type="checkbox" checked="checked" />
