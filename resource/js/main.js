@@ -18,10 +18,10 @@ var app = new Vue({
     },
     updated() {
         M.Datepicker.init(this.$refs.datepickerStart, {
-            format: "yyyy-mm-dd"
+            format: "dd/mm/yyyy"
         });
         M.Datepicker.init(this.$refs.datepickerEnd, {
-            format: "yyyy-mm-dd"
+            format: "dd/mm/yyyy"
         });
     },
     methods: {
