@@ -79,6 +79,7 @@ function loadData(data) {
     data.sort(function (a, b) {
         return a.CODICE_LCL - b.CODICE_LCL;
     });
+
     data.forEach(row => {
         var element = document.createElement("li");
         element.classList.add("w3-display-container");
@@ -96,8 +97,31 @@ function loadData(data) {
         document.querySelector("#addListLCL").appendChild(element);
     });
 
+    rangeDate(data);
+
     document.querySelector("#loadFile").style.display = "none";
     document.querySelector("#selectLCL").style.display = "block";
+}
+
+function rangeDate(data) {
+    let dataS = data.filter(lcl => lcl.SELECT == true);
+    let dataF = data.filter(lcl => lcl.SELECT == true);
+
+    let temp = dataS.sort((a,b) => new Date(a.DATA_INIZIO_LCL) - new Date(b.DATA_INIZIO_LCL))
+    document.querySelector('#d_s').value = dateToYMD(new Date(temp[0].DATA_INIZIO_LCL));
+
+    temp = dataF.sort((a,b) => b.DATA_FINE_LCL - a.DATA_FINE_LCL)
+    document.querySelector('#d_f').value = dateToYMD(new Date(temp[0].DATA_FINE_LCL));
+    
+    /*data.sort(function (a, b) {
+        return a.DATA_INIZIO_LCL - b.DATA_INIZIO_LCL;
+    });
+    document.querySelector('#d_s').value = dateToYMD(new Date(data[0].DATA_INIZIO_LCL));
+    data.sort(function (a, b) {
+        return a.DATA_FINE_LCL - b.DATA_FINE_LCL;
+    });
+    document.querySelector('#d_f').value = dateToYMD(new Date(data[0].DATA_FINE_LCL));
+    */
 }
 
 /////////////////
@@ -107,6 +131,7 @@ window.options = function () {
     divObject.classList.add("w3-light-grey");
     divObject.classList.add("w3-card-4");
     divObject.classList.add("w3-center");
+    divObject.style.cssText = 'border-radius: 15px; padding: 5px 0;';
     divObject.innerHTML = '<h2>' + "€/Punto" + '</h2><table id="lclPerCent" class="w3-table-all w3-hoverable w3-margin-bottom w3-border-0"><thead><tr class="w3-blue"><th>Contratto</th><th class="w3-center">MF-TF</th><th class="w3-center">TF15-30</th><th class="w3-center">M2</th></tr></thead><!-- Injection JavaScript --></table>';
     
     CalcTable.EUP.forEach(Contratto => {
@@ -243,10 +268,7 @@ function closeModaLCL() {
 }
 
 let saveResultBeneficit;
-function calcBeneficit(beneficit = true, smartest = false) {
-    if (beneficit == false && smartest == false) {
-        return;
-    }
+function calcBeneficit() {
     let LCLs = [];
 
     saveListLCL.forEach(rowLCL => {
@@ -421,7 +443,7 @@ function calcBeneficit(beneficit = true, smartest = false) {
             divObject.innerHTML = '<h2>' + rowLCL.CODICE_LCL + '<i class="w3-small"> (' + cnLabel + ', ' + typeLCL + ')</i></h2><table id="lclPerCent" class="w3-table-all w3-hoverable w3-margin-bottom"></table>';
 
             //Beneficit
-            if (beneficit == true) {
+            if (document.querySelector("#r_Prm").checked == true) {
                 var rowBN = document.createElement("thead");
                 rowBN.innerHTML = '<tr class="w3-green"><th style="width: 40%;">Causale</th><th class="w3-center">Contatori</th><th class="w3-center">Punti</th><th class="w3-center">€/Punto</th><th class="w3-center">€</th></tr><!-- Injection JavaScript -->';
                 divObject.querySelector("#lclPerCent").appendChild(rowBN);
@@ -453,7 +475,7 @@ function calcBeneficit(beneficit = true, smartest = false) {
             }
 
             //Smartest Head
-            if (smartest == true) {
+            if (document.querySelector("#r_ST").checked == true) {
                 var rowST = document.createElement("thead");
                 rowST.innerHTML = "<tr class='w3-blue'><td>Operatore</td ><td class='w3-center'>Totale RCMI</td><td class='w3-center'>Annullati</td><td class='w3-center'>Errore di Connessione</td><td class='w3-center'>Eseguiti</td></tr>";
                 divObject.querySelector("#lclPerCent").appendChild(rowST);
