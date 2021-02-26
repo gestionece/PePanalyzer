@@ -77,11 +77,11 @@
       <div class="w3-col l2 m1">
         <p></p>
       </div>
-      <div class="w3-col l8 m10" style="background-color: white; border-radius: 15px;">
+      <div class="w3-col l8 m10 w3-round-xlarge" style="background-color: white;">
         <div class="w3-row">
           <div class="w3-col l5 m5 w3-container w3-margin-bottom">
             <p><i>Filtri:</i></p>
-            <div class="w3-card-4 w3-container" style="border-radius: 15px;">
+            <div class="w3-card-4 w3-container w3-round-xlarge">
               <div class="w3-row w3-margin-top">
                 <label class="w3-text-blue"><b>Data inizio</b></label>
                 <input class="w3-input w3-border w3-card-4" id="d_s" type="date">
@@ -90,18 +90,18 @@
                 <label class="w3-text-blue"><b>Data fine</b></label>
                 <input class="w3-input w3-border w3-card-4" id="d_f" type="date">
               </div>
-              <div class="w3-row">
+              <div class="w3-row w3-card-4 w3-margin-top w3-margin-bottom w3-padding w3-round-xlarge">
                 <p>
                 <input class="w3-radio" name="selOpt" id="r_Prm" type="radio">
-                <label>Premi</label></p>
+                <label class="w3-small">Premi</label></p>
                 <p>
                 <input class="w3-radio" name="selOpt" id="r_Prc" type="radio" disabled>
-                <label>Percentuali</label></p>
+                <label class="w3-small">Percentuali</label></p>
                 <p>
                 <input class="w3-radio" name="selOpt" id="r_ST" type="radio" checked>
-                <label>Smart Test</label></p>
+                <label class="w3-small">Smart Test</label></p>
               </div>
-              <div class="w3-row w3-margin-bottom"> <!--<button class="w3-button w3-block w3-light-grey" onclick="options();">Options</button>-->
+              <div class="w3-row w3-margin-bottom w3-card-4"> <!--<button class="w3-button w3-block w3-light-grey" onclick="options();">Options</button>-->
                 <div class="w3-col s4 m12 l5">
                   <button class="w3-button w3-block w3-dark-grey" onclick="backLCList();">Indietro</button>
                 </div>
@@ -114,7 +114,7 @@
           <div class="w3-col l7 m7 w3-container">
             <p><i>Elimina LCL, premendo su "x":</i></p>
             <div class="w3-col w3-margin-bottom">
-              <ul id="addListLCL" class="w3-ul w3-card-4" style="border-radius: 15px;">
+              <ul id="addListLCL" class="w3-ul w3-card-4 w3-round-xlarge">
                 <!-- Injection JavaScript -->
               </ul>
             </div>
@@ -122,7 +122,7 @@
               <i>Agiungi il contratto, premendosu "+":</i>
             </p>
             <div class="w3-col w3-margin-bottom">
-              <ul id="removeListLCL" class="w3-ul w3-card-4" style="border-radius: 15px;">
+              <ul id="removeListLCL" class="w3-ul w3-card-4 w3-round-xlarge">
                 <!-- Injection JavaScript -->
               </ul>
             </div>
@@ -178,7 +178,7 @@
       <div class="w3-col l3 m1">
         <p></p>
       </div>
-      <div class="w3-col l6 m10" style="border-radius: 15px; padding: 5px 0;">
+      <div class="w3-col l6 m10 w3-round-xlarge">
         <div id="optionsList" class="w3-col w3-margin-bottom">
           <!-- Injection JavaScript -->
         </div>
