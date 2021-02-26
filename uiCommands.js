@@ -18,6 +18,8 @@ window.changeCN = function (element) {
         }
       }
     }
+    
+    rangeDate(saveListLCL)
 
     if (document.querySelector('#removeListLCL').children.length > 0) {
       document.querySelector("#txtRemoveList").style.display = "block";
