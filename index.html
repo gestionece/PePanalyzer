@@ -24,25 +24,42 @@
       height: 100vh;
       background-size: cover;
     }*/
+
+    .bg {
+      background: url(https://picsum.photos/1920/1080?random&blur=1) no-repeat center fixed;
+      background-size: cover;
+
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .blur {
+      background-color: rgb(0 0 0 / 50%);
+      border-radius: 15px;
+      padding: 10px;
+      margin-top: 50px;
+      color: white;
+    }
   </style>
 
   <script src="/resource/js/litepicker.js"></script>
-  <link rel="stylesheet" href="/resource/css/litepicker.css"/>
+  <link rel="stylesheet" href="/resource/css/litepicker.css" />
 </head>
 
 <body>
 
-  <div id="loadFile" class="w3-container" style="display: block;">
+  <div id="loadFile" class="w3-container bg" style="display: block;">
     <div class="w3-row w3-margin-top w3-margin-bottom">
       <div class="w3-col m2">
         <p></p>
       </div>
-      <div class="w3-col m8">
+      <div class="w3-col m8 blur w3-card">
         <h1>Ehi,</h1>
         <h2 id="pharStartPage">ecco un sito che ti aiuta a capire il file Premi/Penali</h2>
         <p id="txtStartPage"><i>Ti basta selezionare il file o premere "Load".<br>
-           Dopo aver caricato il file premi sul tasto Smartest per avere il riapilogo e la percentuale del smartest di tutti operatori per ogni LCL.<br>
-           Opure premi su Next per avere il riapilogo dei premi per ogni LCL</i></p>
+            Dopo aver caricato il file premi sul tasto Smartest per avere il riapilogo e la percentuale del smartest di
+            tutti operatori per ogni LCL.<br>
+            Opure premi su Next per avere il riapilogo dei premi per ogni LCL</i></p>
         <div class="w3-col m12 w3-border w3-round-small w3-margin-top w3-margin-bottom">
           <input
             style="margin: 5px 0px 0px 5px; width: calc(100% - 80px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
@@ -62,24 +79,56 @@
         <p></p>
       </div>
       <div class="w3-col l6 m10">
-        <h2>LCL</h2>
-        <p><i>Elimina LCL, premendo su "x":</i></p>
-        <div class="w3-col w3-margin-bottom">
-          <ul id="addListLCL" class="w3-ul w3-card-4">
-            <!-- Injection JavaScript -->
-          </ul>
+        <div class="w3-row">
+          <div class="w3-col l5 m12 w3-container">
+            <p><i>Filtri:</i></p>
+            <div class="w3-card-4 w3-container">
+              <div class="w3-row">
+                <label class="w3-text-blue"><b>Data inizioo</b></label>
+                <input class="w3-input w3-border w3-card-4" type="date">
+              </div>
+              <div class="w3-row">
+                <label class="w3-text-blue"><b>Data fine</b></label>
+                <input class="w3-input w3-border w3-card-4" type="date">
+              </div>
+              <div class="w3-row">
+                <p>
+                <input class="w3-check w3-card-4" type="checkbox" checked="checked">
+                <label>Premi</label></p>
+                <p>
+                <input class="w3-check w3-card-4" type="checkbox" checked="checked">
+                <label>Percentuali</label></p>
+                <p>
+                <input class="w3-check w3-card-4" type="checkbox" checked="checked">
+                <label>Smart Test</label></p>
+              </div>
+            </div>
+          </div>
+          <div class="w3-col l7 m12 w3-container">
+            <p><i>Elimina LCL, premendo su "x":</i></p>
+            <div class="w3-col w3-margin-bottom">
+              <ul id="addListLCL" class="w3-ul w3-card-4">
+                <!-- Injection JavaScript -->
+              </ul>
+            </div>
+            <p id="txtRemoveList" class="w3-margin-top" style="display: none;">
+              <i>Agiungi il contratto, premendosu "+":</i>
+            </p>
+            <div class="w3-col w3-margin-bottom">
+              <ul id="removeListLCL" class="w3-ul w3-card-4">
+                <!-- Injection JavaScript -->
+              </ul>
+            </div>
+          </div>
         </div>
-        <p id="txtRemoveList" class="w3-margin-top" style="display: none;"><i>Agiungi il contratto, premendosu
-            "+":</i></p>
-        <div class="w3-col w3-margin-bottom">
-          <ul id="removeListLCL" class="w3-ul w3-card-4">
-            <!-- Injection JavaScript -->
-          </ul>
-        </div>
-        <div class="w3-bar"><button class="w3-button w3-left w3-dark-grey" onclick="backLCList();">&laquo; Back</button>
-            <button class="w3-button w3-right w3-green" onclick="calcBeneficit(true, false);">Next &raquo;</button>
+        <div class="w3-row">
+          <div class="w3-bar">
+            <button class="w3-button w3-left w3-dark-grey" onclick="backLCList();">&laquo;
+              Back</button>
+            <button class="w3-button w3-right w3-green " onclick="calcBeneficit(true, false);">Next &raquo;</button>
             <button class="w3-button w3-right w3-blue" onclick="calcBeneficit(false, true);">SmarTest</button>
             <button class="w3-button w3-right w3-light-grey" onclick="options();">Options</button>
+          </div>
         </div>
       </div>
       <div class="w3-col l3 m1">
@@ -111,7 +160,8 @@
           </div>
           <div class="w3-section">
             <label><b>Data</b></label>
-            <input id="dateLCL" class="w3-input w3-border w3-margin-bottom" type="date" value="1998-08-08" required disabled>
+            <input id="dateLCL" class="w3-input w3-border w3-margin-bottom" type="date" value="1998-08-08" required
+              disabled>
           </div>
         </div>
 
@@ -159,18 +209,18 @@
           </h2>
           <div class="w3-section">
             <label><b>Euro/Punto MF-TF</b></label>
-            <input id="epMF" class="w3-input w3-border w3-margin-bottom" type="number" placeholder="Euro"
-              step="0.01" min="0.01" max="10" required>
+            <input id="epMF" class="w3-input w3-border w3-margin-bottom" type="number" placeholder="Euro" step="0.01"
+              min="0.01" max="10" required>
           </div>
           <div class="w3-section">
             <label><b>Euro/Punto TF15/30</b></label>
-            <input id="epTF" class="w3-input w3-border w3-margin-bottom" type="number" placeholder="Euro"
-              step="0.01" min="0.01" max="10" required>
+            <input id="epTF" class="w3-input w3-border w3-margin-bottom" type="number" placeholder="Euro" step="0.01"
+              min="0.01" max="10" required>
           </div>
           <div class="w3-section">
             <label><b>Euro/Punto M2</b></label>
-            <input id="epM2" class="w3-input w3-border w3-margin-bottom" type="number" placeholder="Euro"
-              step="0.01" min="0.01" max="10" required>
+            <input id="epM2" class="w3-input w3-border w3-margin-bottom" type="number" placeholder="Euro" step="0.01"
+              min="0.01" max="10" required>
           </div>
         </div>
 
