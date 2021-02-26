@@ -98,10 +98,10 @@ let CalcTable = {
         ANN: "Annullati",
 
         MF: "MF-TF",
-        TF: "TF-15/30",
+        TF: "15/30",
         M2: "M2",
         MF_R: "MF-TF Ripassi",
-        TF_R: "TF-15/30 Ripassi",
+        TF_R: "15/30 Ripassi",
 
         CN: "Contratto",
         LCL: "LCL",
