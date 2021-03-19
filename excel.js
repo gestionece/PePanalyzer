@@ -282,9 +282,6 @@ function calcBeneficit() {
     let DATA_INIZIO = new Date (document.querySelector("#d_s").value);
     let DATA_FINE = new Date (document.querySelector("#d_f").value);
 
-    console.log(DATA_INIZIO);
-    console.log(DATA_FINE);
-
     saveListLCL.forEach(rowLCL => {
         if (rowLCL.SELECT == true) {
 
