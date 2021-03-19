@@ -268,9 +268,22 @@ function closeModaLCL() {
     elementID.removeEventListener('click', saveCalcTableLCL);
 }
 
+function dateToYMD(date) {
+    var d = date.getDate();
+    var m = date.getMonth() + 1; //Month from 0 to 11
+    var y = date.getFullYear();
+    return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+}
+
 let saveResultBeneficit;
 function calcBeneficit() {
     let LCLs = [];
+
+    let DATA_INIZIO = new Date (document.querySelector("#d_s").value);
+    let DATA_FINE = new Date (document.querySelector("#d_f").value);
+
+    console.log(DATA_INIZIO);
+    console.log(DATA_FINE);
 
     saveListLCL.forEach(rowLCL => {
         if (rowLCL.SELECT == true) {
@@ -319,7 +332,7 @@ function calcBeneficit() {
                 if (rowLCL.CODICE_LCL == row.CODICE_LCL) {
                     LCL.TOT += 1;
                     if (row.STATO_RDA == "ANN") {
-                        if (row.MOTIVO_ANNULLAMENTO == "Annullata per insuccesso") {
+                        if (row.MOTIVO_ANNULLAMENTO == "Annullata per insuccesso" && (DATA_INIZIO < new Date (row.DATA_INSUCCESSO) && new Date (row.DATA_INSUCCESSO) < DATA_FINE)) {
                             LCL.AV += 1;
 
                             if (LCL.Operatori[row.ESECUTORE] == undefined) {
@@ -336,10 +349,10 @@ function calcBeneficit() {
                                 };
                             }
                             LCL.Operatori[row.ESECUTORE].AV += 1;
-                        } else {
+                        } else if (DATA_INIZIO < new Date (row.DATA_ANNULLAMENTO) && new Date (row.DATA_ANNULLAMENTO) < DATA_FINE) {
                             LCL.ANN += 1;
                         }
-                    } else if (row.STATO_RDA == "CON") {
+                    } else if (row.STATO_RDA == "CON" && (DATA_INIZIO < new Date (row.DATA_INSTALLAZIONE) && new Date (row.DATA_INSTALLAZIONE) < DATA_FINE)) {
                         LCL.CON += 1;
 
                         //console.log(row.ESECUTORE.replace(/[^A-Z0-9]+/ig, ""));  errore spazio indisiderato "AE100492 "
