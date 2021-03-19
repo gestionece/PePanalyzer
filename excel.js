@@ -279,8 +279,8 @@ let saveResultBeneficit;
 function calcBeneficit() {
     let LCLs = [];
 
-    let DATA_INIZIO = new Date (document.querySelector("#d_s").value);
-    let DATA_FINE = new Date (document.querySelector("#d_f").value);
+    let DATA_INIZIO = new Date(new Date (document.querySelector("#d_s").value) - (60 * 60 * 1000));
+    let DATA_FINE = new Date(new Date (document.querySelector("#d_f").value) - (60 * 60 * 1000));
 
     saveListLCL.forEach(rowLCL => {
         if (rowLCL.SELECT == true) {
@@ -351,6 +351,10 @@ function calcBeneficit() {
                         }
                     } else if (row.STATO_RDA == "CON" && (DATA_INIZIO <= new Date (row.DATA_INSTALLAZIONE) && new Date (row.DATA_INSTALLAZIONE) <= DATA_FINE)) {
                         LCL.CON += 1;
+
+                        console.log(DATA_INIZIO);
+                        //console.log(DATA_FINE);
+                        console.log(row.DATA_INSTALLAZIONE);
 
                         //console.log(row.ESECUTORE.replace(/[^A-Z0-9]+/ig, ""));  errore spazio indisiderato "AE100492 "
                         //Salvare in qualche modo eneltel dei contatori eseguiti senza operatore
