@@ -329,7 +329,7 @@ function calcBeneficit() {
                 if (rowLCL.CODICE_LCL == row.CODICE_LCL) {
                     LCL.TOT += 1;
                     if (row.STATO_RDA == "ANN") {
-                        if (row.MOTIVO_ANNULLAMENTO == "Annullata per insuccesso" && (DATA_INIZIO < new Date (row.DATA_INSUCCESSO) && new Date (row.DATA_INSUCCESSO) < DATA_FINE)) {
+                        if (row.MOTIVO_ANNULLAMENTO == "Annullata per insuccesso" && (DATA_INIZIO <= new Date (row.DATA_INSUCCESSO) && new Date (row.DATA_INSUCCESSO) <= DATA_FINE)) {
                             LCL.AV += 1;
 
                             if (LCL.Operatori[row.ESECUTORE] == undefined) {
@@ -346,10 +346,10 @@ function calcBeneficit() {
                                 };
                             }
                             LCL.Operatori[row.ESECUTORE].AV += 1;
-                        } else if (DATA_INIZIO < new Date (row.DATA_ANNULLAMENTO) && new Date (row.DATA_ANNULLAMENTO) < DATA_FINE) {
+                        } else if (DATA_INIZIO <= new Date (row.DATA_ANNULLAMENTO) && new Date (row.DATA_ANNULLAMENTO) <= DATA_FINE) {
                             LCL.ANN += 1;
                         }
-                    } else if (row.STATO_RDA == "CON" && (DATA_INIZIO < new Date (row.DATA_INSTALLAZIONE) && new Date (row.DATA_INSTALLAZIONE) < DATA_FINE)) {
+                    } else if (row.STATO_RDA == "CON" && (DATA_INIZIO <= new Date (row.DATA_INSTALLAZIONE) && new Date (row.DATA_INSTALLAZIONE) <= DATA_FINE)) {
                         LCL.CON += 1;
 
                         //console.log(row.ESECUTORE.replace(/[^A-Z0-9]+/ig, ""));  errore spazio indisiderato "AE100492 "
