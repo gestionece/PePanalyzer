@@ -93,7 +93,7 @@ let CalcTable = {
         GG3: "Premio Accelerazione 90<>120 giorni",
         INT: "Premio interni",
         INTR: "Premio interni ripassi(no <30 giorni)",
-        AV: "Acesso a Vuoto",
+        AV: "Accesso a Vuoto",
         TOT: "Totali",
         ANN: "Annullati",
 
