@@ -599,7 +599,11 @@ function calcBeneficit() {
             divObject.classList.add("w3-light-grey");
             divObject.classList.add("w3-card-4");
     
-            divObject.innerHTML = '<h2>' + convertDate(sorted[i][0]) + '</h2><table id="lclPerCent" class="w3-table-all w3-hoverable w3-margin-bottom"></table>';
+            var days = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
+            var d = new Date(sorted[i][0]);
+            var dayName = days[d.getDay()];
+
+            divObject.innerHTML = '<h2>' + "<i class='w3-medium'>(" + dayName + ")</i>" + convertDate(sorted[i][0]) +'</h2><table id="lclPerCent" class="w3-table-all w3-hoverable w3-margin-bottom"></table>';
 
             var rowST = document.createElement("thead");
             rowST.innerHTML = "<tr class='w3-blue'><td>Operatore</td><td class='w3-center'>M2</td><td class='w3-center'>TF15_30</td><td class='w3-center'>TF15_30_R</td><td class='w3-center'>MF_INT</td><td class='w3-center'>MF</td><td class='w3-center'>ST</td></tr>";
@@ -607,19 +611,12 @@ function calcBeneficit() {
             Object.keys(sorted[i][1]).forEach(op => {
                     rowST = document.createElement("tr");
 
-                    /*
-                                                    M2: 0,
-                                TF15_30: 0,
-                                TF15_30_R: 0,
-                                MF_INT: 0,
-                                MF: 0,
-                                MF_R: 0,
-                                ST: 0,
-                                TOT: 0,
-                                */
+                    var labelName = op;
+                    if (CalcTable.Label[op] != undefined) {
+                        labelName = CalcTable.Label[op] + "<i class='w3-tiny'>(" + op + ")</i>";
+                    }
 
-
-                    rowST.innerHTML = "<td>" + op + "</td><td class='w3-center'>" + sorted[i][1][op].M2 + "</td><td class='w3-center'>" + sorted[i][1][op].TF15_30 + "</td><td class='w3-center'>" + sorted[i][1][op].TF15_30_R + "</td ><td class='w3-center'>" + sorted[i][1][op].MF_INT + "</td ><td class='w3-center'>" + sorted[i][1][op].MF + "</td ><td class='w3-center'>" + sorted[i][1][op].ST + "</td >";
+                    rowST.innerHTML = "<td>" + labelName + "</td><td class='w3-center'>" + sorted[i][1][op].M2 + "</td><td class='w3-center'>" + sorted[i][1][op].TF15_30 + "</td><td class='w3-center'>" + sorted[i][1][op].TF15_30_R + "</td ><td class='w3-center'>" + sorted[i][1][op].MF_INT + "</td ><td class='w3-center'>" + sorted[i][1][op].MF + "</td ><td class='w3-center'>" + sorted[i][1][op].ST + "</td >";
                     divObject.querySelector("#lclPerCent").appendChild(rowST);
             });
 
