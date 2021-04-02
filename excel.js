@@ -606,7 +606,7 @@ function calcBeneficit() {
             divObject.innerHTML = '<h2>' + "<i class='w3-medium'>(" + dayName + ")</i>" + convertDate(sorted[i][0]) +'</h2><table id="lclPerCent" class="w3-table-all w3-hoverable w3-margin-bottom"></table>';
 
             var rowST = document.createElement("thead");
-            rowST.innerHTML = "<tr class='w3-blue'><td>Operatore</td><td class='w3-center'>M2</td><td class='w3-center'>TF15_30</td><td class='w3-center'>TF15_30_R</td><td class='w3-center'>MF_INT</td><td class='w3-center'>MF</td><td class='w3-center'>ST</td></tr>";
+            rowST.innerHTML = "<tr class='w3-blue'><td>Operatore</td><td class='w3-center'>M2</td><td class='w3-center'>TF15_30</td><td class='w3-center'>TF15_30_R</td><td class='w3-center'>MF_R</td><td class='w3-center'>MF_INT</td><td class='w3-center'>MF</td><td class='w3-center'>ST</td></tr>";
             divObject.querySelector("#lclPerCent").appendChild(rowST);
             Object.keys(sorted[i][1]).forEach(op => {
                     rowST = document.createElement("tr");
@@ -616,7 +616,7 @@ function calcBeneficit() {
                         labelName = CalcTable.Label[op] + "<i class='w3-tiny'>(" + op + ")</i>";
                     }
 
-                    rowST.innerHTML = "<td>" + labelName + "</td><td class='w3-center'>" + sorted[i][1][op].M2 + "</td><td class='w3-center'>" + sorted[i][1][op].TF15_30 + "</td><td class='w3-center'>" + sorted[i][1][op].TF15_30_R + "</td ><td class='w3-center'>" + sorted[i][1][op].MF_INT + "</td ><td class='w3-center'>" + sorted[i][1][op].MF + "</td ><td class='w3-center'>" + sorted[i][1][op].ST + "</td >";
+                    rowST.innerHTML = "<td>" + labelName + "</td><td class='w3-center'>" + sorted[i][1][op].M2 + "</td><td class='w3-center'>" + sorted[i][1][op].TF15_30 + "</td><td class='w3-center'>" + sorted[i][1][op].TF15_30_R + "</td ><td class='w3-center'>" + sorted[i][1][op].MF_R + "</td ><td class='w3-center'>" + sorted[i][1][op].MF_INT + "</td ><td class='w3-center'>" + sorted[i][1][op].MF + "</td ><td class='w3-center'>" + sorted[i][1][op].ST + "</td >";
                     divObject.querySelector("#lclPerCent").appendChild(rowST);
             });
 
