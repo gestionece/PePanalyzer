@@ -566,7 +566,7 @@ function calcBeneficit() {
             }
 
             if (document.querySelector("#r_PrmOpr").checked == false) {
-                ocument.querySelector("#listCnLCL").appendChild(divObject);
+                document.querySelector("#listCnLCL").appendChild(divObject);
             }
         }
     });
