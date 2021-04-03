@@ -702,7 +702,7 @@ function calcBeneficit() {
                     labelName = CalcTable.Label[op] + "<i class='w3-tiny'>(" + op + ")</i>";
                 }
 
-                rowST.innerHTML = "<td>" + labelName + "</td><td class='w3-center'>" + PremioOs.TotOP[op].M2 + "</td><td class='w3-center'>" + PremioOs.TotOP[op].TF15_30 + "</td><td class='w3-center'>" + PremioOs.TotOP[op].TF15_30_R + "</td ><td class='w3-center'>" + PremioOs.TotOP[op].MF_R + "</td ><td class='w3-center'>" + PremioOs.TotOP[op].MF_INT + "</td ><td class='w3-center'>" + PremioOs.TotOP[op].MF + "</td ><td class='w3-center'>" + PremioOs.TotOP[op].ST + "</td ><td class='w3-center'>" + PremioOs.TotOP[op].TOT + "</td >";
+                rowST.innerHTML = "<td>" + labelName + "</td><td class='w3-center'>" + PremioOs.TotOP[op].M2 + "</td><td class='w3-center'>" + PremioOs.TotOP[op].TF15_30 + "</td><td class='w3-center'>" + PremioOs.TotOP[op].TF15_30_R + "</td ><td class='w3-center'>" + PremioOs.TotOP[op].MF_R + "</td ><td class='w3-center'>" + PremioOs.TotOP[op].MF_INT + "</td ><td class='w3-center'>" + PremioOs.TotOP[op].MF + "</td ><td class='w3-center'>" + PremioOs.TotOP[op].ST + "</td ><td class='w3-center'><b>" + PremioOs.TotOP[op].TOT + "</b></td >";
                 divObject.querySelector("#lclPerCent").appendChild(rowST);
             });
 
