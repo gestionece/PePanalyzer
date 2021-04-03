@@ -1,13 +1,44 @@
 let selectedFile;
 //console.log(window.XLSX);
 document.getElementById('input').addEventListener("change", (event) => {
-    selectedFile = event.target.files[0];
+    selectedFile = event.target.files;
 })
 
-let saveLoadFile;
+let saveLoadFile = [];
 document.getElementById('button').addEventListener("click", () => {
     let data = [{}];
     XLSX.utils.json_to_sheet(data, 'out.xlsx');
+
+    saveLoadFile = [];
+
+    if (selectedFile) {
+        let fileReader = new FileReader();
+        let readFile = (index) => {
+            if (index >= selectedFile.length) {
+                getLCL(saveLoadFile);
+                return;
+            }
+
+            var file = selectedFile[index];
+
+            fileReader.onload = (event) => {
+                let data = event.target.result;
+                let workbook = XLSX.read(data, { type: "binary", cellDates: true, dateNF: 'dd/mm/yyyy' });
+                workbook.SheetNames.forEach(sheet => {
+                    let rowObject = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
+
+                    saveLoadFile = saveLoadFile.concat(rowObject)
+                    readFile(index + 1);
+                });
+            }
+
+            fileReader.readAsBinaryString(file);
+        }
+        readFile(0);
+    }
+
+
+    /*
     if (selectedFile) {
         let fileReader = new FileReader();
         fileReader.readAsBinaryString(selectedFile);
@@ -21,7 +52,7 @@ document.getElementById('button').addEventListener("click", () => {
                 getLCL(rowObject);
             });
         }
-    }
+    }*/
 });
 
 let saveListLCL = [];
@@ -271,8 +302,8 @@ function dateToYMD(date) {
 function convertDate(inputFormat) {
     function pad(s) { return (s < 10) ? '0' + s : s; }
     var d = new Date(inputFormat)
-    return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/')
-  }
+    return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/')
+}
 
 let saveResultBeneficit;
 function calcBeneficit() {
@@ -374,28 +405,28 @@ function calcBeneficit() {
                         }
 
                         if (rowLCL.TIPO_LCL == "M2") {
-                            PremioOs[row.DATA_INSTALLAZIONE][row.ESECUTORE].M2 +=1;
+                            PremioOs[row.DATA_INSTALLAZIONE][row.ESECUTORE].M2 += 1;
                         } else if (rowLCL.TIPO_LCL == "TF") {
-                            PremioOs[row.DATA_INSTALLAZIONE][row.ESECUTORE].TF15_30 +=1;
+                            PremioOs[row.DATA_INSTALLAZIONE][row.ESECUTORE].TF15_30 += 1;
                         } else if (rowLCL.TIPO_LCL == "TF_R") {
-                            PremioOs[row.DATA_INSTALLAZIONE][row.ESECUTORE].TF15_30_R +=1;
+                            PremioOs[row.DATA_INSTALLAZIONE][row.ESECUTORE].TF15_30_R += 1;
                         } else if (rowLCL.TIPO_LCL == "MF") {
                             if (row.POSIZIONE_MIS_POST_SOST == "1 - Nell'appartamento" && new Date(row.DATA_INSTALLAZIONE) >= new Date("8/11/2020")) {//dopo l’11/8/20 – data in cui è stata accettata la comunicazione che la introduceva
-                                PremioOs[row.DATA_INSTALLAZIONE][row.ESECUTORE].MF_INT +=1;
+                                PremioOs[row.DATA_INSTALLAZIONE][row.ESECUTORE].MF_INT += 1;
                             } else {
-                                PremioOs[row.DATA_INSTALLAZIONE][row.ESECUTORE].MF +=1;
+                                PremioOs[row.DATA_INSTALLAZIONE][row.ESECUTORE].MF += 1;
                             }
                         } else if (rowLCL.TIPO_LCL == "MF_R") {
-                            PremioOs[row.DATA_INSTALLAZIONE][row.ESECUTORE].MF_R +=1;
+                            PremioOs[row.DATA_INSTALLAZIONE][row.ESECUTORE].MF_R += 1;
                         }
 
                         if (row.ESITO_SMARTEST == "Non eseguibile per Errore di connessione con la sonda BIRD" || row.ESITO_SMARTEST == "Non eseguibile per Errore di connessione con la sonda ARES") {
-                            PremioOs[row.DATA_INSTALLAZIONE][row.ESECUTORE].ST +=1;
+                            PremioOs[row.DATA_INSTALLAZIONE][row.ESECUTORE].ST += 1;
                         } else if (row.ESITO_SMARTEST == "Annullato") {
-                            PremioOs[row.DATA_INSTALLAZIONE][row.ESECUTORE].ST +=1;
+                            PremioOs[row.DATA_INSTALLAZIONE][row.ESECUTORE].ST += 1;
                         }
 
-                        PremioOs[row.DATA_INSTALLAZIONE][row.ESECUTORE].TOT +=1;
+                        PremioOs[row.DATA_INSTALLAZIONE][row.ESECUTORE].TOT += 1;
 
                         //console.log(row.ESECUTORE.replace(/[^A-Z0-9]+/ig, ""));  errore spazio indisiderato "AE100492 "
                         //Salvare in qualche modo eneltel dei contatori eseguiti senza operatore
@@ -483,24 +514,24 @@ function calcBeneficit() {
                 divObject.setAttribute("style", "margin-bottom: 50px;");
                 divObject.classList.add("w3-light-grey");
                 divObject.classList.add("w3-card-4");
-    
+
                 var typeLCL = CalcTable.Label[rowLCL.TIPO_LCL];
-    
+
                 var eurPuntoCN = 0;
-    
+
                 var cnLabel = rowLCL.CODICE_CONTRATTO;
-    
+
                 CalcTable.EUP.forEach(Contratto => {
                     if (rowLCL.CODICE_CONTRATTO == Contratto.key) {
                         cnLabel = Contratto.label;
                         eurPuntoCN = Contratto[(rowLCL.TIPO_LCL).substring(0, 2)]
                     }
                 });
-    
+
                 divObject.innerHTML = '<h2>' + rowLCL.CODICE_LCL + '<i class="w3-small"> (' + cnLabel + ', ' + typeLCL + ')</i></h2><table id="lclPerCent" class="w3-table-all w3-hoverable w3-margin-bottom"></table>';
-    
+
             }
-            
+
             //Beneficit
             if (document.querySelector("#r_Prm").checked == true) {
                 var rowBN = document.createElement("thead");
@@ -576,7 +607,7 @@ function calcBeneficit() {
 
     //Premio OP Head
     if (document.querySelector("#r_PrmOpr").checked == true) {
-          let sorted = Object.entries(PremioOs).sort(function (a, b) {
+        let sorted = Object.entries(PremioOs).sort(function (a, b) {
             var A = new Date(a[0]).getTime();
             var B = new Date(b[0]).getTime();
             if (A < B) {
@@ -590,34 +621,34 @@ function calcBeneficit() {
             return 0;
         });
 
-        console.log(sorted);
-        
+        //console.log(sorted);
+
         for (let i = 0; i < sorted.length; i++) {
             var divObject = document.createElement('div');
             divObject.classList.add("w3-containery");
             divObject.setAttribute("style", "margin-bottom: 50px;");
             divObject.classList.add("w3-light-grey");
             divObject.classList.add("w3-card-4");
-    
+
             var days = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
             var d = new Date(sorted[i][0]);
             var dayName = days[d.getDay()];
 
-            divObject.innerHTML = '<h2>' + "<i class='w3-medium'>(" + dayName + ")</i>" + convertDate(sorted[i][0]) +'</h2><table id="lclPerCent" class="w3-table-all w3-hoverable w3-margin-bottom"></table>';
+            divObject.innerHTML = '<h2>' + "<i class='w3-medium'>(" + dayName + ")</i>" + convertDate(sorted[i][0]) + '</h2><table id="lclPerCent" class="w3-table-all w3-hoverable w3-margin-bottom"></table>';
 
             var rowST = document.createElement("thead");
             rowST.innerHTML = "<tr class='w3-blue'><td>Operatore</td><td class='w3-center'>M2</td><td class='w3-center'>TF15_30</td><td class='w3-center'>TF15_30_R</td><td class='w3-center'>MF_R</td><td class='w3-center'>MF_INT</td><td class='w3-center'>MF</td><td class='w3-center'>ST</td></tr>";
             divObject.querySelector("#lclPerCent").appendChild(rowST);
             Object.keys(sorted[i][1]).forEach(op => {
-                    rowST = document.createElement("tr");
+                rowST = document.createElement("tr");
 
-                    var labelName = op;
-                    if (CalcTable.Label[op] != undefined) {
-                        labelName = CalcTable.Label[op] + "<i class='w3-tiny'>(" + op + ")</i>";
-                    }
+                var labelName = op;
+                if (CalcTable.Label[op] != undefined) {
+                    labelName = CalcTable.Label[op] + "<i class='w3-tiny'>(" + op + ")</i>";
+                }
 
-                    rowST.innerHTML = "<td>" + labelName + "</td><td class='w3-center'>" + sorted[i][1][op].M2 + "</td><td class='w3-center'>" + sorted[i][1][op].TF15_30 + "</td><td class='w3-center'>" + sorted[i][1][op].TF15_30_R + "</td ><td class='w3-center'>" + sorted[i][1][op].MF_R + "</td ><td class='w3-center'>" + sorted[i][1][op].MF_INT + "</td ><td class='w3-center'>" + sorted[i][1][op].MF + "</td ><td class='w3-center'>" + sorted[i][1][op].ST + "</td >";
-                    divObject.querySelector("#lclPerCent").appendChild(rowST);
+                rowST.innerHTML = "<td>" + labelName + "</td><td class='w3-center'>" + sorted[i][1][op].M2 + "</td><td class='w3-center'>" + sorted[i][1][op].TF15_30 + "</td><td class='w3-center'>" + sorted[i][1][op].TF15_30_R + "</td ><td class='w3-center'>" + sorted[i][1][op].MF_R + "</td ><td class='w3-center'>" + sorted[i][1][op].MF_INT + "</td ><td class='w3-center'>" + sorted[i][1][op].MF + "</td ><td class='w3-center'>" + sorted[i][1][op].ST + "</td >";
+                divObject.querySelector("#lclPerCent").appendChild(rowST);
             });
 
             document.querySelector("#listCnLCL").appendChild(divObject);
@@ -639,24 +670,24 @@ function calcBeneficit() {
                     warningTriangle = '<b><span class="w3-text-orange" title="I dati sono aprosimativi(per la mancanza di calcolo CE precedenti)">&#x26A0;</span></b>';
                 }*/
 
-                /*var labelName = operatore;
-                if (CalcTable.Label[operatore] != undefined) {
-                    labelName = CalcTable.Label[operatore] + "<i class='w3-tiny'>(" + operatore + ")</i>";
-                }
+        /*var labelName = operatore;
+        if (CalcTable.Label[operatore] != undefined) {
+            labelName = CalcTable.Label[operatore] + "<i class='w3-tiny'>(" + operatore + ")</i>";
+        }
 
-                rowST.innerHTML = "<td>" + labelName + "</td ><td class='w3-center'>" + LCL.Operatori[operatore].ST_CON + "</td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Annullato * 100 / LCL.Operatori[operatore].ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Connect * 100 / LCL.Operatori[operatore].ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) * 100 / LCL.Operatori[operatore].ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) + ")</i></td>";
-                divObject.querySelector("#lclPerCent").appendChild(rowST);
-            }
-        });
-        //Smartest Tot
-        var rowST = document.createElement("tr");
-        rowST.classList.add("w3-yellow");
-        rowST.innerHTML = "<td>Totale:</td ><td class='w3-center'>" + LCL.ST_CON + "</td><td class='w3-center'>" + Number(LCL.Smartest.ST_Annullato * 100 / LCL.ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Smartest.ST_Connect * 100 / LCL.ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) * 100 / LCL.ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) + ")</i></td>";
-        divObject.querySelector("#lclPerCent").appendChild(rowST);*/
+        rowST.innerHTML = "<td>" + labelName + "</td ><td class='w3-center'>" + LCL.Operatori[operatore].ST_CON + "</td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Annullato * 100 / LCL.Operatori[operatore].ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Operatori[operatore].ST_Connect * 100 / LCL.Operatori[operatore].ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Operatori[operatore].ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) * 100 / LCL.Operatori[operatore].ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Operatori[operatore].ST_Eseguito + LCL.Operatori[operatore].ST_Carico) + ")</i></td>";
+        divObject.querySelector("#lclPerCent").appendChild(rowST);
+    }
+});
+//Smartest Tot
+var rowST = document.createElement("tr");
+rowST.classList.add("w3-yellow");
+rowST.innerHTML = "<td>Totale:</td ><td class='w3-center'>" + LCL.ST_CON + "</td><td class='w3-center'>" + Number(LCL.Smartest.ST_Annullato * 100 / LCL.ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Annullato + ")</i></td><td class='w3-center'>" + Number(LCL.Smartest.ST_Connect * 100 / LCL.ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + LCL.Smartest.ST_Connect + ")</i></td><td class='w3-center'>" + Number((LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) * 100 / LCL.ST_CON).toFixed(0) + "%<i class='w3-tiny'>(" + (LCL.Smartest.ST_Eseguito + LCL.Smartest.ST_Carico) + ")</i></td>";
+divObject.querySelector("#lclPerCent").appendChild(rowST);*/
     }
 
 
-    console.log(PremioOs);
+    //console.log(PremioOs);
 
     document.querySelector("#selectLCL").style.display = "none";
     document.querySelector("#BeneficitTab").style.display = "block";
