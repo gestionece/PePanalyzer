@@ -391,7 +391,7 @@ function calcBeneficit() {
                         //console.log(row.DATA_INSTALLAZIONE);
 
                         if (PremioOs.TotOP[row.ESECUTORE] == undefined) {
-                            PremioOs.TotOP[row.ESECUTORE] = {         
+                            PremioOs.TotOP[row.ESECUTORE] = {
                                 M2: 0,
                                 TF15_30: 0,
                                 TF15_30_R: 0,
@@ -678,35 +678,34 @@ function calcBeneficit() {
             document.querySelector("#listCnLCL").appendChild(divObject);
         }
 
-    }
+        console.log(PremioOs);
 
+        var divObject = document.createElement('div');
+        divObject.classList.add("w3-containery");
+        divObject.setAttribute("style", "margin-bottom: 50px;");
+        divObject.classList.add("w3-light-grey");
+        divObject.classList.add("w3-card-4");
 
-    console.log(PremioOs);
+        divObject.innerHTML = '<h2>' + "Totale eseguiti" + '</h2><table id="lclPerCent" class="w3-table-all w3-hoverable w3-margin-bottom"></table>';
 
-    var divObject = document.createElement('div');
-            divObject.classList.add("w3-containery");
-            divObject.setAttribute("style", "margin-bottom: 50px;");
-            divObject.classList.add("w3-light-grey");
-            divObject.classList.add("w3-card-4");
+        var rowST = document.createElement("thead");
+        rowST.innerHTML = "<tr class='w3-blue'><td>Operatore</td><td class='w3-center'>M2</td><td class='w3-center'>TF15_30</td><td class='w3-center'>TF15_30_R</td><td class='w3-center'>MF_R</td><td class='w3-center'>MF_INT</td><td class='w3-center'>MF</td><td class='w3-center'>ST</td><td class='w3-center'>TOT</td></tr>";
+        divObject.querySelector("#lclPerCent").appendChild(rowST);
+        Object.keys(PremioOs.TotOP).forEach(op => {
+            rowST = document.createElement("tr");
 
-            divObject.innerHTML = '<h2>' + "Totale eseguiti" + '</h2><table id="lclPerCent" class="w3-table-all w3-hoverable w3-margin-bottom"></table>';
+            var labelName = op;
+            if (CalcTable.Label[op] != undefined) {
+                labelName = CalcTable.Label[op] + "<i class='w3-tiny'>(" + op + ")</i>";
+            }
 
-            var rowST = document.createElement("thead");
-            rowST.innerHTML = "<tr class='w3-blue'><td>Operatore</td><td class='w3-center'>M2</td><td class='w3-center'>TF15_30</td><td class='w3-center'>TF15_30_R</td><td class='w3-center'>MF_R</td><td class='w3-center'>MF_INT</td><td class='w3-center'>MF</td><td class='w3-center'>ST</td><td class='w3-center'>TOT</td></tr>";
+            rowST.innerHTML = "<td>" + labelName + "</td><td class='w3-center'>" + PremioOs.TotOP[op].M2 + "</td><td class='w3-center'>" + PremioOs.TotOP[op].TF15_30 + "</td><td class='w3-center'>" + PremioOs.TotOP[op].TF15_30_R + "</td ><td class='w3-center'>" + PremioOs.TotOP[op].MF_R + "</td ><td class='w3-center'>" + PremioOs.TotOP[op].MF_INT + "</td ><td class='w3-center'>" + PremioOs.TotOP[op].MF + "</td ><td class='w3-center'>" + PremioOs.TotOP[op].ST + "</td ><td class='w3-center'><b>" + PremioOs.TotOP[op].TOT + "</b></td >";
             divObject.querySelector("#lclPerCent").appendChild(rowST);
-            Object.keys(PremioOs.TotOP).forEach(op => {
-                rowST = document.createElement("tr");
+        });
 
-                var labelName = op;
-                if (CalcTable.Label[op] != undefined) {
-                    labelName = CalcTable.Label[op] + "<i class='w3-tiny'>(" + op + ")</i>";
-                }
+        document.querySelector("#listCnLCL").appendChild(divObject);
 
-                rowST.innerHTML = "<td>" + labelName + "</td><td class='w3-center'>" + PremioOs.TotOP[op].M2 + "</td><td class='w3-center'>" + PremioOs.TotOP[op].TF15_30 + "</td><td class='w3-center'>" + PremioOs.TotOP[op].TF15_30_R + "</td ><td class='w3-center'>" + PremioOs.TotOP[op].MF_R + "</td ><td class='w3-center'>" + PremioOs.TotOP[op].MF_INT + "</td ><td class='w3-center'>" + PremioOs.TotOP[op].MF + "</td ><td class='w3-center'>" + PremioOs.TotOP[op].ST + "</td ><td class='w3-center'><b>" + PremioOs.TotOP[op].TOT + "</b></td >";
-                divObject.querySelector("#lclPerCent").appendChild(rowST);
-            });
-
-            document.querySelector("#listCnLCL").appendChild(divObject);
+    }
 
     document.querySelector("#selectLCL").style.display = "none";
     document.querySelector("#BeneficitTab").style.display = "block";
