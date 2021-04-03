@@ -161,6 +161,9 @@ let CalcTable = {
         AF31173: "Gian Maria Zanardi",
         AF34208: "Alessandro Zanirato",
         AF05109: "Mattia Zucchi",
+
+        AF46032: "Khalid Selloum",
+        AF10025: "Di Natale Giuseppe",
     },
 }
 
