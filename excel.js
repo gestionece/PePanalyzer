@@ -439,6 +439,13 @@ function calcBeneficit() {
                         } else if (rowLCL.TIPO_LCL == "MF_R") {
                             PremioOs.Date[row.DATA_INSTALLAZIONE][row.ESECUTORE].MF_R += 1;
                             PremioOs.TotOP[row.ESECUTORE].MF_R += 1;
+                            /*if (row.POSIZIONE_MIS_POST_SOST == "1 - Nell'appartamento" && new Date(row.DATA_INSTALLAZIONE) >= new Date("8/11/2020")) {//dopo l’11/8/20 – data in cui è stata accettata la comunicazione che la introduceva
+                                PremioOs.Date[row.DATA_INSTALLAZIONE][row.ESECUTORE].MF_INT += 1;
+                                PremioOs.TotOP[row.ESECUTORE].MF_INT += 1;
+                            } else {
+                                PremioOs.Date[row.DATA_INSTALLAZIONE][row.ESECUTORE].MF += 1;
+                                PremioOs.TotOP[row.ESECUTORE].MF += 1;
+                            }*/
                         }
 
                         if (row.ESITO_SMARTEST == "Non eseguibile per Errore di connessione con la sonda BIRD" || row.ESITO_SMARTEST == "Non eseguibile per Errore di connessione con la sonda ARES") {
