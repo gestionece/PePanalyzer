@@ -164,6 +164,18 @@ let CalcTable = {
 
         AF46032: "Khalid Selloum",
         AF10025: "Di Natale Giuseppe",
+        AF35836: "Delmonte Gianmaria",
+        AE83344: "Bini Eric",
+        AF47355: "Amorini Luca",
+        AF52878: "Dattisi Michael",
+        AF52877: "Niscola Francesco",
+        AF51344: "Corradi Marco",
+
+        AF13827: "Casadei Lorenzo",
+        AF35837: "Rossi Emanuele",
+        AE100492: "Rus",
+        AF23849: "Alcaza Nicolae",
+
     },
 }
 
