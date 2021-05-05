@@ -383,7 +383,7 @@ function calcBeneficit() {
                         } else if (DATA_INIZIO <= new Date(row.DATA_ANNULLAMENTO) && new Date(row.DATA_ANNULLAMENTO) <= DATA_FINE) {
                             LCL.ANN += 1;
                         }
-                    } else if (row.STATO_RDA == "CON" && (DATA_INIZIO <= new Date(row.DATA_INSTALLAZIONE) && new Date(row.DATA_INSTALLAZIONE) <= DATA_FINE)) {
+                    } else if ( (row.STATO_RDA == "CON" || row.STATO_RDA == "RESC") && (DATA_INIZIO <= new Date(row.DATA_INSTALLAZIONE) && new Date(row.DATA_INSTALLAZIONE) <= DATA_FINE)) {
                         LCL.CON += 1;
 
                         //console.log(DATA_INIZIO);
