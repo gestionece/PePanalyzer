@@ -256,7 +256,7 @@ function modalEditLCL(element) {
             });
 
             document.querySelector('#labelLCL').innerHTML = lcl.CODICE_LCL + '<i class="w3-small">(' + cnLabel + ')</i>';
-            document.querySelector('#dateLCL').value = dateToYMD(new Date(lcl.DATA_FINE_LCL));
+            document.querySelector('#dateLCL').value = dateToYMD(new Date(lcl.DATA_INIZIO_LCL));
             document.querySelector('#typeLCL').value = lcl.TIPO_LCL;
 
             elementIDlcl.addEventListener('click', saveCalcTableLCL, false);
