@@ -10,32 +10,32 @@ let CalcTable = {
             key: "8400150707",
             label: "Ferrara",
             MF: 3.57,
-            TF: 6.40,
-            M2: 6.40
+            TF: 5.90,
+            M2: 5.90
         }, {
             key: "8400141787",
             label: "Firenze",
             MF: 3.83,
-            TF: 6.00,
-            M2: 6.00
+            TF: 6.40,
+            M2: 7.00
         }, {
             key: "8400124337",
             label: "Reggio-Modena 1",
             MF: 4.44,
             TF: 6.90,
-            M2: 6.90
+            M2: 6.40
         }, {
             key: "8400118979",
             label: "Rovigo 1",
             MF: 5.55,
-            TF: 5.55,
-            M2: 5.55
+            TF: 6.90,
+            M2: 0.00
         }, {
             key: "8400141790",
             label: "Vicenza",
             MF: 4.60,
             TF: 6.40,
-            M2: 6.40
+            M2: 7.00
         }, {
             key: "8400149736",
             label: "Mantova-Cremona",
