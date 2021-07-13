@@ -316,9 +316,6 @@ function calcBeneficit() {
     let DATA_INIZIO = new Date(new Date(document.querySelector("#d_s").value) - (60 * 60 * 1000)*2);
     let DATA_FINE = new Date(new Date(document.querySelector("#d_f").value) - (60 * 60 * 1000));
 
-console.log(DATA_INIZIO);
-console.log(DATA_FINE);
-
     saveListLCL.forEach(rowLCL => {
         if (rowLCL.SELECT == true) {
 
